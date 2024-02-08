@@ -3,14 +3,12 @@ package com.example.foobarapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class signup_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button btnSignup= findViewById(requireViewById().getId());
+        setContentView(R.layout.activity_signup);
     }
 }
