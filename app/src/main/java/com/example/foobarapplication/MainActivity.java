@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
             // Check if the entered username and password match the user created during signup
             EditText emailEditText = findViewById(R.id.emailEditText);
             EditText passwordEditText = findViewById(R.id.passwordEditText);
-
             String enteredemail = emailEditText.getText().toString();
             String enteredPassword = passwordEditText.getText().toString();
 
