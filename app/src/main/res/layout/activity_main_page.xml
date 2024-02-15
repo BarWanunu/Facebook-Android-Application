@@ -6,4 +6,117 @@
     android:layout_height="match_parent"
     tools:context=".main_page_Activity">
 
+    <LinearLayout
+        android:id="@+id/facebook_head"
+        android:layout_width="416dp"
+        android:layout_height="60dp"
+        android:background="#0866FE"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp">
+
+        <ImageButton
+            android:id="@+id/messenger_button"
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#0866FE"
+            android:src="@drawable/messenger">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#0866FE"
+            android:src="@drawable/search">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/plus_button"
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:background="#0866FE"
+            android:src="@drawable/plus_circle">
+
+        </ImageButton>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/facebook_what_on_your_mind"
+        android:layout_width="416dp"
+        android:layout_height="60dp"
+        android:background="#0866FE"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints,UselessLeaf"
+        tools:layout_editor_absoluteY="60dp">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/facebook_bottom"
+        android:layout_width="416dp"
+        android:layout_height="60dp"
+        android:background="#0866FE"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="670dp">
+
+
+        <ImageButton
+            android:id="@+id/notifications"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:background="#0866FE"
+            android:src="@drawable/notifications">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/market"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:background="#0866FE"
+            android:src="@drawable/marketplace">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/friends"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:background="#0866FE"
+            android:src="@drawable/friends">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/tv"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:background="#0866FE"
+            android:src="@drawable/tv">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="80dp"
+            android:layout_height="54dp"
+            android:background="#0866FE"
+            android:src="@drawable/home">
+
+        </ImageButton>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
