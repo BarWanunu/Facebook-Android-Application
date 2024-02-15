@@ -21,6 +21,12 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(this, signup_Activity.class);
             startActivity(i);
         });
+        Button itay_btn = findViewById(R.id.itay_btn);
+        itay_btn.setOnClickListener(v -> {
+            Intent i = new Intent(this, main_page_Activity.class);
+            startActivity(i);
+        });
+
 
         Button btnSignin = findViewById(R.id.btnSignin);
         btnSignin.setOnClickListener(v -> {

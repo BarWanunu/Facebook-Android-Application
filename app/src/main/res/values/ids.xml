@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="editTextConfirmPassword" type="id" />
+    <item name="itat_button" type="id" />
+    <item name="button4" type="id" />
+    <item name="btn_itay" type="id" />
 </resources>
