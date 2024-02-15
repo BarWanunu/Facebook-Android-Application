@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
             // Check if the entered username and password match the user created during signup
             EditText emailEditText = findViewById(R.id.emailEditText);
             EditText passwordEditText = findViewById(R.id.passwordEditText);
-            String enteredemail = emailEditText.getText().toString();
+            String enteredUsername = emailEditText.getText().toString();
             String enteredPassword = passwordEditText.getText().toString();
 
-            if (newUser != null && newUser.getEmail().equals(enteredemail) && newUser.getPassword().equals(enteredPassword)) {
+            if (newUser != null && newUser.getUsername().equals(enteredUsername) && newUser.getPassword().equals(enteredPassword)) {
                 // Successful login, navigate to the next activity
                 Intent signInIntent = new Intent(this, main_page_Activity.class);
+                signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
             } else {
                 // Invalid credentials, show an error message or handle accordingly
