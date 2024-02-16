@@ -4,33 +4,56 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
+
+import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.widget.ImageView;
+    import android.view.Menu;
+    import android.view.MenuItem;
+    import android.view.View;
+    import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import java.net.DatagramPacket;
 
-public class main_page_Activity extends AppCompatActivity {
-    @Override
+    boolean isDarkMode = false;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main_page);
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_page);
+            ImageButton menu = findViewById(R.id.menu);
+            menu.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(main_page_Activity.this, v);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    int id = item.getItemId();
+                    if (id == R.id.action_dark_mode) {
+                        // Toggle the mode
+                        isDarkMode = !isDarkMode;
 
-        // Retrieve the UserCred object from the intent
-        Intent intent = getIntent();
-        UserCred user = (UserCred) intent.getSerializableExtra("user");
-
-        // Set the profile image using the image path
-        if (user != null) {
-            String imagePath = user.getImagePath();
-            if (imagePath != null && !imagePath.isEmpty()) {
-                ImageView profileImageView = findViewById(R.id.profileImageView);
-                profileImageView.setImageURI(Uri.parse(imagePath));
-            }
+                        // Update UI based on the current mode
+                        if (isDarkMode) {
+                            // Set dark mode background, text color, etc.
+                            getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+                            // Adjust other UI elements as needed
+                        } else {
+                            // Set light mode background, text color, etc.
+                            getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+                            // Adjust other UI elements as needed
+                        }
+                        return true;
+                    } else if (id == R.id.action_logout) {
+                        // Implement logout functionality here
+                        // Start MainActivity
+                        Intent intent = new Intent(main_page_Activity.this, MainActivity.class);
+                        startActivity(intent);
+                        // Close current activity if necessary
+                        finish();
+                        return true;
+                    }
+                    return false;
+                });
+                popupMenu.show();
+            });
         }
-
-        // ... (rest of your code)
     }
-}
