@@ -8,4 +8,17 @@
     <string name="sign_up">Sign up</string>
     <string name="Log_out">Log out</string>
     <string name="light_mode">Light/Dark mode</string>
+    <string name="gallery">gallery</string>
+    <string name="camera">camera</string>
+    <string name="messanger">Messanger</string>
+    <string name="group">Group</string>
+    <string name="author">Author</string>
+    <string name="content">Content</string>
+    <string name="add_a_comment">Add a comment</string>
+    <string name="submit">Submit</string>
+    <string name="_0_likes">0 likes</string>
+    <string name="_0_comments">0 comments</string>
+    <string name="default_comment_text">default_comment_text</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="copy_link">Copy link</string>
 </resources>
