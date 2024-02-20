@@ -1,13 +1,12 @@
 package com.example.foobarapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Button itay_btn = findViewById(R.id.itay_btn);
         itay_btn.setOnClickListener(v -> {
-            Intent i = new Intent(this, main_page_Activity.class);
+            Intent i = new Intent(this, Activity_Post.class);
             startActivity(i);
         });
 

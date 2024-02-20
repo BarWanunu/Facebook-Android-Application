@@ -1,20 +1,13 @@
 package com.example.foobarapplication;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-
 import android.graphics.Color;
 import android.os.Bundle;
-    import android.view.Menu;
-    import android.view.MenuItem;
-    import android.view.View;
-    import android.widget.ImageButton;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
-import java.net.DatagramPacket;
-
+import androidx.appcompat.app.AppCompatActivity;
+public class main_page_Activity extends AppCompatActivity {
     boolean isDarkMode = false;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
