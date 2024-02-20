@@ -1,6 +1,7 @@
 package com.example.foobarapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -17,12 +18,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
-
+    boolean isDarkMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        ImageButton menu = findViewById(R.id.menu);
+        menu.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.action_dark_mode) {
+                    // Toggle the mode
+                    isDarkMode = !isDarkMode;
+
+                    // Update UI based on the current mode
+                    if (isDarkMode) {
+                        // Set dark mode background, text color, etc.
+                        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+                        // Adjust other UI elements as needed
+                    } else {
+                        // Set light mode background, text color, etc.
+                        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+                        // Adjust other UI elements as needed
+                    }
+                    return true;
+                } else if (id == R.id.action_logout) {
+                    // Implement logout functionality here
+                    // Start MainActivity
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    // Close current activity if necessary
+                    finish();
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
         final PostsListAdapter adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
