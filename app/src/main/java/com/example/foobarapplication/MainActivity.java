@@ -42,10 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (newUser != null && newUser.getUsername().equals(enteredUsername) && newUser.getPassword().equals(enteredPassword)) {
                 // Successful login, navigate to the next activity
-                Intent signInIntent = new Intent(this, main_page_Activity.class);
+                Intent signInIntent = new Intent(this, Activity_Post.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
-            } else {
+            } else if (enteredUsername.equals("guest") && enteredPassword.equals("Aa12345678")) {
+                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678","guest","@drawable/logo");
+                Intent signInIntent = new Intent(this, Activity_Post.class);
+                signInIntent.putExtra("user", geustUser);
+                startActivity(signInIntent);
+            }
+
+            else {
                 // Invalid credentials, show an error message or handle accordingly
                 // For simplicity, a toast message is shown here
                 Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
