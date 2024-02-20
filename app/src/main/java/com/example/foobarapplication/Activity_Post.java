@@ -3,9 +3,12 @@ package com.example.foobarapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,10 +22,17 @@ import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
+    List<Post> posts;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        Intent intentUser = getIntent();
+        UserCred User = (UserCred) intentUser.getSerializableExtra("user");
+
+// Get the text from the EditText
+
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
@@ -64,12 +74,38 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
 
-        List<Post> posts = new ArrayList<>();
+
+        posts = new ArrayList<>();
         posts.add(new Post(1, "Itay", "Hello", R.drawable.pingpong));
         posts.add(new Post(2, "Itay2", "Hello2", R.drawable.pingpong));
         posts.add(new Post(3, "Itay3", "Hello3", R.drawable.pingpong));
         posts.add(new Post(4, "Itay4", "Hello4", R.drawable.pingpong));
         adapter.setPosts(posts);
+
+
+
+        ImageButton photo_button = findViewById(R.id.photo_button);
+        photo_button.setOnClickListener(v -> {
+            EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
+            String enteredText = whatsOnYourMindEditText.getText().toString();
+
+            if (!enteredText.isEmpty()) {
+                int id1 = posts.toArray().length;
+                Post newPost = new Post(id1 + 1, User.getUsername(), enteredText, R.drawable.pingpong);
+                posts.add(newPost);
+                adapter.setPosts(posts);
+
+                // Show a toast message
+                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+
+                // Clear the EditText
+                whatsOnYourMindEditText.setText("");
+            } else {
+                // Show a toast message indicating that the text is empty
+                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
     }
