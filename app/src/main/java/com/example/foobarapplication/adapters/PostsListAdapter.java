@@ -28,6 +28,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         void onLikeClick();
 
         void onCommentClick(int postId);
+
+        void onOptionClick(int id);
     }
     class PostViewHolder extends RecyclerView.ViewHolder{
         private final TextView tvAuthor;
@@ -36,6 +38,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final ImageButton shareButton;
         private final ImageButton likeButton;
         private final ImageButton commentButton;
+        private final ImageView post_option;
 
         private PostViewHolder(View itemView){
             super(itemView);
@@ -45,6 +48,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             shareButton = itemView.findViewById(R.id.shareButton);
             likeButton= itemView.findViewById(R.id.likeButton);
             commentButton= itemView.findViewById(R.id.commentButton);
+            post_option= itemView.findViewById(R.id.post_options);
 
         }
     }
@@ -96,6 +100,16 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 }
             }
         });
+        holder.post_option.setOnClickListener(v -> {
+            if (listener != null) {
+                int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    Post currentPost = posts.get(adapterPosition);
+                    listener.onOptionClick(currentPost.getId());
+                }
+            }
+        });
+
 
 
 

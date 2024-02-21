@@ -21,4 +21,6 @@
     <string name="default_comment_text">default_comment_text</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="copy_link">Copy link</string>
+    <string name="edit">\n</string>
+    <string name="Delete">\n</string>
 </resources>

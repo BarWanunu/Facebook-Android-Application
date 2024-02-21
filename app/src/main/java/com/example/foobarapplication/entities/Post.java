@@ -98,6 +98,7 @@ public class Post extends AppCompatActivity {
     }
 
 
+
     private boolean clicked = false;
 
     @Override

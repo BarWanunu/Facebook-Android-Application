@@ -3,13 +3,13 @@ package com.example.foobarapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +23,12 @@ import java.util.List;
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
     List<Post> posts;
+    RecyclerView lstPosts;
+    private PostsListAdapter adapter;
+    int counterId;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -69,11 +75,10 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             popupMenu.show();
         });
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-        final PostsListAdapter adapter = new PostsListAdapter(this);
+         adapter = new PostsListAdapter(this);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
-
 
         posts = new ArrayList<>();
         posts.add(new Post(1, "Itay", "Hello", R.drawable.pingpong));
@@ -83,15 +88,14 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         adapter.setPosts(posts);
 
 
-
         ImageButton photo_button = findViewById(R.id.photo_button);
+        counterId= posts.toArray().length+10;
         photo_button.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
             String enteredText = whatsOnYourMindEditText.getText().toString();
 
             if (!enteredText.isEmpty()) {
-                int id1 = posts.toArray().length;
-                Post newPost = new Post(id1 + 1, User.getUsername(), enteredText, R.drawable.pingpong);
+                Post newPost = new Post(counterId++, User.getUsername(), enteredText, R.drawable.pingpong);
                 posts.add(newPost);
                 adapter.setPosts(posts);
 
@@ -159,7 +163,65 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         intent.putExtra("POST_ID", postId);
         startActivity(intent);
     }
+    public void onOptionClick(int postID){
+        ImageButton post_option = findViewById(R.id.post_options);
+
+        // Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, post_option);
+
+        // Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.menu_post_option, popup.getMenu());
+        Post mypost=null;
+        for(Post post:posts) {
+            if (post.getId() == postID)
+                mypost = post;
+
+        }
+
+        // Set the item click listener
+        Post finalMypost = mypost;
+        popup.setOnMenuItemClickListener(item -> {
+            // Handle item clicks here
+            int id = item.getItemId();
+            if (id == R.id.action_post_delete) {
+                posts.remove(finalMypost);
+                adapter.setPosts(posts);
+            }
+            else if(id==R.id.action_post_edit){
+                assert finalMypost != null;
+                showEditDialog(finalMypost);
+            }
 
 
+            return false;
+        });
+
+        // Showing the popup menu
+        popup.show();
+    }
+    private void showEditDialog(Post post) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Post");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setText(post.getContent());
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String newContent = input.getText().toString();
+            // Update the post content
+            post.setContent(newContent);
+            // Update the adapter
+            adapter.setPosts(posts);
+            dialog.dismiss();
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
 
 }
+

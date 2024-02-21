@@ -78,7 +78,7 @@
 
         <ImageButton
             android:id="@+id/photo_button"
-            android:layout_width="113dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
             android:background="@color/facebook"
             android:scaleX="2"
@@ -88,14 +88,26 @@
 
         <EditText
             android:id="@+id/whats_on_your_mind"
-            android:layout_width="291dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:background="@color/facebook"
             android:gravity="center"
             android:hint="what's on your mind ?"
-            tools:ignore="HardcodedText">
+            tools:ignore="HardcodedText"
+            >
 
         </EditText>
+
+        <Button
+            android:id="@+id/btnAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="add post"
+            android:textColor="@color/facebook"
+
+            android:textSize="14sp" />
 
 
     </LinearLayout>
