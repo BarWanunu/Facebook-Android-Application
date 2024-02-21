@@ -3,6 +3,7 @@ package com.example.foobarapplication;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -88,9 +89,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         adapter.setPosts(posts);
 
 
-        ImageButton photo_button = findViewById(R.id.photo_button);
+        Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
         counterId= posts.toArray().length+10;
-        photo_button.setOnClickListener(v -> {
+        btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
             String enteredText = whatsOnYourMindEditText.getText().toString();
 
