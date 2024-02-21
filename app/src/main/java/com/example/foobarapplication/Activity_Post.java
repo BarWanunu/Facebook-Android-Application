@@ -20,7 +20,7 @@ import java.util.List;
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
@@ -75,7 +75,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     @Override
-    public void onShareClick(){
+    public void onShareClick() {
         ImageButton shareButton = findViewById(R.id.shareButton);
 
         // Creating the instance of PopupMenu
@@ -89,7 +89,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
 
     }
-    public void onLikeClick(){
+    public void onLikeClick() {
         // Find the TextView for likes
         TextView likesTextView = findViewById(R.id.likes);
 
@@ -123,7 +123,4 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         intent.putExtra("POST_ID", postId);
         startActivity(intent);
     }
-
-
-
 }

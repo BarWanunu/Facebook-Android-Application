@@ -72,21 +72,21 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             holder.ivPic.setImageResource(current.getPic());
         }
 
-        //share button was pressed
+        //happens if comment button was pressed
         holder.shareButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onShareClick();
             }
         });
 
-        //like button was pressed
+        //happens if comment button was pressed
         holder.likeButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onLikeClick();
             }
         });
 
-        //comment button was pressed
+        //happens if comment button was pressed
         holder.commentButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
