@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,19 +20,24 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     private CommentListAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onSubmitCommentClick(List<Comment> comments);
+        void onEditCommentClick(int position);
+
+        void onDeleteCommentClick(int position);
     }
 
     class CommentViewHolder extends RecyclerView.ViewHolder {
         private final TextView commentAuthor;
         private final TextView commentContent;
-        private final Button submitCommentButton;
+
+        private final ImageButton editCommentButton;
+        private final ImageButton deleteCommentButton;
 
         private CommentViewHolder(View itemView) {
             super(itemView);
             commentAuthor = itemView.findViewById(R.id.commentAuthor);
             commentContent = itemView.findViewById(R.id.commentContent);
-            submitCommentButton = itemView.findViewById(R.id.submitCommentButton);
+            editCommentButton = itemView.findViewById(R.id.editCommentButton);
+            deleteCommentButton = itemView.findViewById(R.id.deleteCommentButton);
         }
     }
 
@@ -58,16 +63,18 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             holder.commentContent.setText(current.getCommentContent());
         }
 
-        holder.submitCommentButton.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onSubmitCommentClick(comments);
+        holder.editCommentButton.setOnClickListener(v -> {
+            if (listener != null){
+                listener.onEditCommentClick(position);
             }
         });
-    }
 
-    public void addComment(Comment comment) {
-        comments.add(comment); // Add the new comment to the list
-        notifyItemInserted(comments.size() - 1); // Notify the adapter that an item is inserted
+        holder.deleteCommentButton.setOnClickListener(v -> {
+            if (listener != null){
+                listener.onDeleteCommentClick(position);
+            }
+        });
+
     }
 
     @Override
@@ -82,5 +89,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public void setComments(List<Comment> s){
         comments =s;
         notifyDataSetChanged();
+    }
+
+    public Comment getCommentAt(int position) {
+        return comments.get(position);
     }
 }

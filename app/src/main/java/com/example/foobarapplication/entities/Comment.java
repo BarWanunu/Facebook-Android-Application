@@ -9,10 +9,15 @@ import com.example.foobarapplication.R;
 public class Comment extends AppCompatActivity {
 
     private int commentId;
+    private int postId;
     private String commentAuthor;
+
     private String commentContent;
 
-    public Comment(String commentAuthor, String commentContent) {
+
+    public Comment(int commentId, int postId, String commentAuthor, String commentContent) {
+        this.commentId = commentId;
+        this.postId = postId;
         this.commentAuthor = commentAuthor;
         this.commentContent = commentContent;
     }
@@ -23,6 +28,14 @@ public class Comment extends AppCompatActivity {
 
     public void setCommentId(int commentId) {
         this.commentId = commentId;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getCommentAuthor() {

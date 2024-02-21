@@ -3,32 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".entities.Comment">
 
     <LinearLayout
-        android:layout_width="308dp"
-        android:layout_height="47dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.622">
+        app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/commentContent"
-            android:layout_width="208dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="25dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="commentContent" />
+            app:srcCompat="@drawable/pingpong" />
 
-        <TextView
-            android:id="@+id/commentAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="198dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/commentAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="commentAuthor"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/commentContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="commentContent" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/editCommentButton"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="commentAuthor" />
+            android:padding="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/edit_button" />
+
+        <ImageButton
+            android:id="@+id/deleteCommentButton"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/delete_button" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
