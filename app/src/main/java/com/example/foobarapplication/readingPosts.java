@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class readingPosts {
 
-    public static void readingPosts(Context context) {
+    public static void readingPosts(Context context, List<Post> posts) {
         try {
             InputStream inputStream = context.getResources().openRawResource(R.raw.posts);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -30,21 +29,18 @@ public class readingPosts {
             while((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
+            JSONObject object = new JSONObject(stringBuilder.toString());
+            JSONArray array = object.getJSONArray("posts");
 
-            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-            JSONArray jsonArray = new JSONArray("posts");
-
-            List<Post> posts = GlobalPostList.postList;
-
-            for(int i=0; i<jsonArray.length(); i++) {
-                JSONObject jsonPost = jsonArray.getJSONObject(i);
+            for(int i=0; i<array.length(); i++) {
+                JSONObject jsonPost = array.getJSONObject(i);
                 int id = jsonPost.getInt("id");
                 String author = jsonPost.getString("author");
                 String content = jsonPost.getString("content");
                 String date = jsonPost.getString("date");
                 int likes = jsonPost.getInt("likes");
-                int picResourceId = getResourceId(context, jsonPost.getString("img"));
-                int profilePicResourceId = getResourceId(context, jsonPost.getString("img"));
+                int picResourceId = getResourceId(context, jsonPost.getString("picture"));
+                int profilePicResourceId = getResourceId(context, jsonPost.getString("profilePicture"));
                 Post post = new Post(id, author, content, date, likes, picResourceId, profilePicResourceId);
                 posts.add(post);
             }
