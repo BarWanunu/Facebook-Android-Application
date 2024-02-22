@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,39 +99,38 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
             String enteredText = whatsOnYourMindEditText.getText().toString();
 
-//            if (!enteredText.isEmpty()) {
-//                Post newPost = new Post(counterId++, User.getUsername(), enteredText, R.drawable.pingpong);
-//                posts.add(newPost);
-//                adapter.setPosts(posts);
-//
-//                // Show a toast message
-//                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
-//
-//                // Clear the EditText
-//                whatsOnYourMindEditText.setText("");
-//            } else {
-//                // Show a toast message indicating that the text is empty
-//                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
-//            }
+            if (!enteredText.isEmpty()) {
+                Post newPost = new Post(counterId++, User.getUsername(), enteredText,"22.02.24",0, R.drawable.pingpong, R.drawable.pingpong);
+                posts.add(newPost);
+                adapter.setPosts(posts);
+
+                // Show a toast message
+                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+
+                // Clear the EditText
+                whatsOnYourMindEditText.setText("");
+            } else {
+                // Show a toast message indicating that the text is empty
+                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }
 
+    //share button was pressed
     @Override
     public void onShareClick() {
         ImageButton shareButton = findViewById(R.id.shareButton);
 
-        // Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(this, shareButton);
 
-        // Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.menu_share, popup.getMenu());
-        //Log.i("Activity_post", "Information message");
 
-        // Showing the popup menu
         popup.show();
 
     }
+
+    //like button was pressed
     public void onLikeClick(int postId) {
         // Find the TextView for likes
         TextView likesTextView = findViewById(R.id.likes);
@@ -159,12 +159,17 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     }
 
-    //the user pressed the CommentButton
+    //comment button was pressed
     public void onCommentClick(int postId) {
+        Intent intentUser = getIntent();
+        UserCred newUser = (UserCred) intentUser.getSerializableExtra("user");
         Intent intent = new Intent(this, Comment_Activity.class);
         intent.putExtra("POST_ID", postId);
+        intent.putExtra("userDetails", newUser );
         startActivity(intent);
     }
+
+    //option button (delete or edit) was pressed
     public void onOptionClick(int postID){
         ImageButton post_option = findViewById(R.id.post_options);
 
