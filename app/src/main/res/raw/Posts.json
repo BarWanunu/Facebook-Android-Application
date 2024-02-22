@@ -1,78 +1,88 @@
 [
   {
     "id":1,
-    "text":"Hi everyone! it's my first post for Shaked!",
-    "profile":"Shaked Gitta",
+    "author":"Shaked Gitta",
+    "content":"Hi everyone! it's my first post for Shaked!",
     "date":"30.1.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":2,
-    "text":"Hi everyone! it's my first post for Itay!",
-    "profile":"Itay Chananel",
+    "author":"Itay Chananel",
+    "content":"Hi everyone! it's my first post for Itay!",
     "date":"30.1.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":3,
-    "text":"Hi everyone! it's my first post for Bar!",
-    "profile":"Bar Wanunu",
+    "author":"Bar Wanunu",
+    "content":"Hi everyone! it's my first post for Bar!",
     "date":"30.1.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":4,
-    "text":"Just finished my work in computer structure! Assembly is so fun!",
-    "profile":"Itay Chananel",
+    "author":"Itay Chananel",
+    "content":"Just finished my work in computer structure! Assembly is so fun!",
     "date":"8.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":5,
-    "text":"Just came back from a zoo trip! I saw a koala",
-    "profile":"Bar Wanunu",
+    "author":"Bar Wanunu",
+    "content":"Just came back from a zoo trip! I saw a koala",
     "date":"3.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":6,
-    "text":"Day 473 in the degree study, i'm still alive",
-    "profile":"Shaked Gitta",
+    "author":"Shaked Gitta",
+    "content":"Day 473 in the degree study, i'm still alive",
     "date":"8.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
 
   },
   {
     "id":7,
-    "text":"I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
-    "profile":"Bar Wanunu",
+    "author":"Bar Wanunu",
+    "content":"I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
     "date":"5.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
   },
   {
     "id":8,
-    "text":"Just came back from a ping pong contest!",
-    "profile":"Itay Chananel",
+    "author":"Itay Chananel",
+    "content":"Just came back from a ping pong contest!",
     "date":"6.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
   },
   {
     "id":9,
-    "text":"I need to talk with Partner something is not right with my internet connection!",
-    "profile":"Shaked Gitta",
+    "author":"Shaked Gitta",
+    "content":"I need to talk with Partner something is not right with my internet connection!",
     "date":"6.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
   },
   {
     "id":10,
-    "text":"I can't believe i drove to Petach Tikva instead of Kiryat Ono",
-    "profile":"Itay Chananel",
+    "author":"Itay Chananel",
+    "content":"I can't believe i drove to Petach Tikva instead of Kiryat Ono",
     "date":"8.2.24",
-    "img":""
+    "likes": "0",
+    "img":"@drawable/pingpong"
   }
 ]
