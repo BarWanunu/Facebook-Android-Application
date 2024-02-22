@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
-    public static List<Post> posts;
+    public static List<Post> posts ;
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
     int counterId;
@@ -36,6 +36,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        readingPosts.readingPosts(this);
+        adapter.setPosts(GlobalPostList.postList);
 
         Intent intentUser = getIntent();
         UserCred User = (UserCred) intentUser.getSerializableExtra("user");
@@ -86,13 +89,12 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             popupMenu.show();
         });
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-         adapter = new PostsListAdapter(this, isDarkMode);
+        adapter = new PostsListAdapter(this, isDarkMode);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
 
-//        posts = new ArrayList<>();
-//        adapter.setPosts(posts);
+
 
 
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
@@ -101,20 +103,20 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
             String enteredText = whatsOnYourMindEditText.getText().toString();
 
-            if (!enteredText.isEmpty()) {
-                Post newPost = new Post(counterId++, User.getUsername(), enteredText, R.drawable.pingpong);
-                posts.add(newPost);
-                adapter.setPosts(posts);
-
-                // Show a toast message
-                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
-
-                // Clear the EditText
-                whatsOnYourMindEditText.setText("");
-            } else {
-                // Show a toast message indicating that the text is empty
-                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
-            }
+//            if (!enteredText.isEmpty()) {
+//                Post newPost = new Post(counterId++, User.getUsername(), enteredText, R.drawable.pingpong);
+//                posts.add(newPost);
+//                adapter.setPosts(posts);
+//
+//                // Show a toast message
+//                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+//
+//                // Clear the EditText
+//                whatsOnYourMindEditText.setText("");
+//            } else {
+//                // Show a toast message indicating that the text is empty
+//                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
+//            }
         });
 
     }
@@ -168,7 +170,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         intent.putExtra("POST_ID", postId);
         startActivity(intent);
     }
-  <<<<<<< new_post
     public void onOptionClick(int postID){
         ImageButton post_option = findViewById(R.id.post_options);
 

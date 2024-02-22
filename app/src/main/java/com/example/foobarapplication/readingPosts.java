@@ -21,7 +21,7 @@ public class readingPosts {
 
     public static void readingPosts(Context context) {
         try {
-            InputStream inputStream = context.getResources().openRawResource(R.raw.Posts);
+            InputStream inputStream = context.getResources().openRawResource(R.raw.posts);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -32,9 +32,9 @@ public class readingPosts {
             }
 
             JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-            JSONArray jsonArray = new JSONArray("Posts");
+            JSONArray jsonArray = new JSONArray("posts");
 
-            List<Post> postList = Activity_Post.posts;
+            List<Post> posts = GlobalPostList.postList;
 
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject jsonPost = jsonArray.getJSONObject(i);
@@ -43,10 +43,10 @@ public class readingPosts {
                 String content = jsonPost.getString("content");
                 String date = jsonPost.getString("date");
                 int likes = jsonPost.getInt("likes");
-                int picResourceId = getResourceId(context, jsonPost.getString("pic"));
-                int profilePicResourceId = getResourceId(context, jsonPost.getString("userPic"));
+                int picResourceId = getResourceId(context, jsonPost.getString("img"));
+                int profilePicResourceId = getResourceId(context, jsonPost.getString("img"));
                 Post post = new Post(id, author, content, date, likes, picResourceId, profilePicResourceId);
-                postList.add(post);
+                posts.add(post);
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
