@@ -27,7 +27,6 @@
             android:hint="@string/username"
             android:inputType="text" />
 
-
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
@@ -42,6 +41,28 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#0866FE"
             android:text="Sign In" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+
+            <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Forgot password?"
+            tools:ignore="MissingConstraints" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/itay_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="itay button" />
 
 
     </LinearLayout>
@@ -81,6 +102,7 @@
         tools:layout_editor_absoluteY="436dp"
         tools:ignore="MissingConstraints">
 
+
     </LinearLayout>
 
     <Button
@@ -95,14 +117,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="1dp" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:text="Forgot password?"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="443dp"
-        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

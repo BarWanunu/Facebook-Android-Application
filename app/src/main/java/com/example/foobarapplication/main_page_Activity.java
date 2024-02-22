@@ -1,8 +1,10 @@
 package com.example.foobarapplication;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Bundle;
     import android.view.Menu;
@@ -11,7 +13,7 @@ import android.os.Bundle;
     import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
-public class main_page_Activity extends AppCompatActivity {
+import java.net.DatagramPacket;
 
     boolean isDarkMode = false;
         @Override
