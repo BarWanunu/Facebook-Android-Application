@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
