@@ -1,13 +1,12 @@
 package com.example.foobarapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Button itay_btn = findViewById(R.id.itay_btn);
         itay_btn.setOnClickListener(v -> {
-            Intent i = new Intent(this, main_page_Activity.class);
+            Intent i = new Intent(this, Activity_Post.class);
             startActivity(i);
         });
 
@@ -43,10 +42,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (newUser != null && newUser.getUsername().equals(enteredUsername) && newUser.getPassword().equals(enteredPassword)) {
                 // Successful login, navigate to the next activity
-                Intent signInIntent = new Intent(this, main_page_Activity.class);
+                Intent signInIntent = new Intent(this, Activity_Post.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
-            } else {
+            } else if (enteredUsername.equals("guest") && enteredPassword.equals("Aa12345678")) {
+                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678","@drawable/logo","guest");
+                Intent signInIntent = new Intent(this, Activity_Post.class);
+                signInIntent.putExtra("user", geustUser);
+                startActivity(signInIntent);
+            }
+
+            else {
                 // Invalid credentials, show an error message or handle accordingly
                 // For simplicity, a toast message is shown here
                 Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();

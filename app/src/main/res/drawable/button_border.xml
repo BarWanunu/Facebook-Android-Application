@@ -1,0 +1,8 @@
+<!-- res/drawable/button_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:background="@color/facebook" /> <!-- Blue background color -->
+    <stroke
+        android:width="2dp"
+    android:color="@color/white" /> <!-- Border color (white) -->
+</shape>

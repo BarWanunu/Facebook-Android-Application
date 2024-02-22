@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Messanger"
+        android:title="@string/messanger" />
+    <item
+        android:id="@+id/WhatsApp"
+        android:title="@string/whatsapp" />
+    <item
+        android:id="@+id/Copy_link"
+        android:title="@string/copy_link" />
+    <item
+        android:id="@+id/Group"
+        android:title="@string/group" />
+
+</menu>
