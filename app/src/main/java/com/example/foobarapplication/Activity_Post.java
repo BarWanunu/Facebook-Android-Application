@@ -1,5 +1,6 @@
 package com.example.foobarapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +57,20 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     if (isDarkMode) {
                         // Set dark mode background, text color, etc.
                         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+
                         // Adjust other UI elements as needed
-                    } else {
+                        // Update the adapter with the new dark mode state
+
+                    }
+                    else {
                         // Set light mode background, text color, etc.
                         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
                         // Adjust other UI elements as needed
                     }
+                    adapter.setDarkMode(isDarkMode);
+
+                    // Notify the adapter that the data has changed
+                    adapter.notifyDataSetChanged();
                     return true;
                 } else if (id == R.id.action_logout) {
                     // Implement logout functionality here
@@ -76,7 +86,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             popupMenu.show();
         });
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-         adapter = new PostsListAdapter(this);
+         adapter = new PostsListAdapter(this, isDarkMode);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
@@ -110,8 +120,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
     }
 
