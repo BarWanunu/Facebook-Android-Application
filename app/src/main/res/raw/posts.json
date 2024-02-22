@@ -5,7 +5,7 @@
     "content":"Hi everyone! it's my first post for Shaked!",
     "date":"30.1.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -14,7 +14,7 @@
     "content":"Hi everyone! it's my first post for Itay!",
     "date":"30.1.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -23,7 +23,7 @@
     "content":"Hi everyone! it's my first post for Bar!",
     "date":"30.1.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -32,7 +32,7 @@
     "content":"Just finished my work in computer structure! Assembly is so fun!",
     "date":"8.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -41,7 +41,7 @@
     "content":"Just came back from a zoo trip! I saw a koala",
     "date":"3.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -50,7 +50,7 @@
     "content":"Day 473 in the degree study, i'm still alive",
     "date":"8.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
 
   },
   {
@@ -59,7 +59,7 @@
     "content":"I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
     "date":"5.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
   },
   {
     "id":8,
@@ -67,7 +67,7 @@
     "content":"Just came back from a ping pong contest!",
     "date":"6.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
   },
   {
     "id":9,
@@ -75,7 +75,7 @@
     "content":"I need to talk with Partner something is not right with my internet connection!",
     "date":"6.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
   },
   {
     "id":10,
@@ -83,6 +83,6 @@
     "content":"I can't believe i drove to Petach Tikva instead of Kiryat Ono",
     "date":"8.2.24",
     "likes": "0",
-    "img":"@drawable/pingpong"
+    "img":""
   }
 ]
