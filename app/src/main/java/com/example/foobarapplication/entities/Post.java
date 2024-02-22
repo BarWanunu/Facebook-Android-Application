@@ -1,5 +1,6 @@
 package com.example.foobarapplication.entities;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
 
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foobarapplication.R;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,35 +16,45 @@ public class Post extends AppCompatActivity {
     private int id;
     private String author;
     private String content;
+    private String date;
     private int likes;
     private int pic;
-
-    private int profilepic;
+    private int profilePicture;
+    private Uri uProfilePicture;
+    private Uri uPic;
     private List<String> comments;
+    private boolean clicked = false;
 
     public Post() {
         this.pic = R.drawable.pingpong;
     }
 
-    public Post(int id, String author, String content, int pic) {
+    public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
         this.id = id;
         this.author = author;
         this.content = content;
-        this.pic = pic;
-        this.likes = 0;
+        this.date = date;
+        this.likes = likes;
+        this.pic = -1;
+        this.profilePicture = -1;
+        this.uPic = uPic;
+        this.uProfilePicture = uProfilePicture;
         this.comments = new ArrayList<>();
-
     }
-    public Post(int id, String author, String content, int pic,int profilepic) {
+
+    public Post(int id, String author, String content, String date, int likes, int pic, int profilePicture){
         this.id = id;
         this.author = author;
         this.content = content;
+        this.date = date;
+        this.likes = likes;
         this.pic = pic;
-        this.likes = 0;
+        this.profilePicture = profilePicture;
+        this.uPic = null;
+        this.uProfilePicture = null;
         this.comments = new ArrayList<>();
-        this.profilepic=profilepic;
-
     }
+
 
     public int getId() {
         return id;
@@ -75,8 +87,6 @@ public class Post extends AppCompatActivity {
     public void incrementLikes() {
         likes++;
     }
-
-
     public void setLikes(int likes) {
         this.likes = likes;
     }
@@ -97,9 +107,6 @@ public class Post extends AppCompatActivity {
         this.pic = pic;
     }
 
-
-
-    private boolean clicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -34,7 +34,7 @@ public class readingPosts {
             JSONObject jsonObject = new JSONObject(stringBuilder.toString());
             JSONArray jsonArray = new JSONArray("Posts");
 
-            List<Post> postList = GlobalVariables.postList;
+            List<Post> postList = Activity_Post.posts;
 
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject jsonPost = jsonArray.getJSONObject(i);
@@ -45,7 +45,7 @@ public class readingPosts {
                 int likes = jsonPost.getInt("likes");
                 int picResourceId = getResourceId(context, jsonPost.getString("pic"));
                 int profilePicResourceId = getResourceId(context, jsonPost.getString("userPic"));
-                Post post = new Post(id, author, content, picResourceId, profilePicResourceId, likes, date);
+                Post post = new Post(id, author, content, date, likes, picResourceId, profilePicResourceId);
                 postList.add(post);
             }
         } catch (IOException | JSONException e) {
