@@ -16,6 +16,7 @@ import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
 
@@ -27,7 +28,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
         void onShareClick();
 
-        void onLikeClick();
+        void onLikeClick(int id);
 
         void onCommentClick(int postId);
 
@@ -41,6 +42,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final ImageButton likeButton;
         private final ImageButton commentButton;
         private final ImageView post_option;
+        private final TextView likesTextView;
         private boolean isDarkMode;
 
 
@@ -53,6 +55,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             likeButton= itemView.findViewById(R.id.likeButton);
             commentButton= itemView.findViewById(R.id.commentButton);
             post_option= itemView.findViewById(R.id.post_options);
+            likesTextView = itemView.findViewById(R.id.likes);
             this.isDarkMode = isDarkMode;
 
         }
@@ -78,6 +81,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
             holder.ivPic.setImageResource(current.getPic());
+            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
 
             // Use the isDarkMode parameter from the ViewHolder constructor
             if (isDarkMode) {
@@ -105,7 +109,11 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         //happens if comment button was pressed
         holder.likeButton.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onLikeClick();
+                int adapterPosition = holder.getAdapterPosition();
+                if(adapterPosition != RecyclerView.NO_POSITION) {
+                    Post currentPost = posts.get(adapterPosition);
+                    listener.onLikeClick(currentPost.getId()-1);
+                }
             }
         });
 
@@ -128,12 +136,6 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 }
             }
         });
-
-
-
-
-
-
 
     }
     public void setOnItemClickListener(PostsListAdapter.OnItemClickListener listener) {
@@ -161,7 +163,4 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         isDarkMode = darkMode;
         notifyDataSetChanged();
     }
-
-
-
 }
