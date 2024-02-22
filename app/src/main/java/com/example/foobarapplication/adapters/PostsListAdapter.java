@@ -1,6 +1,7 @@
 package com.example.foobarapplication.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foobarapplication.R;
@@ -17,10 +19,10 @@ import java.util.List;
 
 public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
 
-    private PostsListAdapter.OnItemClickListener listener;
-
-
-
+    private OnItemClickListener listener;
+    private boolean isDarkMode;
+    private final LayoutInflater mInflater;
+    private List<Post> posts;
     public interface OnItemClickListener{
 
         void onShareClick();
@@ -39,8 +41,10 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final ImageButton likeButton;
         private final ImageButton commentButton;
         private final ImageView post_option;
+        private boolean isDarkMode;
 
-        private PostViewHolder(View itemView){
+
+        private PostViewHolder(View itemView, boolean isDarkMode){
             super(itemView);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvContent = itemView.findViewById(R.id.tvContent);
@@ -49,21 +53,21 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             likeButton= itemView.findViewById(R.id.likeButton);
             commentButton= itemView.findViewById(R.id.commentButton);
             post_option= itemView.findViewById(R.id.post_options);
+            this.isDarkMode = isDarkMode;
 
         }
     }
 
-    private final LayoutInflater mInflater;
-    private List<Post> posts;
 
-    public PostsListAdapter(Context context) {
+    public PostsListAdapter(Context context, boolean isDarkMode) {
         mInflater = LayoutInflater.from(context);
+        this.isDarkMode = isDarkMode;
     }
 
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.post_layout, parent, false);
-        return new PostViewHolder(itemView);
+        return new PostViewHolder(itemView, isDarkMode);
     }
 
     @Override
@@ -74,6 +78,21 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
             holder.ivPic.setImageResource(current.getPic());
+
+            // Use the isDarkMode parameter from the ViewHolder constructor
+            if (isDarkMode) {
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
+                holder.post_option.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
+                holder.tvAuthor.setTextColor(Color.WHITE);
+                holder.tvContent.setTextColor(Color.WHITE);
+                // Set other dark mode styles
+            } else {
+                holder.itemView.setBackgroundColor(Color.WHITE);
+                holder.post_option.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+
+                holder.tvAuthor.setTextColor(Color.BLACK);
+                holder.tvContent.setTextColor(Color.BLACK);
+            }
         }
 
         //happens if comment button was pressed
@@ -114,6 +133,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
 
 
+
+
     }
     public void setOnItemClickListener(PostsListAdapter.OnItemClickListener listener) {
         this.listener = listener;
@@ -134,6 +155,11 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        isDarkMode = darkMode;
+        notifyDataSetChanged();
     }
 
 
