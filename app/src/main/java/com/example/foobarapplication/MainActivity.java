@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
             } else if (enteredUsername.equals("guest") && enteredPassword.equals("Aa12345678")) {
-                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678","guest","@drawable/logo");
+                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678","@drawable/logo","guest");
                 Intent signInIntent = new Intent(this, Activity_Post.class);
                 signInIntent.putExtra("user", geustUser);
                 startActivity(signInIntent);

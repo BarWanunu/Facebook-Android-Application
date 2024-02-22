@@ -17,6 +17,7 @@ public class Post extends AppCompatActivity {
     private int likes;
     private int pic;
 
+    private int profilepic;
     private List<String> comments;
 
     public Post() {
@@ -30,6 +31,16 @@ public class Post extends AppCompatActivity {
         this.pic = pic;
         this.likes = 0;
         this.comments = new ArrayList<>();
+
+    }
+    public Post(int id, String author, String content, int pic,int profilepic) {
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.pic = pic;
+        this.likes = 0;
+        this.comments = new ArrayList<>();
+        this.profilepic=profilepic;
 
     }
 
@@ -85,6 +96,7 @@ public class Post extends AppCompatActivity {
     public void setPic(int pic) {
         this.pic = pic;
     }
+
 
 
     private boolean clicked = false;

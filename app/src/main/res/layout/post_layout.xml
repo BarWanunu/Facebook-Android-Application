@@ -37,6 +37,18 @@
                 android:layout_width="75dp"
                 android:layout_height="32dp"
                 android:text="@string/author" />
+
+            <ImageButton
+                android:id="@+id/post_options"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/topLayout"
+                android:layout_marginStart="200dp"
+                android:background="@color/white"
+                app:srcCompat="@drawable/menu" />
+
+
         </LinearLayout>
 
         <TextView
@@ -47,6 +59,7 @@
             app:layout_constraintBottom_toTopOf="@+id/ivPic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
