@@ -34,8 +34,8 @@
 
             <TextView
                 android:id="@+id/tvAuthor"
-                android:layout_width="75dp"
-                android:layout_height="32dp"
+                android:layout_width="125dp"
+                android:layout_height="31dp"
                 android:text="@string/author" />
 
             <ImageButton
@@ -85,7 +85,7 @@
                 android:layout_width="120dp"
                 android:layout_height="23dp"
                 android:layout_weight="1"
-                android:text="@string/_0_likes"
+                android:text="@string/likes_format"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.13"

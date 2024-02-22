@@ -133,7 +133,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
 
     }
-    public void onLikeClick() {
+    public void onLikeClick(int postId) {
         // Find the TextView for likes
         TextView likesTextView = findViewById(R.id.likes);
 
@@ -144,7 +144,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
 
         // Check if the like button is already liked
-        boolean isLiked = currentLikesString.contains("1");
+        boolean isLiked = currentLikes == (posts.get(postId).getLikes() + 1);
 
         // Update the number of likes based on the current state
         int newLikes;
