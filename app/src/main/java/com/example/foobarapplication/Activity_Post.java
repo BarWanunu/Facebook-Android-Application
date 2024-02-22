@@ -86,7 +86,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             popupMenu.show();
         });
         RecyclerView lstPosts = findViewById(R.id.lstPosts);
-        adapter = new PostsListAdapter(this, isDarkMode);
+         adapter = new PostsListAdapter(this, isDarkMode);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
