@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
-    public static List<Post> posts ;
+    public static List<Post> posts = GlobalPostList.postList ;
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
     int counterId;
@@ -36,9 +36,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-
-        readingPosts.readingPosts(this);
-        adapter.setPosts(GlobalPostList.postList);
 
         Intent intentUser = getIntent();
         UserCred User = (UserCred) intentUser.getSerializableExtra("user");
@@ -94,8 +91,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
 
-
-
+        readingPosts.readingPosts(this, posts);
+        adapter.setPosts(posts);
 
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
         counterId= posts.toArray().length+10;

@@ -18,7 +18,7 @@ public class Post extends AppCompatActivity {
     private String content;
     private String date;
     private int likes;
-    private int pic;
+    private int picture;
     private int profilePicture;
     private Uri uProfilePicture;
     private Uri uPic;
@@ -26,7 +26,7 @@ public class Post extends AppCompatActivity {
     private boolean clicked = false;
 
     public Post() {
-        this.pic = R.drawable.pingpong;
+        this.picture = R.drawable.pingpong;
     }
 
     public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
@@ -35,20 +35,20 @@ public class Post extends AppCompatActivity {
         this.content = content;
         this.date = date;
         this.likes = likes;
-        this.pic = -1;
+        this.picture = -1;
         this.profilePicture = -1;
         this.uPic = uPic;
         this.uProfilePicture = uProfilePicture;
         this.comments = new ArrayList<>();
     }
 
-    public Post(int id, String author, String content, String date, int likes, int pic, int profilePicture){
+    public Post(int id, String author, String content, String date, int likes, int picture, int profilePicture){
         this.id = id;
         this.author = author;
         this.content = content;
         this.date = date;
         this.likes = likes;
-        this.pic = pic;
+        this.picture = picture;
         this.profilePicture = profilePicture;
         this.uPic = null;
         this.uProfilePicture = null;
@@ -100,11 +100,11 @@ public class Post extends AppCompatActivity {
     }
 
     public int getPic() {
-        return pic;
+        return picture;
     }
 
     public void setPic(int pic) {
-        this.pic = pic;
+        this.picture = pic;
     }
 
 
