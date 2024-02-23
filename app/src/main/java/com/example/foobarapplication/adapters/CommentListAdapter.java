@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Comment;
 
@@ -29,6 +31,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         private final TextView commentAuthor;
         private final TextView commentContent;
 
+        private final ImageView userProfilePictureComment;
         private final ImageButton editCommentButton;
         private final ImageButton deleteCommentButton;
 
@@ -38,15 +41,16 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             commentContent = itemView.findViewById(R.id.commentContent);
             editCommentButton = itemView.findViewById(R.id.editCommentButton);
             deleteCommentButton = itemView.findViewById(R.id.deleteCommentButton);
+            userProfilePictureComment = itemView.findViewById(R.id.userProfilePictureComment);
         }
     }
 
     private final LayoutInflater mInflater;
-    private List<Comment> comments; // Initialize the list as empty
+    private List<Comment> comments;
 
     public CommentListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        this.comments = new ArrayList<>(); // Ensure the list is initialized as empty
+        this.comments = new ArrayList<>();
     }
 
     @Override
@@ -57,18 +61,21 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-        if (!comments.isEmpty()) { // Check if comments list is not empty
+        if (!comments.isEmpty()) {
             final Comment current = comments.get(position);
             holder.commentAuthor.setText(current.getCommentAuthor());
             holder.commentContent.setText(current.getCommentContent());
+            Glide.with(holder.itemView.getContext()).load(current.getProfilePicPath()).into(holder.userProfilePictureComment);
         }
 
+        //check if the editCommentButton was pressed
         holder.editCommentButton.setOnClickListener(v -> {
             if (listener != null){
                 listener.onEditCommentClick(position);
             }
         });
 
+        //check if the deleteCommentButton was pressed
         holder.deleteCommentButton.setOnClickListener(v -> {
             if (listener != null){
                 listener.onDeleteCommentClick(position);

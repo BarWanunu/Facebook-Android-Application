@@ -99,14 +99,14 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             }
         }
 
-        //happens if comment button was pressed
+        //check if the shareButton was pressed
         holder.shareButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onShareClick();
             }
         });
 
-        //happens if comment button was pressed
+        //check if the likeButton was pressed
         holder.likeButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition();
@@ -117,7 +117,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             }
         });
 
-        //happens if comment button was pressed
+        //check if the commentButton was pressed
         holder.commentButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
@@ -127,6 +127,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 }
             }
         });
+
+        //check if the post_option (edit or delete) was pressed
         holder.post_option.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
