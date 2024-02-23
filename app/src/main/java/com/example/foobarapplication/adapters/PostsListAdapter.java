@@ -92,6 +92,9 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             if(currentpic==-1&&currentprofilepic==-1){
                 Picasso.get().load(current.getuPic()).into(holder.ivPic);
                 Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
+            } else if (currentpic != -1 && currentprofilepic == -1) {
+                Picasso.get().load(current.getPic()).into(holder.ivPic);
+                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
             }
             else{
                 holder.ivPic.setImageResource(current.getPic());
