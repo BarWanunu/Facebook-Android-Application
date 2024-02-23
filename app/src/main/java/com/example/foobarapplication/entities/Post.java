@@ -30,7 +30,7 @@ public class Post extends AppCompatActivity {
         this.picture = R.drawable.pingpong;
     }
 
-    public Post(int id, String author, String content,String date, int likes, String uPic, String uProfilePicture) {
+    public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
         this.id = id;
         this.author = author;
         this.content = content;
@@ -38,8 +38,8 @@ public class Post extends AppCompatActivity {
         this.likes = likes;
         this.picture = -1;
         this.profilePicture = -1;
-        this.uPic = Uri.parse(uPic);
-        this.uProfilePicture = Uri.parse(uProfilePicture);
+        this.uPic = uPic;
+        this.uProfilePicture = uProfilePicture;
         this.comments = new ArrayList<>();
     }
 
@@ -106,9 +106,14 @@ public class Post extends AppCompatActivity {
     public int getProfilePicture() {
         return profilePicture;
     }
-
     public void setPic(int pic) {
         this.picture = pic;
+    }
+    public Uri getuPic(){
+        return uPic;
+    }
+    public Uri getuProfilePicture(){
+        return uProfilePicture;
     }
 
 

@@ -2,6 +2,7 @@ package com.example.foobarapplication.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.view.ActionBarPolicy;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
 import com.squareup.picasso.Picasso;
@@ -26,11 +27,12 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
     private boolean isDarkMode;
     private final LayoutInflater mInflater;
     private List<Post> posts;
+    private Boolean isLiked= false;
     public interface OnItemClickListener{
 
         void onShareClick();
 
-        void onLikeClick(int id);
+        void onLikeClick(Post id, Boolean isLiked);
 
         void onCommentClick(int postId);
 
@@ -83,12 +85,20 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
+            Log.d("Image URIs", "Post Image URI: " + current.getPic()+ position);
+            Log.d("Image URIs", "Profile Picture URI: " + current.getuProfilePicture());
+            int currentpic=current.getPic();
+            int currentprofilepic= current.getProfilePicture();
+            if(currentpic==-1&&currentprofilepic==-1){
+                Picasso.get().load(current.getuPic()).into(holder.ivPic);
+                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
+            }
+            else{
+                Picasso.get().load(current.getPic()).into(holder.ivPic);
+                Picasso.get().load(current.getProfilePicture()).into(holder.profilePicture);
+            }
 
-            Picasso.get().load(current.getPic()).into(holder.ivPic);
-            holder.ivPic.setImageResource(current.getPic());
-            Picasso.get().load(current.getPic()).into(holder.profilePicture);
-            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
-            holder.profilePicture.setImageResource(current.getProfilePicture());
+            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));;
 
             // Use the isDarkMode parameter from the ViewHolder constructor
             if (isDarkMode) {
@@ -118,8 +128,11 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition();
                 if(adapterPosition != RecyclerView.NO_POSITION) {
+
                     Post currentPost = posts.get(adapterPosition);
-                    listener.onLikeClick(currentPost.getId()-1);
+                    int id=currentPost.getId();
+                    listener.onLikeClick(currentPost,isLiked);
+                    isLiked=!isLiked;
                 }
             }
         });

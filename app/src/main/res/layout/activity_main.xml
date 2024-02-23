@@ -58,12 +58,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/itay_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="itay button" />
-
 
     </LinearLayout>
 

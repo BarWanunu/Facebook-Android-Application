@@ -8,7 +8,90 @@
       "likes": 22,
       "picture": "drawable/shaked",
       "profilePicture": "shaked"
+    },
+    {
+      "id": 2,
+      "author": "Itay Chananel",
+      "content": "Hi everyone! it's my first post for Itay!",
+      "date": "30.1.24",
+      "likes": 32,
+      "picture": "drawable/pingpong",
+      "profilePicture": "itay"
+    },
+    {
+      "id": 3,
+      "author": "Bar Wanunu",
+      "content": "Hi everyone! it's my first post for Bar!",
+      "date": "30.1.24",
+      "likes": 11,
+      "picture": "drawable/pingpong",
+      "profilePicture": "bar"
+    },
+    {
+      "id": 4,
+      "author": "Itay Chananel",
+      "content": "Just finished my work in computer structure! Assembly is so fun!",
+      "date": "8.2.24",
+      "likes": 9,
+      "picture": "drawable/pingpong",
+      "profilePicture": "itay"
+    },
+    {
+      "id": 5,
+      "author": "Bar Wanunu",
+      "content": "Just came back from a zoo trip! I saw a koala",
+      "date": "3.2.24",
+      "likes": 9,
+      "picture": "drawable/pingpong",
+      "profilePicture": "bar"
+    },
+    {
+      "id": 6,
+      "author": "Shaked Gitta",
+      "content": "Day 473 in the degree study, i'm still alive",
+      "date": "8.2.24",
+      "likes": 0,
+      "picture": "drawable/pingpong",
+      "profilePicture": "shaked"
+    },
+    {
+      "id": 7,
+      "author": "Bar Wanunu",
+      "content": "I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
+      "date": "5.2.24",
+      "likes": 0,
+      "picture": "drawable/pingpong",
+      "profilePicture": "bar"
+    },
+    {
+      "id": 8,
+      "author": "Itay Chananel",
+      "content": "Just came back from a ping pong contest!",
+      "date": "6.2.24",
+      "likes": 0,
+      "picture": "drawable/pingpong",
+      "profilePicture": "itay"
+    },
+    {
+      "id": 9,
+      "author": "Shaked Gitta",
+      "content": "I need to talk with Partner something is not right with my internet connection!",
+      "date": "6.2.24",
+      "likes": 0,
+      "picture": "drawable/pingpong",
+      "profilePicture": "shaked"
+    },
+    {
+      "id": 10,
+      "author": "Itay Chananel",
+      "content": "I can't believe i drove to Petach Tikva instead of Kiryat Ono",
+      "date": "8.2.24",
+      "likes": 0,
+      "picture": "drawable/pingpong",
+      "profilePicture": "itay"
     }
+
+
 
   ]
 }

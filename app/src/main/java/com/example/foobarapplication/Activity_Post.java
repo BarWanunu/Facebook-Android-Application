@@ -117,7 +117,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Post newPost;
                 if (selectedImageUri != null) {
                     String imageUriString = selectedImageUri.toString();
-                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, imageUriString, imageUriString);
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, selectedImageUri, Uri.parse(User.getImagePath()));
                 } else {
                     newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, R.drawable.pingpong, R.drawable.pingpong);
                 }
@@ -151,7 +151,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     //like button was pressed
-    public void onLikeClick(int postId) {
+    public void onLikeClick(Post post, Boolean isLiked) {
         // Find the TextView for likes
         TextView likesTextView = findViewById(R.id.likes);
 
@@ -162,16 +162,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
 
         // Check if the like button is already liked
-        boolean isLiked = currentLikes == (posts.get(postId).getLikes() + 1);
+//        boolean isLiked = currentLikes == (post.getLikes() + 1);
 
         // Update the number of likes based on the current state
         int newLikes;
         if (isLiked) {
             // If already liked, decrease the likes by 1
             newLikes = currentLikes - 1;
+            post.unLike();
         } else {
             // If not liked, increase the likes by 1
             newLikes = currentLikes + 1;
+            post.addLike();
         }
 
         // Update the TextView with the new number of likes
@@ -266,30 +268,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 // Display the image in a dialog
 
 
-                Toast.makeText(this, "Image selected and converted to base64", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image selected", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    private void showImageDialog(Bitmap imageBitmap) {
-        // Create a custom dialog
-        Dialog imageDialog = new Dialog(this);
-        imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        imageDialog.setContentView(R.layout.dialog_image);
 
-        // Find the ImageView in the dialog layout
-        ImageView imageView = imageDialog.findViewById(R.id.dialogImageView);
-
-        // Set the Bitmap to the ImageView
-        imageView.setImageBitmap(imageBitmap);
-
-        // Set an OnClickListener to close the dialog when clicked
-        imageView.setOnClickListener(v -> imageDialog.dismiss());
-
-        // Show the dialog
-        imageDialog.show();
-    }
 
     // Helper method to encode Bitmap to base64
     private String encodeImageToBase64(Bitmap bitmap) {
