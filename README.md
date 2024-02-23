@@ -33,3 +33,10 @@ At the bottom of the page you'll see our ruler of actions. The most left icon (t
 #### Posts
 Each post has its own data: author, content, number of likes and comments, you can add like by presing the like button, you can add comments by pressing the comments button and right after to enter you comment and submit it. you can also delete and edit your comment. <br>
 When you add a post the home page will get updated and your post will be added at the end of the page.
+
+## Our workflow
+
+At first we divided the missions between us and updated it in the Jira. <br>
+We created the tests for the program and by them we built the components with different and specific roles for each component. <br>
+During our work we checked after every little detail we changed that our app behavior is as we expected. <br> 
+When everything worked as we expected we upload our program. <br>
