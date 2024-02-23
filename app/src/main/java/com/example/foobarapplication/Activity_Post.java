@@ -119,7 +119,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     String imageUriString = selectedImageUri.toString();
                     newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, selectedImageUri, Uri.parse(User.getImagePath()));
                 } else {
-                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, R.drawable.pingpong, R.drawable.pingpong);
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, R.drawable.pingpong, Uri.parse(User.getImagePath()));
                 }
                 posts.add(newPost);
                 adapter.setPosts(posts);

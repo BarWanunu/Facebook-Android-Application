@@ -56,6 +56,19 @@ public class Post extends AppCompatActivity {
         this.comments = new ArrayList<>();
     }
 
+    public Post(int id, String author, String content, String date, int likes, int picture, Uri uProfilePicture){
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+        this.picture = picture;
+        this.profilePicture = -1;
+        this.uPic = null;
+        this.uProfilePicture = uProfilePicture;
+        this.comments = new ArrayList<>();
+    }
+
 
     public int getId() {
         return id;
