@@ -6,8 +6,8 @@
       "content": "Hi everyone! it's my first post for Shaked!",
       "date": "30.1.24",
       "likes": 22,
-      "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "picture": "drawable/shaked",
+      "profilePicture": "shaked"
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "date": "30.1.24",
       "likes": 32,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "itay"
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "date": "30.1.24",
       "likes": 11,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "bar"
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "date": "8.2.24",
       "likes": 9,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "itay"
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "date": "3.2.24",
       "likes": 9,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "bar"
     },
     {
       "id": 6,
@@ -52,7 +52,7 @@
       "date": "8.2.24",
       "likes": 0,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "shaked"
     },
     {
       "id": 7,
@@ -61,7 +61,7 @@
       "date": "5.2.24",
       "likes": 0,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "bar"
     },
     {
       "id": 8,
@@ -70,7 +70,7 @@
       "date": "6.2.24",
       "likes": 0,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "itay"
     },
     {
       "id": 9,
@@ -79,7 +79,7 @@
       "date": "6.2.24",
       "likes": 0,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "shaked"
     },
     {
       "id": 10,
@@ -88,7 +88,7 @@
       "date": "8.2.24",
       "likes": 0,
       "picture": "drawable/pingpong",
-      "profilePicture": "drawable/pingpong"
+      "profilePicture": "itay"
     }
   ]
 }

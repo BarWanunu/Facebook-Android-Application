@@ -43,6 +43,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final ImageButton commentButton;
         private final ImageView post_option;
         private final TextView likesTextView;
+        private final ImageView profilePicture;
         private boolean isDarkMode;
 
 
@@ -57,6 +58,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             post_option= itemView.findViewById(R.id.post_options);
             likesTextView = itemView.findViewById(R.id.likes);
             this.isDarkMode = isDarkMode;
+            this.profilePicture = itemView.findViewById(R.id.profile_picture);
 
         }
     }
@@ -75,13 +77,13 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-
         if (posts != null){
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
             holder.ivPic.setImageResource(current.getPic());
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
+            holder.profilePicture.setImageResource(current.getProfilePicture());
 
             // Use the isDarkMode parameter from the ViewHolder constructor
             if (isDarkMode) {
