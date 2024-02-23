@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post extends AppCompatActivity {
+    private ArrayList<Object> comments;
     private int id;
     private String author;
     private String content;
@@ -22,14 +23,14 @@ public class Post extends AppCompatActivity {
     private int profilePicture;
     private Uri uProfilePicture;
     private Uri uPic;
-    private List<String> comments;
+    private List<String> commenths;
     private boolean clicked = false;
 
     public Post() {
         this.picture = R.drawable.pingpong;
     }
 
-    public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
+    public Post(int id, String author, String content,String date, int likes, String uPic, String uProfilePicture) {
         this.id = id;
         this.author = author;
         this.content = content;
@@ -37,8 +38,8 @@ public class Post extends AppCompatActivity {
         this.likes = likes;
         this.picture = -1;
         this.profilePicture = -1;
-        this.uPic = uPic;
-        this.uProfilePicture = uProfilePicture;
+        this.uPic = Uri.parse(uPic);
+        this.uProfilePicture = Uri.parse(uProfilePicture);
         this.comments = new ArrayList<>();
     }
 

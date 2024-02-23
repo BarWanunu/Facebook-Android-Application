@@ -9,11 +9,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.view.ActionBarPolicy;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
@@ -81,7 +83,10 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
+
+            Picasso.get().load(current.getPic()).into(holder.ivPic);
             holder.ivPic.setImageResource(current.getPic());
+            Picasso.get().load(current.getPic()).into(holder.profilePicture);
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
             holder.profilePicture.setImageResource(current.getProfilePicture());
 

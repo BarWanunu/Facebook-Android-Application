@@ -77,7 +77,7 @@
         tools:ignore="MissingConstraints">
 
         <ImageButton
-            android:id="@+id/photo_button"
+            android:id="@+id/btnGallery"
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:background="@color/facebook"
