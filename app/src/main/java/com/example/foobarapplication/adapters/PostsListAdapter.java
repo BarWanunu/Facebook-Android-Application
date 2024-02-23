@@ -94,8 +94,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
             }
             else{
-                Picasso.get().load(current.getPic()).into(holder.ivPic);
-                Picasso.get().load(current.getProfilePicture()).into(holder.profilePicture);
+                holder.ivPic.setImageResource(current.getPic());
+                holder.profilePicture.setImageResource(current.getProfilePicture());
             }
 
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));;

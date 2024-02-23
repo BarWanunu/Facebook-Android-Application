@@ -15,7 +15,7 @@
       "content": "Hi everyone! it's my first post for Itay!",
       "date": "30.1.24",
       "likes": 32,
-      "picture": "drawable/pingpong",
+      "picture": "itay",
       "profilePicture": "itay"
     },
     {
@@ -24,7 +24,7 @@
       "content": "Hi everyone! it's my first post for Bar!",
       "date": "30.1.24",
       "likes": 11,
-      "picture": "drawable/pingpong",
+      "picture": "bar",
       "profilePicture": "bar"
     },
     {
@@ -33,7 +33,7 @@
       "content": "Just finished my work in computer structure! Assembly is so fun!",
       "date": "8.2.24",
       "likes": 9,
-      "picture": "drawable/pingpong",
+      "picture": "hacking",
       "profilePicture": "itay"
     },
     {
@@ -42,7 +42,7 @@
       "content": "Just came back from a zoo trip! I saw a koala",
       "date": "3.2.24",
       "likes": 9,
-      "picture": "drawable/pingpong",
+      "picture": "koala",
       "profilePicture": "bar"
     },
     {
@@ -51,7 +51,7 @@
       "content": "Day 473 in the degree study, i'm still alive",
       "date": "8.2.24",
       "likes": 0,
-      "picture": "drawable/pingpong",
+      "picture": "still_alive",
       "profilePicture": "shaked"
     },
     {
@@ -60,7 +60,7 @@
       "content": "I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
       "date": "5.2.24",
       "likes": 0,
-      "picture": "drawable/pingpong",
+      "picture": "why_me",
       "profilePicture": "bar"
     },
     {
@@ -69,7 +69,7 @@
       "content": "Just came back from a ping pong contest!",
       "date": "6.2.24",
       "likes": 0,
-      "picture": "drawable/pingpong",
+      "picture": "pingpong",
       "profilePicture": "itay"
     },
     {
@@ -78,7 +78,7 @@
       "content": "I need to talk with Partner something is not right with my internet connection!",
       "date": "6.2.24",
       "likes": 0,
-      "picture": "drawable/pingpong",
+      "picture": "frustration",
       "profilePicture": "shaked"
     },
     {
@@ -87,7 +87,7 @@
       "content": "I can't believe i drove to Petach Tikva instead of Kiryat Ono",
       "date": "8.2.24",
       "likes": 0,
-      "picture": "drawable/pingpong",
+      "picture": "petach_tikva",
       "profilePicture": "itay"
     }
 
