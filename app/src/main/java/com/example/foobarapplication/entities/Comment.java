@@ -12,14 +12,15 @@ public class Comment extends AppCompatActivity {
     private int postId;
     private String commentAuthor;
 
+    private String profilePicPath;
     private String commentContent;
 
-
-    public Comment(int commentId, int postId, String commentAuthor, String commentContent) {
+    public Comment(int commentId, int postId, String commentAuthor, String commentContent, String profilePicPath) {
         this.commentId = commentId;
         this.postId = postId;
         this.commentAuthor = commentAuthor;
         this.commentContent = commentContent;
+        this.profilePicPath=profilePicPath;
     }
 
     public int getCommentId() {
@@ -54,6 +55,12 @@ public class Comment extends AppCompatActivity {
         this.commentContent = commentContent;
     }
 
+    public String getProfilePicPath() {
+        return profilePicPath;
+    }
+    public void setProfilePicPath(String profilePicPath) {
+        this.profilePicPath = profilePicPath;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

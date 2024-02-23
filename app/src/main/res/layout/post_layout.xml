@@ -90,7 +90,7 @@
                 android:text="@string/likes_format"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.13"
+                app:layout_constraintHorizontal_bias="0.18"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.47000003" />
@@ -109,27 +109,24 @@
 
             <ImageButton
                 android:id="@+id/likeButton"
-                android:layout_width="325dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/like_button" />
 
             <ImageButton
                 android:id="@+id/commentButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/comment_button" />
 
             <ImageButton
                 android:id="@+id/shareButton"
-                android:layout_width="350dp"
-                android:layout_height="50dp"
-                android:layout_weight="1.4"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/share_icon" />

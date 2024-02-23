@@ -1,6 +1,7 @@
 package com.example.foobarapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,11 +19,6 @@ public class MainActivity extends AppCompatActivity {
         Button btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(v -> {
             Intent i = new Intent(this, signup_Activity.class);
-            startActivity(i);
-        });
-        Button itay_btn = findViewById(R.id.itay_btn);
-        itay_btn.setOnClickListener(v -> {
-            Intent i = new Intent(this, Activity_Post.class);
             startActivity(i);
         });
 
@@ -46,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
             } else if (enteredUsername.equals("guest") && enteredPassword.equals("Aa12345678")) {
-                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678","@drawable/logo","guest");
+                // Assuming R.drawable.my_drawable is your drawable resource
+                int drawableResourceId = R.drawable.guest_profile;
+                Uri drawableUri = Uri.parse("android.resource://" + getPackageName() + "/" + drawableResourceId);
+                String imageUriString = drawableUri.toString();
+                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678",imageUriString,"guest");
                 Intent signInIntent = new Intent(this, Activity_Post.class);
                 signInIntent.putExtra("user", geustUser);
                 startActivity(signInIntent);

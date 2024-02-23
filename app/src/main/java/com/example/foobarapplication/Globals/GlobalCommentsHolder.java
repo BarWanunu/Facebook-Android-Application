@@ -31,9 +31,9 @@ public class GlobalCommentsHolder {
 
     public void updateComment(int commentId, String updatedCommentText) {
         for (Comment comment : comments) {
-            if (comment.getCommentId() == commentId) { // Use == for primitive int comparison
+            if (comment.getCommentId() == commentId) {
                 comment.setCommentContent(updatedCommentText);
-                break; // Exit loop once the comment is found and updated
+                break;
             }
         }
     }

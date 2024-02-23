@@ -2,6 +2,7 @@ package com.example.foobarapplication.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
@@ -24,11 +27,12 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
     private boolean isDarkMode;
     private final LayoutInflater mInflater;
     private List<Post> posts;
+    private Boolean isLiked= false;
     public interface OnItemClickListener{
 
         void onShareClick();
 
-        void onLikeClick(int id);
+        void onLikeClick(Post id, Boolean isLiked);
 
         void onCommentClick(int postId);
 
@@ -81,9 +85,20 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
-            holder.ivPic.setImageResource(current.getPic());
-            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
-            holder.profilePicture.setImageResource(current.getProfilePicture());
+            Log.d("Image URIs", "Post Image URI: " + current.getPic()+ position);
+            Log.d("Image URIs", "Profile Picture URI: " + current.getuProfilePicture());
+            int currentpic=current.getPic();
+            int currentprofilepic= current.getProfilePicture();
+            if(currentpic==-1&&currentprofilepic==-1){
+                Picasso.get().load(current.getuPic()).into(holder.ivPic);
+                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
+            }
+            else{
+                Picasso.get().load(current.getPic()).into(holder.ivPic);
+                Picasso.get().load(current.getProfilePicture()).into(holder.profilePicture);
+            }
+
+            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));;
 
             // Use the isDarkMode parameter from the ViewHolder constructor
             if (isDarkMode) {
@@ -101,25 +116,28 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             }
         }
 
-        //happens if comment button was pressed
+        //check if the shareButton was pressed
         holder.shareButton.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onShareClick();
             }
         });
 
-        //happens if comment button was pressed
+        //check if the likeButton was pressed
         holder.likeButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition();
                 if(adapterPosition != RecyclerView.NO_POSITION) {
+
                     Post currentPost = posts.get(adapterPosition);
-                    listener.onLikeClick(currentPost.getId()-1);
+                    int id=currentPost.getId();
+                    listener.onLikeClick(currentPost,isLiked);
+                    isLiked=!isLiked;
                 }
             }
         });
 
-        //happens if comment button was pressed
+        //check if the commentButton was pressed
         holder.commentButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
@@ -129,6 +147,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 }
             }
         });
+
+        //check if the post_option (edit or delete) was pressed
         holder.post_option.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
