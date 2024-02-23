@@ -31,7 +31,7 @@
       "id": 4,
       "author": "Itay Chananel",
       "content": "Just finished my work in computer structure! Assembly is so fun!",
-      "date": "8.2.24",
+      "date": "3.2.24",
       "likes": 9,
       "picture": "hacking",
       "profilePicture": "itay"
@@ -40,35 +40,35 @@
       "id": 5,
       "author": "Bar Wanunu",
       "content": "Just came back from a zoo trip! I saw a koala",
-      "date": "3.2.24",
+      "date": "4.2.24",
       "likes": 9,
       "picture": "koala",
       "profilePicture": "bar"
     },
     {
       "id": 6,
-      "author": "Shaked Gitta",
-      "content": "Day 473 in the degree study, i'm still alive",
-      "date": "8.2.24",
-      "likes": 0,
-      "picture": "still_alive",
-      "profilePicture": "shaked"
-    },
-    {
-      "id": 7,
       "author": "Bar Wanunu",
       "content": "I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
       "date": "5.2.24",
-      "likes": 0,
+      "likes": 25,
       "picture": "why_me",
       "profilePicture": "bar"
+    },
+    {
+      "id": 7,
+      "author": "Shaked Gitta",
+      "content": "Day 473 in the degree study, i'm still alive",
+      "date": "8.2.24",
+      "likes": 473,
+      "picture": "still_alive",
+      "profilePicture": "shaked"
     },
     {
       "id": 8,
       "author": "Itay Chananel",
       "content": "Just came back from a ping pong contest!",
-      "date": "6.2.24",
-      "likes": 0,
+      "date": "12.2.24",
+      "likes": 100,
       "picture": "pingpong",
       "profilePicture": "itay"
     },
@@ -76,8 +76,8 @@
       "id": 9,
       "author": "Shaked Gitta",
       "content": "I need to talk with Partner something is not right with my internet connection!",
-      "date": "6.2.24",
-      "likes": 0,
+      "date": "13.2.24",
+      "likes": 23,
       "picture": "frustration",
       "profilePicture": "shaked"
     },
@@ -85,8 +85,8 @@
       "id": 10,
       "author": "Itay Chananel",
       "content": "I can't believe i drove to Petach Tikva instead of Kiryat Ono",
-      "date": "8.2.24",
-      "likes": 0,
+      "date": "14.2.24",
+      "likes": 77,
       "picture": "petach_tikva",
       "profilePicture": "itay"
     }

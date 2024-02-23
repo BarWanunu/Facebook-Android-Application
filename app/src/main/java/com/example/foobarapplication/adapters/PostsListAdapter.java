@@ -32,7 +32,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
         void onShareClick();
 
-        void onLikeClick(Post id, Boolean isLiked);
+        void onLikeClick(Post id, TextView likesTextView);
 
         void onCommentClick(int postId);
 
@@ -48,6 +48,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final ImageView post_option;
         private final TextView likesTextView;
         private final ImageView profilePicture;
+        private final TextView date;
         private boolean isDarkMode;
 
 
@@ -63,6 +64,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             likesTextView = itemView.findViewById(R.id.likes);
             this.isDarkMode = isDarkMode;
             this.profilePicture = itemView.findViewById(R.id.profile_picture);
+            this.date = itemView.findViewById(R.id.date);
 
         }
     }
@@ -100,7 +102,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 holder.ivPic.setImageResource(current.getPic());
                 holder.profilePicture.setImageResource(current.getProfilePicture());
             }
-
+            holder.date.setText(String.format(Locale.getDefault(), "%s" , current.getDate()));
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));;
 
             // Use the isDarkMode parameter from the ViewHolder constructor
@@ -130,12 +132,11 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         holder.likeButton.setOnClickListener(v -> {
             if (listener != null) {
                 int adapterPosition = holder.getAdapterPosition();
-                if(adapterPosition != RecyclerView.NO_POSITION) {
-
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
-                    int id=currentPost.getId();
-                    listener.onLikeClick(currentPost,isLiked);
-                    isLiked=!isLiked;
+                    listener.onLikeClick(currentPost, holder.likesTextView);
+                    // Toggle the isLiked state for the current post
+                    currentPost.setLiked(!currentPost.getIsLiked());
                 }
             }
         });
