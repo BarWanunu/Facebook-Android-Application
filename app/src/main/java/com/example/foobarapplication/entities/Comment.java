@@ -1,5 +1,6 @@
 package com.example.foobarapplication.entities;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,15 +13,30 @@ public class Comment extends AppCompatActivity {
     private int postId;
     private String commentAuthor;
 
-    private String profilePicPath;
+    //private String profilePicPath;
+
+    private int profilePicture;
+
+    private Uri uProfilePicture;
+
     private String commentContent;
 
-    public Comment(int commentId, int postId, String commentAuthor, String commentContent, String profilePicPath) {
+    public Comment(int commentId, int postId, String commentAuthor, String commentContent, Uri uProfilePicture) {
         this.commentId = commentId;
         this.postId = postId;
         this.commentAuthor = commentAuthor;
         this.commentContent = commentContent;
-        this.profilePicPath=profilePicPath;
+        this.profilePicture = -1;
+        this.uProfilePicture = uProfilePicture;
+    }
+
+    public Comment(int commentId, int postId, String commentAuthor, String commentContent, int profilePicture) {
+        this.commentId = commentId;
+        this.postId = postId;
+        this.commentAuthor = commentAuthor;
+        this.commentContent = commentContent;
+        this.profilePicture = profilePicture;
+        this.uProfilePicture = null;
     }
 
     public int getCommentId() {
@@ -55,15 +71,25 @@ public class Comment extends AppCompatActivity {
         this.commentContent = commentContent;
     }
 
-    public String getProfilePicPath() {
-        return profilePicPath;
-    }
-    public void setProfilePicPath(String profilePicPath) {
-        this.profilePicPath = profilePicPath;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_layout);
+    }
+
+    public int getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(int profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public Uri getuProfilePicture() {
+        return uProfilePicture;
+    }
+
+    public void setuProfilePicture(Uri uProfilePicture) {
+        this.uProfilePicture = uProfilePicture;
     }
 }

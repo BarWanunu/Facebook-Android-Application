@@ -1,6 +1,7 @@
 package com.example.foobarapplication;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,7 +51,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
             if (!commentText.isEmpty()) {
                 List<Comment> currentComments = GlobalCommentsHolder.getCommentsByPostId(POST_ID); // Fetch the latest comments
                 int id = currentComments.size() + 1; // This might need adjustment based on how you manage IDs
-                Comment newComment = new Comment(id, POST_ID, User.getUsername(), commentText, User.getImagePath());
+                Comment newComment = new Comment(id, POST_ID, User.getUsername(), commentText, Uri.parse(User.getImagePath()));
                 GlobalCommentsHolder.addComment(newComment); // Add to global holder
                 commentListAdapter.setComments(GlobalCommentsHolder.getCommentsByPostId(POST_ID)); // Refresh adapter with updated list
                 commentListAdapter.notifyItemInserted(currentComments.size() - 1);

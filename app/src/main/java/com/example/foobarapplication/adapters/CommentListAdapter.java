@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Comment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             final Comment current = comments.get(position);
             holder.commentAuthor.setText(current.getCommentAuthor());
             holder.commentContent.setText(current.getCommentContent());
-            Glide.with(holder.itemView.getContext()).load(current.getProfilePicPath()).into(holder.userProfilePictureComment);
+            int currentprofilepic= current.getProfilePicture();
+            if(currentprofilepic==-1){
+                Picasso.get().load(current.getuProfilePicture()).into(holder.userProfilePictureComment);
+            }
+            else{
+                Picasso.get().load(current.getProfilePicture()).into(holder.userProfilePictureComment);
+            }
+            //Glide.with(holder.itemView.getContext()).load(current.getProfilePicPath()).into(holder.userProfilePictureComment);
         }
 
         //check if the editCommentButton was pressed
