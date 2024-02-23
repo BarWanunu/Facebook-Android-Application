@@ -102,6 +102,9 @@ public class Post extends AppCompatActivity {
     public int getPic() {
         return picture;
     }
+    public int getProfilePicture() {
+        return profilePicture;
+    }
 
     public void setPic(int pic) {
         this.picture = pic;

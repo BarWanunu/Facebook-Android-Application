@@ -28,15 +28,16 @@
 
             <ImageView
                 android:id="@+id/profile_picture"
-                android:layout_width="59dp"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/pingpong" />
+                android:layout_width="104dp"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/tvAuthor"
-                android:layout_width="125dp"
-                android:layout_height="31dp"
-                android:text="@string/author" />
+                android:layout_width="145dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/author"
+                android:textSize="20dp" />
 
             <ImageButton
                 android:id="@+id/post_options"
@@ -56,10 +57,11 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="@string/content"
+            android:textSize="20dp"
+            android:gravity="center_vertical|center_horizontal"
             app:layout_constraintBottom_toTopOf="@+id/ivPic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
