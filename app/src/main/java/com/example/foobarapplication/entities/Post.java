@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post extends AppCompatActivity {
+    private ArrayList<Object> comments;
     private int id;
     private String author;
     private String content;
@@ -22,7 +23,7 @@ public class Post extends AppCompatActivity {
     private int profilePicture;
     private Uri uProfilePicture;
     private Uri uPic;
-    private List<String> comments;
+    private List<String> commenths;
     private boolean clicked = false;
 
     public Post() {
@@ -105,9 +106,14 @@ public class Post extends AppCompatActivity {
     public int getProfilePicture() {
         return profilePicture;
     }
-
     public void setPic(int pic) {
         this.picture = pic;
+    }
+    public Uri getuPic(){
+        return uPic;
+    }
+    public Uri getuProfilePicture(){
+        return uProfilePicture;
     }
 
 

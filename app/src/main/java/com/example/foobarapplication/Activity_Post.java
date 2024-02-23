@@ -1,14 +1,22 @@
 package com.example.foobarapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
@@ -26,6 +36,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
     int counterId;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    Uri selectedImageUri;
 
 
 
@@ -91,15 +103,24 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         readingPosts.readingPosts(this, posts);
         adapter.setPosts(posts);
+        ImageButton btnGallery = findViewById(R.id.btnGallery);
+        btnGallery.setOnClickListener(v -> openGallery());
 
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
         counterId= posts.toArray().length+10;
+
         btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
             String enteredText = whatsOnYourMindEditText.getText().toString();
 
             if (!enteredText.isEmpty()) {
-                Post newPost = new Post(counterId++, User.getUsername(), enteredText,"22.02.24",0, R.drawable.pingpong, R.drawable.pingpong);
+                Post newPost;
+                if (selectedImageUri != null) {
+                    String imageUriString = selectedImageUri.toString();
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, selectedImageUri, Uri.parse(User.getImagePath()));
+                } else {
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, R.drawable.pingpong, R.drawable.pingpong);
+                }
                 posts.add(newPost);
                 adapter.setPosts(posts);
 
@@ -130,7 +151,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     //like button was pressed
-    public void onLikeClick(int postId) {
+    public void onLikeClick(Post post, Boolean isLiked) {
         // Find the TextView for likes
         TextView likesTextView = findViewById(R.id.likes);
 
@@ -141,16 +162,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
 
         // Check if the like button is already liked
-        boolean isLiked = currentLikes == (posts.get(postId).getLikes() + 1);
+//        boolean isLiked = currentLikes == (post.getLikes() + 1);
 
         // Update the number of likes based on the current state
         int newLikes;
         if (isLiked) {
             // If already liked, decrease the likes by 1
             newLikes = currentLikes - 1;
+            post.unLike();
         } else {
             // If not liked, increase the likes by 1
             newLikes = currentLikes + 1;
+            post.addLike();
         }
 
         // Update the TextView with the new number of likes
@@ -228,6 +251,39 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         builder.show();
     }
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+
+                // Display the image in a dialog
+
+
+                Toast.makeText(this, "Image selected", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    // Helper method to encode Bitmap to base64
+    private String encodeImageToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 }
+
+
 
