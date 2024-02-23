@@ -28,7 +28,10 @@ import com.example.foobarapplication.entities.Post;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
@@ -115,11 +118,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
             if (!enteredText.isEmpty()) {
                 Post newPost;
+                String currentDate = new SimpleDateFormat("dd.MM.yy", Locale.getDefault()).format(new Date());
                 if (selectedImageUri != null) {
                     String imageUriString = selectedImageUri.toString();
-                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, selectedImageUri, Uri.parse(User.getImagePath()));
+
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, currentDate, 0, selectedImageUri, Uri.parse(User.getImagePath()));
                 } else {
-                    newPost = new Post(counterId++, User.getUsername(), enteredText, "22.02.24", 0, R.drawable.pingpong, Uri.parse(User.getImagePath()));
+                    newPost = new Post(counterId++, User.getUsername(), enteredText,currentDate , 0, R.drawable.pingpong, Uri.parse(User.getImagePath()));
                 }
                 posts.add(newPost);
                 adapter.setPosts(posts);
@@ -151,10 +156,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     //like button was pressed
-    public void onLikeClick(Post post, Boolean isLiked) {
-        // Find the TextView for likes
-        TextView likesTextView = findViewById(R.id.likes);
-
+    public void onLikeClick(Post post, TextView likesTextView) {
         // Get the current number of likes as a string
         String currentLikesString = likesTextView.getText().toString();
 
@@ -162,7 +164,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
 
         // Check if the like button is already liked
-//        boolean isLiked = currentLikes == (post.getLikes() + 1);
+        boolean isLiked = post.getIsLiked();
 
         // Update the number of likes based on the current state
         int newLikes;
@@ -178,7 +180,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Update the TextView with the new number of likes
         likesTextView.setText(newLikes + " likes");
-
     }
 
     //comment button was pressed

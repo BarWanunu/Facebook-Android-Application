@@ -24,7 +24,7 @@ public class Post extends AppCompatActivity {
     private Uri uProfilePicture;
     private Uri uPic;
     private List<String> commenths;
-    private boolean clicked = false;
+    private boolean isLiked = false;
 
     public Post() {
         this.picture = R.drawable.pingpong;
@@ -119,6 +119,11 @@ public class Post extends AppCompatActivity {
     public int getProfilePicture() {
         return profilePicture;
     }
+
+    public String getDate() {
+        return date;
+    }
+
     public void setPic(int pic) {
         this.picture = pic;
     }
@@ -129,6 +134,12 @@ public class Post extends AppCompatActivity {
         return uProfilePicture;
     }
 
+    public boolean getIsLiked() {
+        return isLiked;
+    }
+    public void setLiked(boolean liked) {
+        this.isLiked = liked;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,11 +147,11 @@ public class Post extends AppCompatActivity {
         setContentView(R.layout.post_layout);
         ImageButton likeBtn = findViewById(R.id.likeButton);
         likeBtn.setOnClickListener(v -> {
-                    if (clicked == false) {
-                        clicked = true;
+                    if (isLiked == false) {
+                        isLiked = true;
                         addLike();
                     } else {
-                        clicked = false;
+                        isLiked = false;
                         unLike();
                     }
 

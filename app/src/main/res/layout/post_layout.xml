@@ -39,6 +39,14 @@
                 android:text="@string/author"
                 android:textSize="20dp" />
 
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/date_format"
+                android:textSize="18dp" />
+
             <ImageButton
                 android:id="@+id/post_options"
                 android:layout_width="50dp"
