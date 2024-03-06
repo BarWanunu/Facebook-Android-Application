@@ -6,7 +6,7 @@
       "content": "Hi everyone! it's my first post for Shaked!",
       "date": "30.1.24",
       "likes": 22,
-      "picture": "drawable/shaked",
+      "picture": "shaked",
       "profilePicture": "shaked"
     },
     {
@@ -48,7 +48,7 @@
     {
       "id": 6,
       "author": "Bar Wanunu",
-      "content": "I beacme 25 last month, i'm now closer to the age of 30 than 20 :(",
+      "content": "I became 25 last month, i'm now closer to the age of 30 than 20 :(",
       "date": "5.2.24",
       "likes": 25,
       "picture": "why_me",
@@ -89,6 +89,141 @@
       "likes": 77,
       "picture": "petach_tikva",
       "profilePicture": "itay"
+    },
+    {
+      "id": 11,
+      "author": "Micheal Scott",
+      "content": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+      "date": "18.2.24",
+      "likes": 100,
+      "picture": "micheal_1",
+      "profilePicture": "micheal"
+    },
+    {
+      "id": 12,
+      "author": "Jim Halpert",
+      "content": "The point is to get from point A to point B as creatively as possible, so technically they are doing parkour as long as point A is delusion and point B is the hospital.",
+      "date": "18.2.24",
+      "likes": 92,
+      "picture": "jim_1",
+      "profilePicture": "jim"
+    },
+    {
+      "id": 13,
+      "author": "Dwight Schrute",
+      "content": "I Have A Wig For Every Single Person In The Office.",
+      "date": "18.2.24",
+      "likes": 38,
+      "picture": "dwight_1",
+      "profilePicture": "dwight"
+    },
+    {
+      "id": 14,
+      "author": "Micheal Scott",
+      "content": "I am Beyoncé, always.",
+      "date": "21.2.24",
+      "likes": 84,
+      "picture": "micheal_2",
+      "profilePicture": "micheal"
+    },
+    {
+      "id": 15,
+      "author": "Jim Halpert",
+      "content": "Fact: Bears eat beets. Bears. Beets. Battlestar Galactica.",
+      "date": "21.2.24",
+      "likes": 77,
+      "picture": "jim_2",
+      "profilePicture": "jim"
+    },
+    {
+      "id": 16,
+      "author": "Dwight Schrute",
+      "content": "Identity theft is not a joke Jim!",
+      "date": "21.2.24",
+      "likes": 101,
+      "picture": "dwight_2",
+      "profilePicture": "dwight"
+    },
+    {
+      "id": 17,
+      "author": "Micheal Scott",
+      "content": "Sometimes I'll start a sentence and I don't even know where it's going. I just hope I find it along the way.",
+      "date": "23.2.24",
+      "likes": 11,
+      "picture": "micheal_3",
+      "profilePicture": "micheal"
+    },
+    {
+      "id": 18,
+      "author": "Jim Halpert",
+      "content": "I am about to do something very bold in this job that I’ve never done before: try.",
+      "date": "24.2.24",
+      "likes": 46,
+      "picture": "jim_3",
+      "profilePicture": "jim"
+    },
+    {
+      "id": 19,
+      "author": "Dwight Schrute",
+      "content": "Whenever I'm about to do something, I think, 'Would an idiot do that?' And if they would, I do not do that thing.",
+      "date": "25.2.24",
+      "likes": 62,
+      "picture": "dwight_3",
+      "profilePicture": "dwight"
+    },
+    {
+      "id": 20,
+      "author": "Micheal Scott",
+      "content": "You know what they say. Fool me once, strike one, but fool me twice...strike three.",
+      "date": "26.2.24",
+      "likes": 76,
+      "picture": "micheal_4",
+      "profilePicture": "micheal"
+    },
+    {
+      "id": 21,
+      "author": "Jim Halpert",
+      "content": "He has not stopped working… for a second.",
+      "date": "27.2.24",
+      "likes": 71,
+      "picture": "jim_4",
+      "profilePicture": "jim"
+    },
+    {
+      "id": 22,
+      "author": "Dwight Schrute",
+      "content": "Today, smoking is going to save lives.",
+      "date": "28.2.24",
+      "likes": 1,
+      "picture": "dwight_4",
+      "profilePicture": "dwight"
+    },
+    {
+      "id": 23,
+      "author": "Micheal Scott",
+      "content": "I… Declare…. Bankruptcy!",
+      "date": "29.2.24",
+      "likes": 7,
+      "picture": "micheal_5",
+      "profilePicture": "micheal"
+    },
+    {
+      "id": 24,
+      "author": "Jim Halpert",
+      "content": "Everything I Have I Owe To This Job. This Stupid, Wonderful, Boring, Amazing Job.",
+      "date": "1.3.24",
+      "likes": 99,
+      "picture": "jim_5",
+      "profilePicture": "jim"
+    },
+    {
+      "id": 25,
+      "author": "Dwight Schrute",
+      "content": "All you need is love? False. The four basic human necessities are air, water, food and shelter.",
+      "date": "3.3.24",
+      "likes": 66,
+      "picture": "dwight_5",
+      "profilePicture": "dwight"
     }
   ]
 }
