@@ -12,13 +12,8 @@ public class Comment extends AppCompatActivity {
     private int commentId;
     private int postId;
     private String commentAuthor;
-
-    //private String profilePicPath;
-
     private int profilePicture;
-
     private Uri uProfilePicture;
-
     private String commentContent;
 
     public Comment(int commentId, int postId, String commentAuthor, String commentContent, Uri uProfilePicture) {
@@ -37,6 +32,12 @@ public class Comment extends AppCompatActivity {
         this.commentContent = commentContent;
         this.profilePicture = profilePicture;
         this.uProfilePicture = null;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.comment_layout);
     }
 
     public int getCommentId() {
@@ -69,12 +70,6 @@ public class Comment extends AppCompatActivity {
 
     public void setCommentContent(String commentContent) {
         this.commentContent = commentContent;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.comment_layout);
     }
 
     public int getProfilePicture() {

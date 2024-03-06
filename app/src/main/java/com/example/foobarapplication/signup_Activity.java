@@ -16,10 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.foobarapplication.MainActivity;
-import com.example.foobarapplication.R;
-import com.example.foobarapplication.UserCred;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +38,7 @@ public class signup_Activity extends AppCompatActivity {
         EditText editTextEmailAddress = findViewById(R.id.editTextEmailAddress);
         EditText editTextPasswordSign = findViewById(R.id.editTextPasswordSign);
         EditText editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
-        EditText usernameText= findViewById(R.id.usernametext);
+        EditText usernameText = findViewById(R.id.usernametext);
         Button btnSubmit = findViewById(R.id.btnSubmit);
         profileView = findViewById(R.id.profileView);
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
@@ -68,7 +64,7 @@ public class signup_Activity extends AppCompatActivity {
                 String email = editTextEmailAddress.getText().toString().trim();
                 String password = editTextPasswordSign.getText().toString().trim();
                 String confirmPassword = editTextConfirmPassword.getText().toString().trim();
-                String username= usernameText.getText().toString().trim();
+                String username = usernameText.getText().toString().trim();
 
                 if (!isValidEmail(email)) {
                     Toast.makeText(signup_Activity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
@@ -85,7 +81,7 @@ public class signup_Activity extends AppCompatActivity {
                     Toast.makeText(signup_Activity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if( username.length() < 1) {
+                if (username.length() < 1) {
                     Toast.makeText(signup_Activity.this, "please enter a username", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -95,7 +91,7 @@ public class signup_Activity extends AppCompatActivity {
                     return;
                 }
 
-                UserCred newUser = new UserCred(email, password, selectedImagePath,username);
+                UserCred newUser = new UserCred(email, password, selectedImagePath, username);
                 Intent signInIntent = new Intent(signup_Activity.this, MainActivity.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
@@ -145,6 +141,7 @@ public class signup_Activity extends AppCompatActivity {
             profileView.setImageBitmap(imageBitmap);
         }
     }
+
     private String saveCameraImage(Bitmap imageBitmap) throws IOException {
         File imageFile = createImageFile();
         try {
@@ -157,6 +154,7 @@ public class signup_Activity extends AppCompatActivity {
 
         return Uri.fromFile(imageFile).toString();
     }
+
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -169,6 +167,7 @@ public class signup_Activity extends AppCompatActivity {
     private boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     private boolean containsLetterAndNumber(String password) {
         boolean containsLetter = false;
         boolean containsNumber = false;
