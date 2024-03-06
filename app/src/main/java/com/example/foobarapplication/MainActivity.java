@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 int drawableResourceId = R.drawable.guest_profile;
                 Uri drawableUri = Uri.parse("android.resource://" + getPackageName() + "/" + drawableResourceId);
                 String imageUriString = drawableUri.toString();
-                UserCred geustUser=new UserCred("guest@gmail.com","Aa12345678",imageUriString,"guest");
+                UserCred guestUser=new UserCred("guest@gmail.com","Aa12345678",imageUriString,"guest");
                 Intent signInIntent = new Intent(this, Activity_Post.class);
-                signInIntent.putExtra("user", geustUser);
+                signInIntent.putExtra("user", guestUser);
                 startActivity(signInIntent);
             }
 

@@ -1,7 +1,6 @@
 package com.example.foobarapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -9,11 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,13 +32,12 @@ import java.util.Locale;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
-    public static List<Post> posts = GlobalPostList.postList ;
+    public static List<Post> posts = GlobalPostList.postList;
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
     int counterId;
     private static final int PICK_IMAGE_REQUEST = 1;
     Uri selectedImageUri;
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -53,9 +49,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         Intent intentUser = getIntent();
         UserCred User = (UserCred) intentUser.getSerializableExtra("user");
 
-// Get the text from the EditText
-
-
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, v);
@@ -66,19 +59,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     // Toggle the mode
                     isDarkMode = !isDarkMode;
 
-                    // Update UI based on the current mode
                     if (isDarkMode) {
                         // Set dark mode background, text color, etc.
                         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
 
-                        // Adjust other UI elements as needed
-                        // Update the adapter with the new dark mode state
-
-                    }
-                    else {
+                    } else {
                         // Set light mode background, text color, etc.
                         getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-                        // Adjust other UI elements as needed
                     }
                     adapter.setDarkMode(isDarkMode);
 
@@ -86,8 +73,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     adapter.notifyDataSetChanged();
                     return true;
                 } else if (id == R.id.action_logout) {
-                    // Implement logout functionality here
-                    // Start MainActivity
+                    // Start MainActivity - the login page
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     // Close current activity if necessary
@@ -98,19 +84,19 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             });
             popupMenu.show();
         });
-        RecyclerView lstPosts = findViewById(R.id.lstPosts);
-         adapter = new PostsListAdapter(this, isDarkMode);
+        lstPosts = findViewById(R.id.lstPosts);
+        adapter = new PostsListAdapter(this, isDarkMode);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
 
-        readingPosts.readingPosts(this, posts);
+        ReadingPosts.readingPosts(this, posts);
         adapter.setPosts(posts);
         ImageButton btnGallery = findViewById(R.id.btnGallery);
         btnGallery.setOnClickListener(v -> openGallery());
 
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
-        counterId= posts.toArray().length+10;
+        counterId = posts.toArray().length + 10;
 
         btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
@@ -124,7 +110,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
                     newPost = new Post(counterId++, User.getUsername(), enteredText, currentDate, 0, selectedImageUri, Uri.parse(User.getImagePath()));
                 } else {
-                    newPost = new Post(counterId++, User.getUsername(), enteredText,currentDate , 0, R.drawable.pingpong, Uri.parse(User.getImagePath()));
+                    newPost = new Post(counterId++, User.getUsername(), enteredText, currentDate, 0, R.drawable.pingpong, Uri.parse(User.getImagePath()));
                 }
                 posts.add(newPost);
                 adapter.setPosts(posts);
@@ -188,12 +174,12 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         UserCred newUser = (UserCred) intentUser.getSerializableExtra("user");
         Intent intent = new Intent(this, Comment_Activity.class);
         intent.putExtra("POST_ID", postId);
-        intent.putExtra("userDetails", newUser );
+        intent.putExtra("userDetails", newUser);
         startActivity(intent);
     }
 
     //option button (delete or edit) was pressed
-    public void onOptionClick(int postID){
+    public void onOptionClick(int postID) {
         ImageButton post_option = findViewById(R.id.post_options);
 
         // Creating the instance of PopupMenu
@@ -201,8 +187,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.menu_post_option, popup.getMenu());
-        Post mypost=null;
-        for(Post post:posts) {
+        Post mypost = null;
+        for (Post post : posts) {
             if (post.getId() == postID)
                 mypost = post;
 
@@ -216,8 +202,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             if (id == R.id.action_post_delete) {
                 posts.remove(finalMypost);
                 adapter.setPosts(posts);
-            }
-            else if(id==R.id.action_post_edit){
+            } else if (id == R.id.action_post_edit) {
                 assert finalMypost != null;
                 showEditDialog(finalMypost);
             }
@@ -229,6 +214,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         // Showing the popup menu
         popup.show();
     }
+
     private void showEditDialog(Post post) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Edit Post");
@@ -252,10 +238,12 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         builder.show();
     }
+
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

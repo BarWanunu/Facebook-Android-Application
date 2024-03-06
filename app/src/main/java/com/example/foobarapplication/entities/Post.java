@@ -26,9 +26,7 @@ public class Post extends AppCompatActivity {
     private List<String> commenths;
     private boolean isLiked = false;
 
-    public Post() {
-        this.picture = R.drawable.pingpong;
-    }
+
 
     public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
         this.id = id;
@@ -147,17 +145,14 @@ public class Post extends AppCompatActivity {
         setContentView(R.layout.post_layout);
         ImageButton likeBtn = findViewById(R.id.likeButton);
         likeBtn.setOnClickListener(v -> {
-                    if (isLiked == false) {
-                        isLiked = true;
-                        addLike();
-                    } else {
-                        isLiked = false;
-                        unLike();
-                    }
-
-                }
-        );
+            if (isLiked == false) {
+                isLiked = true;
+                addLike();
+            } else {
+                isLiked = false;
+                unLike();
+            }
+        });
     }
-
 }
 

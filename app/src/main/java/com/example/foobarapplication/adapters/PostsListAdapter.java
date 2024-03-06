@@ -21,14 +21,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Locale;
 
-public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
+public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.PostViewHolder> {
 
     private OnItemClickListener listener;
     private boolean isDarkMode;
     private final LayoutInflater mInflater;
     private List<Post> posts;
-    private Boolean isLiked= false;
-    public interface OnItemClickListener{
+
+    public interface OnItemClickListener {
 
         void onShareClick();
 
@@ -38,7 +38,8 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
         void onOptionClick(int id);
     }
-    class PostViewHolder extends RecyclerView.ViewHolder{
+
+    class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvAuthor;
         private final TextView tvContent;
         private final ImageView ivPic;
@@ -49,26 +50,22 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         private final TextView likesTextView;
         private final ImageView profilePicture;
         private final TextView date;
-        private boolean isDarkMode;
 
 
-        private PostViewHolder(View itemView, boolean isDarkMode){
+        private PostViewHolder(View itemView, boolean isDarkMode) {
             super(itemView);
             tvAuthor = itemView.findViewById(R.id.tvAuthor);
             tvContent = itemView.findViewById(R.id.tvContent);
             ivPic = itemView.findViewById(R.id.ivPic);
             shareButton = itemView.findViewById(R.id.shareButton);
-            likeButton= itemView.findViewById(R.id.likeButton);
-            commentButton= itemView.findViewById(R.id.commentButton);
-            post_option= itemView.findViewById(R.id.post_options);
+            likeButton = itemView.findViewById(R.id.likeButton);
+            commentButton = itemView.findViewById(R.id.commentButton);
+            post_option = itemView.findViewById(R.id.post_options);
             likesTextView = itemView.findViewById(R.id.likes);
-            this.isDarkMode = isDarkMode;
             this.profilePicture = itemView.findViewById(R.id.profile_picture);
             this.date = itemView.findViewById(R.id.date);
-
         }
     }
-
 
     public PostsListAdapter(Context context, boolean isDarkMode) {
         mInflater = LayoutInflater.from(context);
@@ -83,27 +80,26 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        if (posts != null){
+        if (posts != null) {
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
-            Log.d("Image URIs", "Post Image URI: " + current.getPic()+ position);
+            Log.d("Image URIs", "Post Image URI: " + current.getPic() + position);
             Log.d("Image URIs", "Profile Picture URI: " + current.getuProfilePicture());
-            int currentpic=current.getPic();
-            int currentprofilepic= current.getProfilePicture();
-            if(currentpic==-1&&currentprofilepic==-1){
+            int currentPic = current.getPic();
+            int currentProfilePicture = current.getProfilePicture();
+            if (currentPic == -1 && currentProfilePicture == -1) {
                 Picasso.get().load(current.getuPic()).into(holder.ivPic);
                 Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-            } else if (currentpic != -1 && currentprofilepic == -1) {
+            } else if (currentPic != -1 && currentProfilePicture == -1) {
                 Picasso.get().load(current.getPic()).into(holder.ivPic);
                 Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-            }
-            else{
+            } else {
                 holder.ivPic.setImageResource(current.getPic());
                 holder.profilePicture.setImageResource(current.getProfilePicture());
             }
-            holder.date.setText(String.format(Locale.getDefault(), "%s" , current.getDate()));
-            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));;
+            holder.date.setText(String.format(Locale.getDefault(), "%s", current.getDate()));
+            holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
 
             // Use the isDarkMode parameter from the ViewHolder constructor
             if (isDarkMode) {
@@ -115,7 +111,6 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
             } else {
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.post_option.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
-
                 holder.tvAuthor.setTextColor(Color.BLACK);
                 holder.tvContent.setTextColor(Color.BLACK);
             }
@@ -144,10 +139,10 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         //check if the commentButton was pressed
         holder.commentButton.setOnClickListener(v -> {
             if (listener != null) {
-                int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
+                int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
-                    listener.onCommentClick(currentPost.getId()); // Correctly reference the position
+                    listener.onCommentClick(currentPost.getId());
                 }
             }
         });
@@ -155,30 +150,28 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         //check if the post_option (edit or delete) was pressed
         holder.post_option.setOnClickListener(v -> {
             if (listener != null) {
-                int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
+                int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
                     listener.onOptionClick(currentPost.getId());
                 }
             }
         });
-
     }
+
     public void setOnItemClickListener(PostsListAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }
 
 
-    public void setPosts(List<Post> s){
-        posts =s;
+    public void setPosts(List<Post> s) {
+        posts = s;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (posts!=null)
-            return posts.size();
-        return 0;
+        return posts == null ? 0 : posts.size();
     }
 
     public List<Post> getPosts() {
