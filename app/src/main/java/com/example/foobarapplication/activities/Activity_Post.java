@@ -1,4 +1,4 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,8 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foobarapplication.Globals.GlobalPostList;
+import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
+import com.example.foobarapplication.entities.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,7 +50,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         setContentView(R.layout.activity_post);
 
         Intent intentUser = getIntent();
-        UserCred User = (UserCred) intentUser.getSerializableExtra("user");
+        User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
@@ -95,7 +98,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         ImageButton btnGallery = findViewById(R.id.btnGallery);
         btnGallery.setOnClickListener(v -> openGallery());
 
-        Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
+        Button btnAddPhoto = findViewById(R.id.btnAddPost);
         counterId = posts.toArray().length + 10;
 
         btnAddPhoto.setOnClickListener(v -> {
@@ -116,7 +119,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 adapter.setPosts(posts);
 
                 // Show a toast message
-                Toast.makeText(this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
 
                 // Clear the EditText
                 whatsOnYourMindEditText.setText("");
@@ -171,7 +174,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     //comment button was pressed
     public void onCommentClick(int postId) {
         Intent intentUser = getIntent();
-        UserCred newUser = (UserCred) intentUser.getSerializableExtra("user");
+        User newUser = (User) intentUser.getSerializableExtra("user");
         Intent intent = new Intent(this, Comment_Activity.class);
         intent.putExtra("POST_ID", postId);
         intent.putExtra("userDetails", newUser);

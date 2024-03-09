@@ -1,7 +1,8 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.activities;
 
 import android.content.Context;
 
+import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
 
 import org.json.JSONArray;

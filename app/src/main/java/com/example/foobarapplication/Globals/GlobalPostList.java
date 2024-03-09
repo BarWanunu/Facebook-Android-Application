@@ -1,4 +1,4 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.Globals;
 
 import com.example.foobarapplication.entities.Post;
 

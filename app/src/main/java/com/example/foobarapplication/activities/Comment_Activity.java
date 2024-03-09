@@ -1,4 +1,4 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foobarapplication.Globals.GlobalCommentsHolder;
+import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.CommentListAdapter;
 import com.example.foobarapplication.entities.Comment;
+import com.example.foobarapplication.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
         POST_ID = getIntent().getIntExtra("POST_ID", -1);
 
         Intent intentUser = getIntent();
-        UserCred User = (UserCred) intentUser.getSerializableExtra("userDetails");
+        User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("userDetails");
 
         RecyclerView lstComments = findViewById(R.id.lstComments);
         final EditText editTextComment = findViewById(R.id.editTextComment); // For entering new comments

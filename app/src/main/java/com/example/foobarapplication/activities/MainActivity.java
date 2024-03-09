@@ -1,4 +1,4 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foobarapplication.R;
+import com.example.foobarapplication.entities.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignin.setOnClickListener(v -> {
             // Retrieve the UserCred object from the intent
             Intent intent = getIntent();
-            UserCred newUser = (UserCred) intent.getSerializableExtra("user");
+            User newUser = (User) intent.getSerializableExtra("user");
 
 
             // Check if the entered username and password match the user created during signup
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 int drawableResourceId = R.drawable.guest_profile;
                 Uri drawableUri = Uri.parse("android.resource://" + getPackageName() + "/" + drawableResourceId);
                 String imageUriString = drawableUri.toString();
-                UserCred guestUser=new UserCred("guest@gmail.com","Aa12345678",imageUriString,"guest");
+                User guestUser=new User("guest@gmail.com","Aa12345678",imageUriString,"guest");
                 Intent signInIntent = new Intent(this, Activity_Post.class);
                 signInIntent.putExtra("user", guestUser);
                 startActivity(signInIntent);

@@ -5,16 +5,17 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.example.foobarapplication.R;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
-
+@Entity
 public class Post extends AppCompatActivity {
-    private ArrayList<Object> comments;
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    private ArrayList<Object> comments;
     private String author;
     private String content;
     private String date;
@@ -23,7 +24,6 @@ public class Post extends AppCompatActivity {
     private int profilePicture;
     private Uri uProfilePicture;
     private Uri uPic;
-    private List<String> commenths;
     private boolean isLiked = false;
 
 
