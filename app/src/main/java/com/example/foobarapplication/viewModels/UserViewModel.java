@@ -1,27 +1,31 @@
 package com.example.foobarapplication.viewModels;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.repositories.UserRepository;
 
-import java.util.List;
-
 public class UserViewModel extends ViewModel {
 
     private UserRepository userRepository;
-    private LiveData<List<User>> users;
+    private MutableLiveData<Boolean> isUserAdded = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isUserChecked = new MutableLiveData<>();
+
 
     public UserViewModel() {
         userRepository = new UserRepository();
-        users = userRepository.getAll();
     }
 
-    public LiveData<List<User>> get() {return  users;}
+    public LiveData<Boolean> getIsUserAdded() {
+        return isUserAdded;
+    }
 
-    public void add(User user) {userRepository.add(user);}
+    public LiveData<Boolean> getIsUserChecked() {
+        return isUserChecked;
+    }
+    public void add(User user) {userRepository.add(user, isUserAdded);}
 
-    public void delete(User user) {userRepository.delete(user);}
-    public void reload(User user) {userRepository.reload(user);}
+    public void check(User user) {userRepository.check(user, isUserChecked);}
 }

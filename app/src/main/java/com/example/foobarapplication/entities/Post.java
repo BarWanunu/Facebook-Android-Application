@@ -154,5 +154,41 @@ public class Post extends AppCompatActivity {
             }
         });
     }
+
+    public ArrayList<Object> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Object> comments) {
+        this.comments = comments;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getPicture() {
+        return picture;
+    }
+
+    public void setPicture(int picture) {
+        this.picture = picture;
+    }
+
+    public void setProfilePicture(int profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void setuProfilePicture(Uri uProfilePicture) {
+        this.uProfilePicture = uProfilePicture;
+    }
+
+    public void setuPic(Uri uPic) {
+        this.uPic = uPic;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
 }
 

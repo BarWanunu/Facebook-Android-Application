@@ -43,6 +43,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.11.0")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.retrofit2:retrofit:2.3.0")
+    implementation ("com.squareup.retrofit2:converter-scalars:2.5.0")
     implementation("com.squareup.retrofit2:converter-gson:2.3.0")
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
 }
