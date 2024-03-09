@@ -1,7 +1,4 @@
-[{
-  "_id": {
-    "$oid": "65e885ccfba857d06f6e3f95"
-  },
+{
   "posts": [
     {
       "id": 1,
@@ -229,4 +226,4 @@
       "profilePicture": "dwight"
     }
   ]
-}]
+}
