@@ -1,10 +1,12 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.webServices;
+
+import com.example.foobarapplication.activities.MainActivity;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public interface RetrofitInterface {
+public interface WebServiceAPI {
 
     @POST("/login")
     Call<MainActivity> onCreate(@Body String name, String password);

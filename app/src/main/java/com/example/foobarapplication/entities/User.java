@@ -1,13 +1,18 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.entities;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
-public class UserCred implements Serializable {
+@Entity
+public class User implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    private  String username;
     private String email;
     private String password;
     private String imagePath;
-    private  String username;// New field for image path
 
-    public UserCred(String email, String password, String imagePath,String username) {
+    public User(String email, String password, String imagePath, String username) {
         this.email = email;
         this.password = password;
         this.imagePath = imagePath;

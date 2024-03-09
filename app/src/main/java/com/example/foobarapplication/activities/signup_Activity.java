@@ -1,4 +1,4 @@
-package com.example.foobarapplication;
+package com.example.foobarapplication.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.foobarapplication.R;
+import com.example.foobarapplication.entities.User;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +44,7 @@ public class signup_Activity extends AppCompatActivity {
         EditText usernameText = findViewById(R.id.usernametext);
         Button btnSubmit = findViewById(R.id.btnSubmit);
         profileView = findViewById(R.id.profileView);
-        Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
+        Button btnAddPhoto = findViewById(R.id.btnAddPost);
         Button btnOpenCamera = findViewById(R.id.btnOpenCamera);
 
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +94,7 @@ public class signup_Activity extends AppCompatActivity {
                     return;
                 }
 
-                UserCred newUser = new UserCred(email, password, selectedImagePath, username);
+                User newUser = new User(email, password, selectedImagePath, username);
                 Intent signInIntent = new Intent(signup_Activity.this, MainActivity.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);

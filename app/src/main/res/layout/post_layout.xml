@@ -63,10 +63,10 @@
         <TextView
             android:id="@+id/tvContent"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="110dp"
+            android:gravity="center_vertical|center_horizontal"
             android:text="@string/content"
             android:textSize="20dp"
-            android:gravity="center_vertical|center_horizontal"
             app:layout_constraintBottom_toTopOf="@+id/ivPic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -75,7 +75,7 @@
         <ImageView
             android:id="@+id/ivPic"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:srcCompat="@drawable/pingpong" />
