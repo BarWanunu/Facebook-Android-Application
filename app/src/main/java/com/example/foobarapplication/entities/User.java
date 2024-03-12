@@ -19,6 +19,11 @@ public class User implements Serializable {
         this.username=username;
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     // Getters and setters for the new field
     public String getImagePath() {
         return imagePath;

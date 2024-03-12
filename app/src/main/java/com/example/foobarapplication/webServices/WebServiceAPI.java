@@ -1,6 +1,6 @@
 package com.example.foobarapplication.webServices;
 
-import com.example.foobarapplication.activities.MainActivity;
+import com.example.foobarapplication.entities.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -8,9 +8,9 @@ import retrofit2.http.POST;
 
 public interface WebServiceAPI {
 
-    @POST("/login")
-    Call<MainActivity> onCreate(@Body String name, String password);
+    @POST("/")
+    Call<Void> createUser(@Body User user);
 
-    @POST("/signup")
-    Call<MainActivity> executeSignup(@Body String name, String email, String password);
+    @POST("/signin")
+    Call<Void> checkUser(@Body User user);
 }

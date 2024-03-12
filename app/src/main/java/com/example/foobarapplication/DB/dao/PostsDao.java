@@ -10,6 +10,7 @@ import com.example.foobarapplication.entities.Post;
 
 import java.util.List;
 
+
 @Dao
 public interface PostsDao {
     @Query("SELECT * FROM post")

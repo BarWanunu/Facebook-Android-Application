@@ -1,26 +1,18 @@
 package com.example.foobarapplication.repositories;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.foobarapplication.DB.UserDB;
-import com.example.foobarapplication.DB.dao.UsersDao;
 import com.example.foobarapplication.entities.User;
-import com.example.foobarapplication.webServices.UsersAPI;
+import com.example.foobarapplication.webServices.UserAPI;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserRepository {
-    private UsersDao dao;
-    private UserListData userListData;
-    private UsersAPI api;
+    private UserAPI api;
 
     public UserRepository() {
-        UserDB db = UserDB.getInstance();
-        dao = db.usersDao();
-        userListData = new UserListData();
-        api = new UsersAPI(userListData, dao);
+        api = new UserAPI();
     }
 
     class UserListData extends MutableLiveData<List<User>> {
@@ -30,18 +22,12 @@ public class UserRepository {
             setValue(new LinkedList<>());
         }
     }
-    public LiveData<List<User>> getAll() {
-        return userListData;
+
+    public void add(final User user, final MutableLiveData<Boolean> isUserAdded) {
+        api.add(user, isUserAdded);
     }
 
-    public void add(final User user) {
-        api.add(user);
-    }
-
-    public void delete(final User user) {
-        api.delete(user);
-    }
-    public void reload(final User user) {
-        api.get();
+    public void check(final User user, final MutableLiveData<Boolean> isUserChecked) {
+        api.check(user, isUserChecked);
     }
 }
