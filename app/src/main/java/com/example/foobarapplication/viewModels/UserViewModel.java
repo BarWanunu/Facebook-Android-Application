@@ -12,6 +12,7 @@ public class UserViewModel extends ViewModel {
     private UserRepository userRepository;
     private MutableLiveData<Boolean> isUserAdded = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUserChecked = new MutableLiveData<>();
+    private String AuthToken;
 
     private MutableLiveData<Boolean> isUserDeleted = new MutableLiveData<>();
 
@@ -20,7 +21,7 @@ public class UserViewModel extends ViewModel {
         userRepository = new UserRepository();
     }
 
-    public MutableLiveData<Boolean> getIsUserDeleted() {
+    public LiveData<Boolean> getIsUserDeleted() {
         return isUserDeleted;
     }
 
@@ -31,9 +32,29 @@ public class UserViewModel extends ViewModel {
     public LiveData<Boolean> getIsUserChecked() {
         return isUserChecked;
     }
-    public void add(User user) {userRepository.add(user, isUserAdded);}
 
-    public void check(User user) {userRepository.check(user, isUserChecked);}
+    public String getToken() {
+        return AuthToken;
+    }
 
-    public void delete(User user) {userRepository.delete(user, isUserDeleted);}
+    public void setToken(String token) {
+        AuthToken = token;
+    }
+
+    public void add(User user) {
+        userRepository.add(user, isUserAdded);
+    }
+
+    public LiveData<Boolean> check(User user) {
+        userRepository.check(user, isUserChecked, this);
+        return isUserChecked;
+    }
+
+    public void  createToken(User user) {
+        userRepository.createToken(user, this);
+    }
+
+    public void delete(User user) {
+        userRepository.delete(user, isUserDeleted);
+    }
 }

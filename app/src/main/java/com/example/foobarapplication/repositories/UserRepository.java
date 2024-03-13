@@ -3,6 +3,7 @@ package com.example.foobarapplication.repositories;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.entities.User;
+import com.example.foobarapplication.viewModels.UserViewModel;
 import com.example.foobarapplication.webServices.UserAPI;
 
 import java.util.LinkedList;
@@ -28,11 +29,14 @@ public class UserRepository {
         api.add(user, isUserAdded);
     }
 
-    public void check(final User user, final MutableLiveData<Boolean> isUserChecked) {
-        api.check(user, isUserChecked);
+    public void check(final User user, final MutableLiveData<Boolean> isUserChecked, UserViewModel userViewModel) {
+        api.check(user, isUserChecked, userViewModel);
     }
 
     public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
         api.delete(user, isUserDeleted);
+    }
+    public void createToken(User user, UserViewModel userViewModel) {
+    api.createToken(user.getUsername(), userViewModel);
     }
 }

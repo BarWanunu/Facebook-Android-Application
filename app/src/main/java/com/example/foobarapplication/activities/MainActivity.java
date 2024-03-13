@@ -35,26 +35,26 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = getIntent();
             User newUser = (User) intent.getSerializableExtra("user");
 
-
 //            // Check if the entered username and password match the user created during signup
             EditText emailEditText = findViewById(R.id.emailEditText);
             EditText passwordEditText = findViewById(R.id.passwordEditText);
             String enteredUsername = emailEditText.getText().toString();
             String enteredPassword = passwordEditText.getText().toString();
+            User user = new User(enteredUsername, enteredPassword);
             if (newUser == null) {
-                User user = new User(enteredUsername, enteredPassword);
-                userViewModel.check(user);
-            } else {
-                userViewModel.check(newUser);
+                newUser = user;
             }
+            userViewModel.check(newUser);
+
 
             userViewModel.getIsUserChecked().observe(this, new Observer<Boolean>() {
                 @Override
-                public void onChanged(Boolean isUserRegistered) {
-                    if (isUserRegistered != null && isUserRegistered) {
+                public void onChanged(Boolean isUserChecked) {
+                    if (isUserChecked != null && isUserChecked) {
                         // Successful login, navigate to the next activity
+                        userViewModel.createToken(user);
                         Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
-                        signInIntent.putExtra("user", newUser);
+                        signInIntent.putExtra("user", user);
                         Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
                         startActivity(signInIntent);
                     } else {
