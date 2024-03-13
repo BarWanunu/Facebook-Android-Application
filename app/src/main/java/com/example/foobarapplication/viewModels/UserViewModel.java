@@ -12,7 +12,7 @@ public class UserViewModel extends ViewModel {
     private UserRepository userRepository;
     private MutableLiveData<Boolean> isUserAdded = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUserChecked = new MutableLiveData<>();
-    private String AuthToken;
+    private MutableLiveData<String> AuthToken = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> isUserDeleted = new MutableLiveData<>();
 
@@ -33,12 +33,12 @@ public class UserViewModel extends ViewModel {
         return isUserChecked;
     }
 
-    public String getToken() {
+    public LiveData<String> getToken() {
         return AuthToken;
     }
 
     public void setToken(String token) {
-        AuthToken = token;
+        AuthToken.postValue(token);
     }
 
     public void add(User user) {

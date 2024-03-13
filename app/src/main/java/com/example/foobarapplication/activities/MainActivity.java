@@ -14,14 +14,12 @@ import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    UserViewModel userViewModel;
+    UserViewModel userViewModel = new UserViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        userViewModel = new UserViewModel();
 
         Button btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(v -> {
@@ -53,10 +51,16 @@ public class MainActivity extends AppCompatActivity {
                     if (isUserChecked != null && isUserChecked) {
                         // Successful login, navigate to the next activity
                         userViewModel.createToken(user);
-                        Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
-                        signInIntent.putExtra("user", user);
-                        Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
-                        startActivity(signInIntent);
+                        userViewModel.getToken().observe(MainActivity.this, new Observer<String>() {
+                            @Override
+                            public void onChanged(String token) {
+                                Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
+                                signInIntent.putExtra("user", user);
+                                signInIntent.putExtra("token", token);
+                                Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
+                                startActivity(signInIntent);
+                            }
+                        });
                     } else {
                         // Invalid credentials, show an error message or handle accordingly
                         // For simplicity, a toast message is shown here
