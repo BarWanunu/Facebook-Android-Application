@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.User;
+import com.example.foobarapplication.viewModels.UserViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,7 +45,7 @@ public class signup_Activity extends AppCompatActivity {
         EditText usernameText = findViewById(R.id.usernametext);
         Button btnSubmit = findViewById(R.id.btnSubmit);
         profileView = findViewById(R.id.profileView);
-        Button btnAddPhoto = findViewById(R.id.btnAddPost);
+        Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
         Button btnOpenCamera = findViewById(R.id.btnOpenCamera);
 
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,9 @@ public class signup_Activity extends AppCompatActivity {
                     return;
                 }
 
-                User newUser = new User(email, password, selectedImagePath, username);
+                User newUser = new User(email, username, password,confirmPassword, selectedImagePath);
+                UserViewModel userViewModel = new UserViewModel();
+                userViewModel.add(newUser);
                 Intent signInIntent = new Intent(signup_Activity.this, MainActivity.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);

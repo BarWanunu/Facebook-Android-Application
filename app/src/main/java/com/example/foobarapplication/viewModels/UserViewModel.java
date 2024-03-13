@@ -13,9 +13,15 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Boolean> isUserAdded = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUserChecked = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> isUserDeleted = new MutableLiveData<>();
+
 
     public UserViewModel() {
         userRepository = new UserRepository();
+    }
+
+    public MutableLiveData<Boolean> getIsUserDeleted() {
+        return isUserDeleted;
     }
 
     public LiveData<Boolean> getIsUserAdded() {
@@ -28,4 +34,6 @@ public class UserViewModel extends ViewModel {
     public void add(User user) {userRepository.add(user, isUserAdded);}
 
     public void check(User user) {userRepository.check(user, isUserChecked);}
+
+    public void delete(User user) {userRepository.delete(user, isUserDeleted);}
 }

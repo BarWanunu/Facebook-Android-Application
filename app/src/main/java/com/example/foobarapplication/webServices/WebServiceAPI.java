@@ -1,16 +1,21 @@
 package com.example.foobarapplication.webServices;
 
-import com.example.foobarapplication.entities.User;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface WebServiceAPI {
 
-    @POST("/")
-    Call<Void> createUser(@Body User user);
+    @POST("users/")
+    Call<JsonObject> createUser(@Body JsonObject user);
 
-    @POST("/signin")
-    Call<Void> checkUser(@Body User user);
+    @POST("users/signin")
+    Call<JsonObject> checkUser(@Body JsonObject user);
+
+    @DELETE("users/{id}")
+    Call<JsonObject> deleteUser(@Path("id") String username);
 }
