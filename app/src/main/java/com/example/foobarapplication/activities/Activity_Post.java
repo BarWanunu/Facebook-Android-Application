@@ -53,6 +53,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         Intent intentUser = getIntent();
         User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
+        String token = intentUser.getStringExtra("token");
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
