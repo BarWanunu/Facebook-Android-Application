@@ -15,6 +15,7 @@ public class UserRepository {
         api = new UserAPI();
     }
 
+
     class UserListData extends MutableLiveData<List<User>> {
 
         public UserListData() {
@@ -29,5 +30,9 @@ public class UserRepository {
 
     public void check(final User user, final MutableLiveData<Boolean> isUserChecked) {
         api.check(user, isUserChecked);
+    }
+
+    public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
+        api.delete(user, isUserDeleted);
     }
 }
