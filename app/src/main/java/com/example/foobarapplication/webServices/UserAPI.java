@@ -58,9 +58,6 @@ public class UserAPI {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            createToken(user.getUsername(), userViewModel);
-                        }
                         isUserChecked.postValue(success);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -78,64 +75,62 @@ public class UserAPI {
         });
     }
 
-    private void createToken(String username, UserViewModel userViewModel) {
-        if(webServiceAPI != null) {
-            Call<JsonObject> call = webServiceAPI.createToken(username);
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
-                    if (response.isSuccessful()) {
-                        try {
-                            JSONObject object = new JSONObject(response.body().toString());
-                            boolean successful = object.getBoolean("success");
-                            if (successful) {
-                                String token = object.getString("token");
-                                userViewModel.setToken(token);
-                            } else {
-                                userViewModel.setToken(null);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+    public void createToken(String username, UserViewModel userViewModel) {
+        JsonObject user = new JsonObject();
+        user.addProperty("username", username);
+        Call<JsonObject> call = webServiceAPI.createToken(user);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject object = new JSONObject(response.body().toString());
+                        boolean successful = object.getBoolean("success");
+                        if (successful) {
+                            String token = object.getString("token");
+                            userViewModel.setToken(token);
+                        } else {
                             userViewModel.setToken(null);
                         }
-                    } else {
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                         userViewModel.setToken(null);
                     }
-                }
-
-                @Override
-                public void onFailure (@NonNull Call < JsonObject > call,@NonNull Throwable t){
+                } else {
                     userViewModel.setToken(null);
                 }
-            });
-        } else {
-            System.out.println("1");
-        }
+            }
 
-        }
-
-        public void delete (User user, MutableLiveData < Boolean > isUserDeleted){
-            Call<JsonObject> call = webServiceAPI.deleteUser(user.getUsername());
-            call.enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                    if (response.isSuccessful()) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body().toString());
-                            boolean success = jsonObject.getBoolean("success");
-                            isUserDeleted.postValue(success);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        isUserDeleted.postValue(false);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-
-                }
-            });
-        }
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                userViewModel.setToken(null);
+            }
+        });
     }
+
+    public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
+        Call<JsonObject> call = webServiceAPI.deleteUser(user.getUsername());
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                        boolean success = jsonObject.getBoolean("success");
+                        isUserDeleted.postValue(success);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    isUserDeleted.postValue(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+    }
+}

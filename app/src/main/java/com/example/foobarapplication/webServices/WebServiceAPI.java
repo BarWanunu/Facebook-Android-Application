@@ -19,6 +19,6 @@ public interface WebServiceAPI {
     @DELETE("users/{id}")
     Call<JsonObject> deleteUser(@Path("id") String username);
 
-    @POST("tokens/")
-    Call<JsonObject> createToken(String username);
+    @POST("token/")
+    Call<JsonObject> createToken(@Body JsonObject user);
 }

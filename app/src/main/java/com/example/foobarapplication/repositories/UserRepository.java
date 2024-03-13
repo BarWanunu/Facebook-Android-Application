@@ -36,4 +36,7 @@ public class UserRepository {
     public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
         api.delete(user, isUserDeleted);
     }
+    public void createToken(User user, UserViewModel userViewModel) {
+    api.createToken(user.getUsername(), userViewModel);
+    }
 }
