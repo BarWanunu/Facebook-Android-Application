@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +55,15 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         Intent intentUser = getIntent();
         User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
         String token = intentUser.getStringExtra("token");
+
+        userViewModel = new UserViewModel();
+        userViewModel.delete(User, token);
+        userViewModel.getIsUserDeleted().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                System.out.println("bye");
+            }
+        });
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -17,7 +18,7 @@ public interface WebServiceAPI {
     Call<JsonObject> checkUser(@Body JsonObject user);
 
     @DELETE("users/{id}")
-    Call<JsonObject> deleteUser(@Path("id") String username);
+    Call<JsonObject> deleteUser(@Path("id") String userId, @Header("Authorization") String token);
 
     @POST("token/")
     Call<JsonObject> createToken(@Body JsonObject user);

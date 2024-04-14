@@ -54,7 +54,7 @@ public class UserViewModel extends ViewModel {
         userRepository.createToken(user, this);
     }
 
-    public void delete(User user) {
-        userRepository.delete(user, isUserDeleted);
+    public void delete(User user, String token) {
+        userRepository.delete(user, isUserDeleted, token);
     }
 }
