@@ -26,6 +26,7 @@ import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
+import com.example.foobarapplication.viewModels.PostsViewModel;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
 import java.io.ByteArrayOutputStream;
@@ -44,6 +45,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     private static final int PICK_IMAGE_REQUEST = 1;
     Uri selectedImageUri;
     UserViewModel userViewModel;
+
+    PostsViewModel postsViewModel;
 
 
     @SuppressLint("NotifyDataSetChanged")
