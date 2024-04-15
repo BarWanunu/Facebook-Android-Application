@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -144,10 +145,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     //share button was pressed
     @Override
-    public void onShareClick() {
-        ImageButton shareButton = findViewById(R.id.shareButton);
-
-        PopupMenu popup = new PopupMenu(this, shareButton);
+    public void onShareClick(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
 
         popup.getMenuInflater().inflate(R.menu.menu_share, popup.getMenu());
 
@@ -193,11 +192,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     //option button (delete or edit) was pressed
-    public void onOptionClick(int postID){
-        ImageButton post_option = findViewById(R.id.post_options);
-
+    public void onOptionClick(View v, int postID){
         // Creating the instance of PopupMenu
-        PopupMenu popup = new PopupMenu(this, post_option);
+        PopupMenu popup = new PopupMenu(this, v);
 
         // Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.menu_post_option, popup.getMenu());
