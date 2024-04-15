@@ -109,8 +109,8 @@ public class UserAPI {
         });
     }
 
-    public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
-        Call<JsonObject> call = webServiceAPI.deleteUser(user.getUsername());
+    public void delete(User user, MutableLiveData<Boolean> isUserDeleted, String token) {
+        Call<JsonObject> call = webServiceAPI.deleteUser(user.getUsername(),"Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {

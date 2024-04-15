@@ -33,8 +33,8 @@ public class UserRepository {
         api.check(user, isUserChecked, userViewModel);
     }
 
-    public void delete(User user, MutableLiveData<Boolean> isUserDeleted) {
-        api.delete(user, isUserDeleted);
+    public void delete(User user, MutableLiveData<Boolean> isUserDeleted, String token) {
+        api.delete(user, isUserDeleted, token);
     }
     public void createToken(User user, UserViewModel userViewModel) {
     api.createToken(user.getUsername(), userViewModel);
