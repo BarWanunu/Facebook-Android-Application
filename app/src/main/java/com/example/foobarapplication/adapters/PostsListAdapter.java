@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
 import com.squareup.picasso.Picasso;
@@ -30,13 +29,13 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
     private Boolean isLiked= false;
     public interface OnItemClickListener{
 
-        void onShareClick();
+        void onShareClick(View v);
 
         void onLikeClick(Post id, TextView likesTextView);
 
         void onCommentClick(int postId);
 
-        void onOptionClick(int id);
+        void onOptionClick(View v, int id);
     }
     class PostViewHolder extends RecyclerView.ViewHolder{
         private final TextView tvAuthor;
@@ -124,7 +123,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
         //check if the shareButton was pressed
         holder.shareButton.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onShareClick();
+                listener.onShareClick(v);
             }
         });
 
@@ -158,7 +157,7 @@ public class PostsListAdapter  extends RecyclerView.Adapter<PostsListAdapter.Pos
                 int adapterPosition = holder.getAdapterPosition(); // Use a different variable name if necessary
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
-                    listener.onOptionClick(currentPost.getId());
+                    listener.onOptionClick(v, currentPost.getId());
                 }
             }
         });
