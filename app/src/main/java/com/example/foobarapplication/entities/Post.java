@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 import com.example.foobarapplication.R;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 @Entity
 public class Post extends AppCompatActivity {
     @PrimaryKey(autoGenerate = true)
@@ -19,14 +21,33 @@ public class Post extends AppCompatActivity {
     private String author;
     private String content;
     private String date;
+
+    private Date dDate;
     private int likes;
     private int picture;
     private int profilePicture;
+
     private Uri uProfilePicture;
+
     private Uri uPic;
+
+    private String sProfilePicture;
+    private String sPic;
     private boolean isLiked = false;
 
 
+    public Post(int id, String author, String content,String date, int likes, String sPic, String sProfilePicture) {
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+        this.picture = -1;
+        this.profilePicture = -1;
+        this.sPic = sPic;
+        this.sProfilePicture = sProfilePicture;
+        this.comments = new ArrayList<>();
+    }
 
     public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
         this.id = id;

@@ -59,14 +59,17 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
         String token = intentUser.getStringExtra("token");
 
-        userViewModel = new UserViewModel();
-        userViewModel.delete(User, token);
+        //userViewModel = new UserViewModel();
+        //userViewModel.delete(User, token);
+        /*
         userViewModel.getIsUserDeleted().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 System.out.println("bye");
             }
         });
+
+         */
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
@@ -116,6 +119,15 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         Button btnAddPhoto = findViewById(R.id.btnAddPost);
         counterId = posts.toArray().length + 10;
+
+
+        postsViewModel= new PostsViewModel();
+        //postsViewModel.getAllFromDb(token);
+        postsViewModel.get(token).observe(this, posts -> {
+            adapter.setPosts(posts);
+        });
+
+
 
         btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
@@ -215,10 +227,14 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Set the item click listener
         Post finalMypost = mypost;
+        //Intent intentUser = getIntent();
+        //String token = intentUser.getStringExtra("token");
         popup.setOnMenuItemClickListener(item -> {
             // Handle item clicks here
             int id = item.getItemId();
             if (id == R.id.action_post_delete) {
+                //postsViewModel= new PostsViewModel();
+                //postsViewModel.delete(finalMypost, token);
                 posts.remove(finalMypost);
                 adapter.setPosts(posts);
             } else if (id == R.id.action_post_edit) {

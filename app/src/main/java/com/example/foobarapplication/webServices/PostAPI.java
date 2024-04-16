@@ -1,5 +1,7 @@
 package com.example.foobarapplication.webServices;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,8 +11,13 @@ import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,5 +85,62 @@ public class PostAPI {
 
             }
         });
+    }
+    public void getAllPosts(MutableLiveData<Boolean> isGetPosts, MutableLiveData<List<Post>> liveDataPosts, String token) {
+        JsonObject userCheck = new JsonObject();
+        Call<JsonObject> call = webServiceAPI.getAllPosts("Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                        boolean success = jsonObject.getBoolean("success");
+                        isGetPosts.postValue(success);
+
+                        if (success) {
+                            Log.d("TAG", "hello");
+                            JSONArray postsArray = jsonObject.getJSONArray("posts");
+                            List<Post> posts = new ArrayList<>();
+                            String jsonString = jsonObject.toString();
+                            // Log the JSON string
+                            Log.d("TAG", jsonString);
+                            for (int i = 0; i < postsArray.length(); i++) {
+                                JSONObject postJson = postsArray.getJSONObject(i);
+                                posts.add(parsePostFromJson(postJson));
+                            }
+                            liveDataPosts.postValue(posts);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        isGetPosts.postValue(false);
+                    }
+                } else {
+                    isGetPosts.postValue(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                isGetPosts.postValue(false);
+            }
+        });
+    }
+
+    private Post parsePostFromJson(JSONObject postJson) throws JSONException {
+        int id = postJson.getInt("id");
+        String text = postJson.getString("text");
+        String profile = postJson.getString("profile");
+        String dateString = postJson.getString("date");
+        //Date date = new Date(postJson.getLong("date"));  // assuming the date comes as a timestamp
+        String img = postJson.optString("img", "");  // optString allows for missing 'img' field
+        String profileImg = postJson.getString("profileImg");
+        int likes = postJson.getInt("likes");
+
+        //Post(int id, String author, String content, String date, int likes, int picture, int profilePicture)
+
+        return new Post(id, profile, text, dateString, likes, img, profileImg);
+
     }
 }

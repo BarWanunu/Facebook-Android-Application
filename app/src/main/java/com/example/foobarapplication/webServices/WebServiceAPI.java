@@ -27,8 +27,8 @@ public interface WebServiceAPI {
     @POST("token/")
     Call<JsonObject> createToken(@Body JsonObject user);
 
-    @GET("posts")
-    Call<List<Post>> getPosts();
+    @GET("posts/")
+    Call<JsonObject> getAllPosts(@Header("Authorization") String token);
 
     @POST("posts")
     Call<Post> createPost(@Header("token") String token, @Body JsonObject postBody);
