@@ -125,12 +125,14 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
 
         postsViewModel= new PostsViewModel();
-        //postsViewModel.getAllFromDb(token);
-//        postsViewModel.get(token).observe(this, posts -> {
-//            Log.i(TAG, posts.toString());
-//        });
-        postsViewModel.get(token);
+//        postsViewModel.getAllFromDb(token);
+        postsViewModel.get(token,this);
 
+        postsViewModel.get(token,this).observe(this, posts -> {
+            adapter.setPosts(posts);
+        });
+//
+        postsViewModel.get(token,this);
 
         btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);

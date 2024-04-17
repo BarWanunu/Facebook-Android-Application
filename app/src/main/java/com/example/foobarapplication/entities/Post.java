@@ -23,7 +23,7 @@ public class Post extends AppCompatActivity {
     private String content;
     private String date;
 
-    private Date dDate;
+//    private Date dDate;
     private int likes;
     private int picture;
     private int profilePicture;
@@ -88,16 +88,18 @@ public class Post extends AppCompatActivity {
         this.comments = new ArrayList<>();
     }
     public Post(int id, String author, String content,String date, int likes) {
-//        this.id = id;
-//        this.author = author;
-//        this.content = content;
-//        this.date = date;
-//        this.likes = likes;
-//        this.picture = -1;
-//        this.profilePicture = -1;
-//        this.sPic = null;
-////        this.sProfilePicture = sProfilePicture;
-//        this.comments = new ArrayList<>();
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+        this.picture = -1;
+        this.profilePicture = -1;
+        this.sPic = null;
+        this.sProfilePicture = null;
+        this.uPic = null;
+        this.uProfilePicture = null;
+        this.comments = new ArrayList<>();
     }
 
 

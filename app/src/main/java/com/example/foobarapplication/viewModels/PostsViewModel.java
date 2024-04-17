@@ -1,5 +1,7 @@
 package com.example.foobarapplication.viewModels;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -30,14 +32,17 @@ public class PostsViewModel extends ViewModel {
 
     }
 
-    public LiveData<List<Post>> get(String token) {
-        posts = postsRepository.getAllFromDb(isGetPosts, token);
+    public LiveData<List<Post>> get(String token, Context context) {
+        posts = postsRepository.getAllFromDb(isGetPosts, token,context);
         return posts;
     }
 
-    public LiveData<List<Post>> getAllFromDb(String token) {
-        posts = postsRepository.getAllFromDb(isGetPosts, token);
-        return posts;
+//    public LiveData<List<Post>> getAllFromDb(String token) {
+//        posts = postsRepository.getAllFromDb(isGetPosts, token);
+//        return posts;
+//    }
+    public static Post create(int id, String profile, String text, String dateString, int likes){
+        return new Post(id, profile, text, dateString, likes);
     }
 
     public MutableLiveData<Boolean> getIsPostDeleted(){

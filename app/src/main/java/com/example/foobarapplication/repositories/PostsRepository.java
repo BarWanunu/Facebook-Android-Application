@@ -1,5 +1,7 @@
 package com.example.foobarapplication.repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -18,7 +20,7 @@ public class PostsRepository {
     public PostsRepository() {
         //LocalDatabase db = LocalDatabase.getInstance();
         //dao = db.postDao();
-        //postListData = new PostListData();
+        postListData = new PostListData();
         api = new PostAPI();
     }
 
@@ -29,8 +31,8 @@ public class PostsRepository {
         }
     }
 
-    public LiveData<List<Post>> getAllFromDb(MutableLiveData<Boolean> isGetPosts, String token) {
-        api.getAllPosts(isGetPosts, postListData, token);
+    public LiveData<List<Post>> getAllFromDb(MutableLiveData<Boolean> isGetPosts, String token, Context context) {
+        api.getAllPosts(isGetPosts, postListData, token,context);
         return postListData;
     }
 

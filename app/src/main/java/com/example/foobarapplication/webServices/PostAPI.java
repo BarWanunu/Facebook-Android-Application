@@ -1,6 +1,7 @@
 package com.example.foobarapplication.webServices;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+import android.content.Context;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +13,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.foobarapplication.activities.ReadingPostDb;
 import com.example.foobarapplication.entities.Post;
+import com.example.foobarapplication.entities.Post2;
 import com.example.foobarapplication.entities.User;
+import com.example.foobarapplication.viewModels.PostsViewModel;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -92,51 +96,43 @@ public class PostAPI {
             }
         });
     }
-    public void getAllPosts(MutableLiveData<Boolean> isGetPosts, MutableLiveData<List<Post>> liveDataPosts, String token) {
-        JsonObject userCheck = new JsonObject();
-        Call<JsonObject> call = webServiceAPI.getAllPosts("Bearer " + token);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body().toString());
-                        boolean success = jsonObject.getBoolean("success");
-                        isGetPosts.postValue(success);
 
-                        if (success) {
-                            Log.d("TAG", "hello");
-                            JSONArray postsArray = jsonObject.getJSONArray("posts");
-                            Log.d("TAG", "hello2");
-                            List<Post> posts = new ArrayList<>();
-                           String jsonString = jsonObject.toString();
-//                            // Log the JSON string
-                            Log.d("TAG", jsonString);
-                            Log.d("TAG", "hello3");
-                            for (int i = 0; i < 1; i++) {
-                                JSONObject postJson = postsArray.getJSONObject(i);
-//                                posts.add(parsePostFromJson(postJson));
-                                parsePostFromJson(postJson);
+        public void getAllPosts(MutableLiveData<Boolean> isGetPosts, MutableLiveData<List<Post>> postListData, String token, Context context) {
+            JsonObject userCheck = new JsonObject();
+            Call<JsonObject> call = webServiceAPI.getAllPosts("Bearer " + token);
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body().toString());
+                            boolean success = jsonObject.getBoolean("success");
+                            isGetPosts.postValue(success);
+
+                            if (success) {
+                                JSONArray postsArray = jsonObject.getJSONArray("posts");
+                                List<Post> posts = new ArrayList<>();
+                                ReadingPostDb.readingPosts(postsArray, posts, context); // Pass the Context object
+                                Log.i(TAG, posts.toString());
+                                postListData.postValue(posts);
                             }
-                            Log.d("TAG", "hello2");
-//                            liveDataPosts.postValue(posts);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            isGetPosts.postValue(false);
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
                         isGetPosts.postValue(false);
                     }
-                } else {
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
                     isGetPosts.postValue(false);
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                isGetPosts.postValue(false);
-            }
-        });
-    }
+
 
     private void parsePostFromJson(JSONObject postJson) throws JSONException {
         Log.d("TAG", postJson.toString());
@@ -145,7 +141,8 @@ public class PostAPI {
         String profile = postJson.getString("profile");
         String dateString = postJson.getString("date");
         int likes = postJson.getInt("likes");
-        Post post = new Post(id, profile, text, dateString, likes);
+        Post2 post = new Post2(id, profile, text, dateString, likes);
+
 
         // Create a new Handler associated with the main UI thread
 
