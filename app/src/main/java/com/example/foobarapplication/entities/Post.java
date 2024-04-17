@@ -1,5 +1,6 @@
 package com.example.foobarapplication.entities;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -34,8 +35,34 @@ public class Post extends AppCompatActivity {
     private String sProfilePicture;
     private String sPic;
     private boolean isLiked = false;
+    private Bitmap imgBitmap; // Bitmap for the post image
+    private Bitmap profileImgBitmap;
 
+    public Post(int id, String author, String content, String date, int likes, Bitmap imgBitmap, Bitmap profileImgBitmap) {
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+        this.picture = -1;
+        this.profilePicture = -1;
+        this.imgBitmap = imgBitmap;
+        this.profileImgBitmap = profileImgBitmap;
+        this.comments = new ArrayList<>();
+    }
 
+    public Post(int id, String author, String content, String date, int likes, Bitmap profileImgBitmap) {
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+//        this.picture = picture;
+        this.profilePicture = -1;
+        this.imgBitmap = null;
+        this.profileImgBitmap = profileImgBitmap;
+        this.comments = new ArrayList<>();
+    }
     public Post(int id, String author, String content,String date, int likes, String sPic, String sProfilePicture) {
         this.id = id;
         this.author = author;
@@ -48,6 +75,31 @@ public class Post extends AppCompatActivity {
         this.sProfilePicture = sProfilePicture;
         this.comments = new ArrayList<>();
     }
+    public Post(int id, String author, String content,String date, int likes, String sProfilePicture) {
+        this.id = id;
+        this.author = author;
+        this.content = content;
+        this.date = date;
+        this.likes = likes;
+        this.picture = -1;
+        this.profilePicture = -1;
+        this.sPic = null;
+        this.sProfilePicture = sProfilePicture;
+        this.comments = new ArrayList<>();
+    }
+    public Post(int id, String author, String content,String date, int likes) {
+//        this.id = id;
+//        this.author = author;
+//        this.content = content;
+//        this.date = date;
+//        this.likes = likes;
+//        this.picture = -1;
+//        this.profilePicture = -1;
+//        this.sPic = null;
+////        this.sProfilePicture = sProfilePicture;
+//        this.comments = new ArrayList<>();
+    }
+
 
     public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
         this.id = id;

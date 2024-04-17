@@ -2,6 +2,11 @@ package com.example.foobarapplication.webServices;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Looper;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,15 +107,19 @@ public class PostAPI {
                         if (success) {
                             Log.d("TAG", "hello");
                             JSONArray postsArray = jsonObject.getJSONArray("posts");
+                            Log.d("TAG", "hello2");
                             List<Post> posts = new ArrayList<>();
-                            String jsonString = jsonObject.toString();
-                            // Log the JSON string
+                           String jsonString = jsonObject.toString();
+//                            // Log the JSON string
                             Log.d("TAG", jsonString);
-                            for (int i = 0; i < postsArray.length(); i++) {
+                            Log.d("TAG", "hello3");
+                            for (int i = 0; i < 1; i++) {
                                 JSONObject postJson = postsArray.getJSONObject(i);
-                                posts.add(parsePostFromJson(postJson));
+//                                posts.add(parsePostFromJson(postJson));
+                                parsePostFromJson(postJson);
                             }
-                            liveDataPosts.postValue(posts);
+                            Log.d("TAG", "hello2");
+//                            liveDataPosts.postValue(posts);
                         }
 
                     } catch (JSONException e) {
@@ -128,19 +138,17 @@ public class PostAPI {
         });
     }
 
-    private Post parsePostFromJson(JSONObject postJson) throws JSONException {
+    private void parsePostFromJson(JSONObject postJson) throws JSONException {
+        Log.d("TAG", postJson.toString());
         int id = postJson.getInt("id");
         String text = postJson.getString("text");
         String profile = postJson.getString("profile");
         String dateString = postJson.getString("date");
-        //Date date = new Date(postJson.getLong("date"));  // assuming the date comes as a timestamp
-        String img = postJson.optString("img", "");  // optString allows for missing 'img' field
-        String profileImg = postJson.getString("profileImg");
         int likes = postJson.getInt("likes");
+        Post post = new Post(id, profile, text, dateString, likes);
 
-        //Post(int id, String author, String content, String date, int likes, int picture, int profilePicture)
+        // Create a new Handler associated with the main UI thread
 
-        return new Post(id, profile, text, dateString, likes, img, profileImg);
 
     }
 }

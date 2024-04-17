@@ -1,5 +1,7 @@
 package com.example.foobarapplication.activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -123,10 +126,10 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         postsViewModel= new PostsViewModel();
         //postsViewModel.getAllFromDb(token);
-        postsViewModel.get(token).observe(this, posts -> {
-            adapter.setPosts(posts);
-        });
-
+//        postsViewModel.get(token).observe(this, posts -> {
+//            Log.i(TAG, posts.toString());
+//        });
+        postsViewModel.get(token);
 
 
         btnAddPhoto.setOnClickListener(v -> {
