@@ -1,7 +1,10 @@
 package com.example.foobarapplication.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,16 +91,44 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             Log.d("Image URIs", "Profile Picture URI: " + current.getuProfilePicture());
             int currentPic = current.getPic();
             int currentProfilePicture = current.getProfilePicture();
-            if (currentPic == -1 && currentProfilePicture == -1) {
-                Picasso.get().load(current.getuPic()).into(holder.ivPic);
-                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-            } else if (currentPic != -1 && currentProfilePicture == -1) {
-                Picasso.get().load(current.getPic()).into(holder.ivPic);
-                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-            } else {
-                holder.ivPic.setImageResource(current.getPic());
-                holder.profilePicture.setImageResource(current.getProfilePicture());
+
+            //                Picasso.get().load(current.getuPic()).into(holder.ivPic);
+////                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
+//            if (currentPic == -1 && currentProfilePicture == -1) {
+//
+//                String img= current.getsPic();
+//                String profile =current.getsProfilePicture();
+//
+//            } else if (currentPic != -1 && currentProfilePicture == -1) {
+//                Picasso.get().load(current.getPic()).into(holder.ivPic);
+//                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
+//            } else {
+//                holder.ivPic.setImageResource(current.getPic());
+//                holder.profilePicture.setImageResource(current.getProfilePicture());
+//
+            // Check if the image data is provided as Base64 strings
+            String imageBase64 = current.getsPic();
+            String profileImageBase64 = current.getsProfilePicture();
+
+            if (imageBase64 != null) {
+                // Decode the Base64 string into a byte array
+                byte[] imageData = Base64.decode(imageBase64, Base64.DEFAULT);
+                // Convert the byte array into a Bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                // Set the Bitmap to the ImageView
+                holder.ivPic.setImageBitmap(bitmap);
+
             }
+
+            if (profileImageBase64 != null) {
+                // Decode the Base64 string into a byte array
+                byte[] profileImageData = Base64.decode(profileImageBase64, Base64.DEFAULT);
+                // Convert the byte array into a Bitmap
+                Bitmap profileBitmap = BitmapFactory.decodeByteArray(profileImageData, 0, profileImageData.length);
+                // Set the Bitmap to the ImageView
+                holder.profilePicture.setImageBitmap(profileBitmap);
+            }
+
             holder.date.setText(String.format(Locale.getDefault(), "%s", current.getDate()));
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
 

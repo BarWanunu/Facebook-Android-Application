@@ -1,5 +1,7 @@
 package com.example.foobarapplication.activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Looper;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Handler;
 
 
@@ -33,7 +36,7 @@ import org.json.JSONObject;
 import java.util.List;
 public class ReadingPostDb {
 
-    public static void readingPosts(JSONArray array, List<Post> posts, Context context) {
+    public static List<Post> readingPosts(JSONArray array, List<Post> posts, Context context) {
         try {
             // Iterate through the JSON array and create Post objects
             for (int i = 0; i < array.length(); i++) {
@@ -58,8 +61,13 @@ public class ReadingPostDb {
                     ((Activity) context).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Post post = new Post(id, author, content, date, likes, finalPicResourceId, finalProfilePicResourceId);
-                            posts.add(post);
+//                            Post post = new Post(id, author, content, date, likes, finalPicResourceId, finalProfilePicResourceId);
+//                            posts.add(post);
+                            Log.d("PostAdd", "Post added: ");
+//                            if (posts.size() == array.length()) {
+//                                // Notify callback that all posts have been added
+//                                callback.onPostAdded();
+//                            }
                         }
                     });
                 } else {
@@ -70,6 +78,9 @@ public class ReadingPostDb {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.i(TAG, "hello2");
+
+        return posts;
     }
 
 

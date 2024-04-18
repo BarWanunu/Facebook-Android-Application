@@ -1,6 +1,7 @@
 package com.example.foobarapplication.webServices;
 
 import com.example.foobarapplication.entities.Post;
+import com.example.foobarapplication.entities.Post2;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface WebServiceAPI {
     Call<JsonObject> createToken(@Body JsonObject user);
 
     @GET("posts/")
-    Call<JsonObject> getAllPosts(@Header("Authorization") String token);
+    Call<List<Post>> getAllPosts(@Header("Authorization") String token);
 
     @POST("posts")
     Call<Post> createPost(@Header("token") String token, @Body JsonObject postBody);

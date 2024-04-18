@@ -5,13 +5,16 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.DB.dao.PostsDao;
+import com.example.foobarapplication.activities.ApiResponseCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.webServices.PostAPI;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 
 public class PostsRepository {
@@ -34,26 +37,16 @@ public class PostsRepository {
     }
 
     public LiveData<List<Post>> getAllFromDb(MutableLiveData<Boolean> isGetPosts, String token, Context context) {
-        Semaphore semaphore = new Semaphore(0);
+        MutableLiveData<List<Post>> postData = new MutableLiveData<>();
 
-        api.getAllPosts(isGetPosts, postListData, token,context,semaphore);
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d("getAllFromDb", "isGetPosts value: " + isGetPosts.getValue());
-
-        // Log the value of postListData
-        List<Post> posts = postListData.getValue();
-        if (posts != null) {
-            Log.d("getAllFromDb", "postListData size: " + posts.size());
-        } else {
-            Log.d("getAllFromDb", "postListData is null");
-        }
+        api.getAllPosts( token,postListData);
 
         return postListData;
     }
+
+
+
+
 
     public LiveData<List<Post>> getAll() {
         return postListData;

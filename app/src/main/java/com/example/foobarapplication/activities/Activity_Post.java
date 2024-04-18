@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -126,13 +127,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         postsViewModel= new PostsViewModel();
 //        postsViewModel.getAllFromDb(token);
-        postsViewModel.get(token,this);
+//        postsViewModel.get(token,this);
 
         postsViewModel.get(token,this).observe(this, posts -> {
             adapter.setPosts(posts);
         });
 //
-        postsViewModel.get(token,this);
+        LiveData<List<Post>> posts2=  postsViewModel.get(token,this);
 
         btnAddPhoto.setOnClickListener(v -> {
             EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
