@@ -72,13 +72,9 @@ public class ReadingPostDb {
         }
     }
 
-    public static int getResourceId(Context context, String resourceName) {
-        // Assuming you are getting resource ID dynamically based on resource name
-        // Implement your logic here to get the resource ID
-        // This might involve using Context.getResources().getIdentifier() or other methods
-        // Return 0 if resource is not found
-        // Example implementation:
-        // return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
-        return 0;
+
+    private static int getResourceId(String resourceName, Context context) {
+        return context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
+
 }

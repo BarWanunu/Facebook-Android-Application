@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Handler;
 
 import retrofit2.Call;
@@ -97,8 +98,8 @@ public class PostAPI {
         });
     }
 
-        public void getAllPosts(MutableLiveData<Boolean> isGetPosts, MutableLiveData<List<Post>> postListData, String token, Context context) {
-            JsonObject userCheck = new JsonObject();
+        public void getAllPosts(MutableLiveData<Boolean> isGetPosts, MutableLiveData<List<Post>> postListData, String token, Context context, Semaphore semaphore) {
+//            JsonObject userCheck = new JsonObject();
             Call<JsonObject> call = webServiceAPI.getAllPosts("Bearer " + token);
             call.enqueue(new Callback<JsonObject>() {
                 @Override
@@ -113,8 +114,9 @@ public class PostAPI {
                                 JSONArray postsArray = jsonObject.getJSONArray("posts");
                                 List<Post> posts = new ArrayList<>();
                                 ReadingPostDb.readingPosts(postsArray, posts, context); // Pass the Context object
-                                Log.i(TAG, posts.toString());
+                              Log.i(TAG, posts.toString());
                                 postListData.postValue(posts);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -123,11 +125,13 @@ public class PostAPI {
                     } else {
                         isGetPosts.postValue(false);
                     }
+                    semaphore.release();
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     isGetPosts.postValue(false);
+                    semaphore.release();
                 }
             });
         }
