@@ -2,14 +2,14 @@ package com.example.foobarapplication.viewModels;
 
 import android.content.Context;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.foobarapplication.Globals.GlobalToken;
 import com.example.foobarapplication.entities.Post;
-import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.repositories.PostsRepository;
-import com.example.foobarapplication.repositories.UserRepository;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class PostsViewModel extends ViewModel {
 
     private PostsRepository postsRepository;
 
-    private LiveData<List<Post>> posts;
+    private MutableLiveData<List<Post>> posts;
 
 
     private MutableLiveData<Boolean> isGetPosts = new MutableLiveData<>();
@@ -26,14 +26,19 @@ public class PostsViewModel extends ViewModel {
     private MutableLiveData<Boolean> isPostDeleted = new MutableLiveData<>();
     private MutableLiveData<List<Post>> postList = new MutableLiveData<>();
 
-    public PostsViewModel() {
-        postsRepository = new PostsRepository();
-        posts = postsRepository.getAll();
+    public PostsViewModel(Context context) {
+        postsRepository = new PostsRepository(context);
+        posts = postsRepository.get();
 
     }
 
-    public LiveData<List<Post>> get(String token, Context context) {
-        posts = postsRepository.getAllFromDb(isGetPosts, token,context);
+    public LiveData<List<Post>> getFromCloud(LifecycleOwner context) {
+        posts = postsRepository.getAllPosts(GlobalToken.token, context);
+        return posts;
+    }
+
+    public MutableLiveData<List<Post>> get() {
+        posts = postsRepository.get();
         return posts;
     }
 
@@ -41,8 +46,8 @@ public class PostsViewModel extends ViewModel {
 //        posts = postsRepository.getAllFromDb(isGetPosts, token);
 //        return posts;
 //    }
-    public static Post create(int id, String profile, String text, String dateString, int likes){
-        return new Post(id, profile, text, dateString, likes);
+    public static Post create(String profile, String text, String dateString, int likes){
+        return new Post(profile, text, dateString, likes);
     }
 
     public MutableLiveData<Boolean> getIsPostDeleted(){
@@ -53,7 +58,19 @@ public class PostsViewModel extends ViewModel {
         return isGetPosts;
     }
 
-    public void delete(Post post, String token) {
-        postsRepository.delete(post, isPostDeleted, token);
+    public void add(Post post) {
+        postsRepository.add(post, GlobalToken.token);
+    }
+
+    public void delete(Post post) {
+        postsRepository.delete(post, GlobalToken.token);
+    }
+
+    public void edit(Post post) {
+        postsRepository.edit(post, GlobalToken.token);
+    }
+
+    public void deleteAll() {
+        postsRepository.deleteAll();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.foobarapplication.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,11 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foobarapplication.Globals.GlobalCommentsHolder;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.CommentListAdapter;
 import com.example.foobarapplication.entities.Comment;
 import com.example.foobarapplication.entities.User;
+import com.example.foobarapplication.repositories.CommentsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,14 @@ import java.util.List;
 public class Comment_Activity extends AppCompatActivity implements CommentListAdapter.OnItemClickListener {
     private CommentListAdapter commentListAdapter;
     private int POST_ID;
+    CommentsRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         POST_ID = getIntent().getIntExtra("POST_ID", -1);
-
+        repository = new CommentsRepository(this);
         Intent intentUser = getIntent();
         User User = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("userDetails");
 
@@ -51,11 +51,11 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
         submitCommentButton.setOnClickListener(v -> {
             String commentText = editTextComment.getText().toString().trim();
             if (!commentText.isEmpty()) {
-                List<Comment> currentComments = GlobalCommentsHolder.getCommentsByPostId(POST_ID); // Fetch the latest comments
+                List<Comment> currentComments = repository.getCommentsOfPost(POST_ID); // Fetch the latest comments
                 int id = currentComments.size() + 1; // This might need adjustment based on how you manage IDs
-                Comment newComment = new Comment(id, POST_ID, User.getUsername(), commentText, Uri.parse(User.getImagePath()));
-                GlobalCommentsHolder.addComment(newComment); // Add to global holder
-                commentListAdapter.setComments(GlobalCommentsHolder.getCommentsByPostId(POST_ID)); // Refresh adapter with updated list
+                Comment newComment = new Comment(id, POST_ID, User.getUserName(), commentText, User.getPhoto());
+                repository.add(newComment);
+                commentListAdapter.setComments(repository.getCommentsOfPost(POST_ID)); // Refresh adapter with updated list
                 commentListAdapter.notifyItemInserted(currentComments.size() - 1);
                 Toast.makeText(this, "Comment added successfully", Toast.LENGTH_SHORT).show();
                 editTextComment.setText("");
@@ -68,7 +68,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
     //happens to handle the GlobalCommentsHolder list
     protected void onResume() {
         super.onResume();
-        List<Comment> commentsForThisPost = GlobalCommentsHolder.getCommentsByPostId(POST_ID);
+        List<Comment> commentsForThisPost = repository.getCommentsOfPost(POST_ID);
         // Update your adapter with commentsForThisPost
         commentListAdapter.setComments(commentsForThisPost);
         commentListAdapter.notifyDataSetChanged();
@@ -93,7 +93,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
                     } else {
                         commentToEdit.setCommentContent(updatedCommentText);
                         commentListAdapter.notifyItemChanged(position);
-                        GlobalCommentsHolder.getInstance().updateComment(commentToEdit.getCommentId(), updatedCommentText);
+                        repository.update(commentToEdit);
                         Toast.makeText(Comment_Activity.this, "Comment edited", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -111,9 +111,9 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
                     // Get the comment to delete
                     Comment commentToDelete = commentListAdapter.getCommentAt(position);
                     // Remove from GlobalCommentsHolder
-                    GlobalCommentsHolder.getInstance().deleteComment(commentToDelete.getCommentId());
+                    repository.delete(commentToDelete);
                     // Refresh the adapter
-                    commentListAdapter.setComments(GlobalCommentsHolder.getCommentsByPostId(POST_ID));
+                    commentListAdapter.setComments(repository.getCommentsOfPost(POST_ID));
                     commentListAdapter.notifyItemChanged(position);
                     Toast.makeText(Comment_Activity.this, "Comment deleted", Toast.LENGTH_SHORT).show();
                 })

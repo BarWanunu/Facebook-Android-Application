@@ -32,7 +32,7 @@ public class signup_Activity extends AppCompatActivity {
     private static final int CAMERA_REQ_CODE = 1001;
 
     private ImageView profileView;
-    private String selectedImagePath;
+    private String selectedImageBase64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +90,12 @@ public class signup_Activity extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(selectedImagePath)) {
+                if (TextUtils.isEmpty(selectedImageBase64)) {
                     Toast.makeText(signup_Activity.this, "Please add a photo", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                User newUser = new User(email, username, password,confirmPassword, selectedImagePath);
-                UserViewModel userViewModel = new UserViewModel();
+                User newUser = new User(email, username, password,confirmPassword, selectedImageBase64);
+                UserViewModel userViewModel = new UserViewModel(signup_Activity.this);
                 userViewModel.add(newUser);
                 Intent signInIntent = new Intent(signup_Activity.this, MainActivity.class);
                 signInIntent.putExtra("user", newUser);
@@ -135,7 +134,7 @@ public class signup_Activity extends AppCompatActivity {
     }
 
     private void handleGalleryResult(Uri selectedImageUri) {
-        selectedImagePath = selectedImageUri.toString();
+        selectedImageBase64 = ImageUtils.base64FromUri(selectedImageUri, this);
         profileView.setImageURI(selectedImageUri);
     }
 
@@ -143,12 +142,12 @@ public class signup_Activity extends AppCompatActivity {
         Bundle extras = data.getExtras();
         if (extras != null) {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            selectedImagePath = saveCameraImage(imageBitmap);// You may want to save this image to a file.
+            selectedImageBase64 = ImageUtils.base64FromUri(saveCameraImage(imageBitmap), this);// You may want to save this image to a file.
             profileView.setImageBitmap(imageBitmap);
         }
     }
 
-    private String saveCameraImage(Bitmap imageBitmap) throws IOException {
+    private Uri saveCameraImage(Bitmap imageBitmap) throws IOException {
         File imageFile = createImageFile();
         try {
             FileOutputStream fos = new FileOutputStream(imageFile);
@@ -158,7 +157,7 @@ public class signup_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return Uri.fromFile(imageFile).toString();
+        return Uri.fromFile(imageFile);
     }
 
     private File createImageFile() throws IOException {
@@ -166,7 +165,6 @@ public class signup_Activity extends AppCompatActivity {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-        selectedImagePath = imageFile.getAbsolutePath();
         return imageFile;
     }
 

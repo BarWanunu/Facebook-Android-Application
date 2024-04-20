@@ -1,45 +1,50 @@
 package com.example.foobarapplication.entities;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
 @Entity
 public class User implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private  String username;
+    @PrimaryKey
+    @NonNull
+    private  String userName;
     private String email;
     private String password;
     private String confirmPassword;
-    private String imagePath;
+    private String photo;
 
-    public User(String email, String password, String imagePath, String username) {
+    @Ignore
+    public User(String email, String password, String photo, String userName) {
         this.email = email;
         this.password = password;
-        this.imagePath = imagePath;
-        this.username=username;
+        this.photo = photo;
+        this.userName =userName;
     }
 
-    public User(String username, String password) {
-        this.username = username;
+    @Ignore
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
-    public User(String email ,String username, String password, String confirmPassword, String imagePath) {
+    public User(String email ,String userName, String password, String confirmPassword, String photo) {
         this.email = email;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.confirmPassword = confirmPassword;
-        this.imagePath = imagePath;
+        this.photo = photo;
     }
 
     // Getters and setters for the new field
-    public String getImagePath() {
-        return imagePath;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getEmail(){
@@ -50,5 +55,25 @@ public class User implements Serializable {
         return this.password;
     }
     public String getConfirmPasswordPassword() {return this.confirmPassword;}
-    public String getUsername(){return this.username;}
+    public String getUserName(){return this.userName;}
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.R;
@@ -14,13 +15,13 @@ import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    UserViewModel userViewModel = new UserViewModel();
+    UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        userViewModel = new UserViewModel(this);
         Button btnSignup = findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(v -> {
             Intent i = new Intent(this, signup_Activity.class);
@@ -54,11 +55,18 @@ public class MainActivity extends AppCompatActivity {
                         userViewModel.getToken().observe(MainActivity.this, new Observer<String>() {
                             @Override
                             public void onChanged(String token) {
-                                Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
-                                signInIntent.putExtra("user", user);
-                                signInIntent.putExtra("token", token);
-                                Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
-                                startActivity(signInIntent);
+                                MutableLiveData<User> user = new MutableLiveData<>();
+                                userViewModel.getUser(enteredUsername, user, MainActivity.this);
+                                user.observe(MainActivity.this, new Observer<User>() {
+                                    @Override
+                                    public void onChanged(User user) {
+                                        Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
+                                        signInIntent.putExtra("user", user);
+                                        signInIntent.putExtra("token", token);
+                                        Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
+                                        startActivity(signInIntent);
+                                    }
+                                });
                             }
                         });
                     } else {

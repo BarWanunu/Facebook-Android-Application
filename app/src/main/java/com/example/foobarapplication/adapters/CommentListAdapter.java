@@ -1,6 +1,9 @@
 package com.example.foobarapplication.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,12 +69,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             final Comment current = comments.get(position);
             holder.commentAuthor.setText(current.getCommentAuthor());
             holder.commentContent.setText(current.getCommentContent());
-            int currentProfilePic= current.getProfilePicture();
-            if(currentProfilePic==-1){
-                Picasso.get().load(current.getuProfilePicture()).into(holder.userProfilePictureComment);
-            }
-            else{
-                Picasso.get().load(current.getProfilePicture()).into(holder.userProfilePictureComment);
+            String profileImageBase64 = current.getSProfilePicture();
+            if(profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+                String formattedBase64 = profileImageBase64.substring(23);
+                // Decode the Base64 string into a byte array
+                byte[] profileImageData = Base64.decode(formattedBase64, Base64.DEFAULT);
+                // Convert the byte array into a Bitmap
+                Bitmap profileBitmap = BitmapFactory.decodeByteArray(profileImageData, 0, profileImageData.length);
+                // Set the Bitmap to the ImageView
+                holder.userProfilePictureComment.setImageBitmap(profileBitmap);
             }
         }
 

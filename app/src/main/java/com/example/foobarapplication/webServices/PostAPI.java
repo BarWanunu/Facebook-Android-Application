@@ -1,27 +1,15 @@
 package com.example.foobarapplication.webServices;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static com.example.foobarapplication.activities.PostConverter.convertPost2ListToPostList;
-import static com.example.foobarapplication.entities.Post.fromServerModel;
-
-import android.content.Context;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.foobarapplication.activities.ApiResponseCallback;
-import com.example.foobarapplication.activities.ReadingPostDb;
 import com.example.foobarapplication.entities.Post;
-import com.example.foobarapplication.entities.Post2;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,15 +28,12 @@ public class PostAPI {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public void add(Post post) {
+    public void add(Post post, String token) {
         JsonObject postCreate = new JsonObject();
         postCreate.addProperty("text", post.getContent());
         postCreate.addProperty("date", post.getDate());
         postCreate.addProperty("image", "");
-
-        String token = "aa";
-
-        Call<Post> call = webServiceAPI.createPost(token, postCreate);
+        Call<Post> call = webServiceAPI.createPost("Bearer " + token, postCreate);
         call.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
@@ -66,57 +51,70 @@ public class PostAPI {
         });
     }
 
-    public void delete(Post post, MutableLiveData<Boolean> isPostDeleted, String token) {
-        Call<JsonObject> call = webServiceAPI.deletePost(post.getId(), post.getAuthor(), "Bearer " + token);
-        call.enqueue(new Callback<JsonObject>() {
+    public void delete(Post post, String token) {
+        Call<Post> call = webServiceAPI.deletePost(post.getAuthor(), post.getId(), "Bearer " + token);
+        call.enqueue(new Callback<Post>() {
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body().toString());
-                        boolean success = jsonObject.getBoolean("success");
-                        isPostDeleted.postValue(success);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    Log.d("AddPost", "Post added");
                 } else {
-                    isPostDeleted.postValue(false);
+                    Log.d("AddPost", "Failed to add post");
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<Post> call, Throwable t) {
 
             }
         });
     }
 
-    public void getAllPosts(String token, MutableLiveData<List<Post>> posts ) {
+    public void edit(Post post, String token) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("editedText", post.getContent());
+        Call<Post> call = webServiceAPI.editPost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
+        call.enqueue(new Callback<Post>() {
+            @Override
+            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
+                if (response.isSuccessful()) {
+                    Log.d("EditPost", "Post edited successfully");
+                } else {
+                    Log.d("EditPost", "Failed to edit post");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
+                Log.e("EditPost", "Network error: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getAllPosts(String token, MutableLiveData<List<Post>> posts) {
 //        ApiResponseCallback<List<Post>> callback
         webServiceAPI.getAllPosts("Bearer " + token).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 if (response.isSuccessful()) {
-                   posts.postValue(response.body());
-//                    List<Post2> post2List = response.body();
-//                    List<Post> posts1 = fromServerModel(post2List);
-
-
+                    List<Post> list = response.body();
+                    Collections.sort(list);
+                    posts.postValue(response.body());
+                    Log.d("getAllPosts", "succeeded to fetch posts: ");
                 } else {
+                    Log.e("API Error", "Failed to fetch posts");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
                 Log.e("API Error", "Failed to fetch posts: " + t.getMessage());
-
             }
 
 
         });
     }
 }
-
 
 
 //            @Override//            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -156,9 +154,6 @@ public class PostAPI {
 //                isGetPosts.postValue(false);
 ////                latch.countDown(); // Release the latch in case of failure
 //            }
-  
-
-
 
 
 //    private void parsePostFromJson(JSONObject postJson) throws JSONException {

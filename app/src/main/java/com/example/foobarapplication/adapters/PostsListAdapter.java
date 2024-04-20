@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Post;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,13 +30,15 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     public interface OnItemClickListener {
 
-        void onShareClick();
+        void onShareClick(View v);
 
         void onLikeClick(Post id, TextView likesTextView);
 
         void onCommentClick(int postId);
 
-        void onOptionClick(int id);
+        void onOptionClick(View v, int id);
+
+        void onPictureClick(View v, String userId);
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
@@ -51,7 +50,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         private final ImageButton commentButton;
         private final ImageView post_option;
         private final TextView likesTextView;
-        private final ImageView profilePicture;
+        private final ImageButton profilePicture;
         private final TextView date;
 
 
@@ -87,10 +86,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
-            Log.d("Image URIs", "Post Image URI: " + current.getPic() + position);
-            Log.d("Image URIs", "Profile Picture URI: " + current.getuProfilePicture());
-            int currentPic = current.getPic();
-            int currentProfilePicture = current.getProfilePicture();
 
             //                Picasso.get().load(current.getuPic()).into(holder.ivPic);
 ////                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
@@ -110,9 +105,10 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             String imageBase64 = current.getsPic();
             String profileImageBase64 = current.getsProfilePicture();
 
-            if (imageBase64 != null) {
+            if (imageBase64 != null && !imageBase64.isEmpty()) {
+                String formattedBase64 = imageBase64.substring(23);
                 // Decode the Base64 string into a byte array
-                byte[] imageData = Base64.decode(imageBase64, Base64.DEFAULT);
+                byte[] imageData = Base64.decode(formattedBase64, Base64.DEFAULT);
                 // Convert the byte array into a Bitmap
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 // Set the Bitmap to the ImageView
@@ -120,16 +116,17 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
             }
 
-            if (profileImageBase64 != null) {
+            if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+                String formattedBase64 = profileImageBase64.substring(23);
                 // Decode the Base64 string into a byte array
-                byte[] profileImageData = Base64.decode(profileImageBase64, Base64.DEFAULT);
+                byte[] profileImageData = Base64.decode(formattedBase64, Base64.DEFAULT);
                 // Convert the byte array into a Bitmap
                 Bitmap profileBitmap = BitmapFactory.decodeByteArray(profileImageData, 0, profileImageData.length);
                 // Set the Bitmap to the ImageView
                 holder.profilePicture.setImageBitmap(profileBitmap);
             }
 
-            holder.date.setText(String.format(Locale.getDefault(), "%s", current.getDate()));
+            holder.date.setText(String.format(Locale.getDefault(), "%s", current.getCurrentDate()));
             holder.likesTextView.setText(String.format(Locale.getDefault(), "%d likes", current.getLikes()));
 
             // Use the isDarkMode parameter from the ViewHolder constructor
@@ -150,7 +147,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
         //check if the shareButton was pressed
         holder.shareButton.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onShareClick();
+                listener.onShareClick(v);
             }
         });
 
@@ -184,7 +181,20 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
-                    listener.onOptionClick(currentPost.getId());
+                    listener.onOptionClick(v, currentPost.getId());
+                }
+            }
+        });
+
+        holder.profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    int adapterPosition = holder.getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        Post currentPost = posts.get(adapterPosition);
+                        listener.onPictureClick(v, currentPost.getAuthor());
+                    }
                 }
             }
         });
