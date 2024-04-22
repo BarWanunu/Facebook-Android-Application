@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.entities.Post;
+import com.example.foobarapplication.entities.User;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.Collection;
@@ -90,6 +92,31 @@ public class PostAPI {
             }
         });
     }
+
+    public void likePost(Post post, String token) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("isLiked", post.getIsLiked());
+        Call<JsonObject> call = webServiceAPI.likePost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Gson gson = new Gson();
+                    User user2 = gson.fromJson(response.body().get("likes"), User.class);
+                    Log.d("LikePost", "Post liked successfully");
+                } else {
+                    Log.d("LikePost", "Failed to like post");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.e("LikePost", "Network error: " + t.getMessage());
+            }
+        });
+    }
+
+
 
     public void getAllPosts(String token, MutableLiveData<List<Post>> posts) {
 //        ApiResponseCallback<List<Post>> callback

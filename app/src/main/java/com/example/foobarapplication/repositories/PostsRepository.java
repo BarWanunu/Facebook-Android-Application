@@ -83,7 +83,14 @@ public class PostsRepository {
         api.edit(post, token);
         dao.update(post);
         List<Post> posts = dao.index();
-        Collections.sort(posts);
+        //Collections.sort(posts);
+        postListData.setValue(posts);
+    }
+    public void likePost(Post post, String token) {
+        api.likePost(post, token);
+        dao.update(post);
+        List<Post> posts = dao.index();
+        //Collections.sort(posts);
         postListData.setValue(posts);
     }
 

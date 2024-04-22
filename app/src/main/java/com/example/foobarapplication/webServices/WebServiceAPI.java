@@ -48,4 +48,7 @@ public interface WebServiceAPI {
     @GET("User/{id}")
     Call<JsonObject> getUser(@Path("id") String userId, @Header("Authorization") String token);
 
+    @PATCH("users/{userId}/posts/{postId}/like")
+    Call<JsonObject> likePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token, @Body JsonObject likeStatus);
+
 }

@@ -87,6 +87,24 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         menu.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, v);
             popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+            List<Post> myposts = new LinkedList<>();
+            List<Post> posts = postsViewModel.get().getValue();
+            for (Post post : posts) {
+                if (post.getAuthor().equals(post.getAuthor())) {
+                    myposts.add(post);
+                }
+            }
+            // Inflating the Popup using xml file
+            //popup.getMenuInflater().inflate(R.menu.menu_user_option, popup.getMenu());
+            User myuser = null;
+            List<User> users = userViewModel.get();
+            for (User user : users) {
+                if (user.getUserName().equals(user.getUserName())) {
+                    myuser = user;
+                    break;
+                }
+            }
+            User finalMyuser = myuser;
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.action_dark_mode) {
@@ -113,6 +131,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     // Close current activity if necessary
                     finish();
                     return true;
+                } else if (id == R.id.action_user_delete) {
+                    userViewModel.delete(finalMyuser);
+                    users.remove(finalMyuser);
+                    finish();
+                } else if (id == R.id.action_user_edit_name) {
+                    assert finalMyuser != null;
+                    showEditUsernameDialog(finalMyuser, myposts);
+                } else if (id == R.id.action_user_edit_image) {
+                    assert finalMyuser != null;
+                    showEditUserImageDialog(finalMyuser, myposts);
                 }
                 return false;
             });
@@ -251,8 +279,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 assert finalMypost != null;
                 showEditPostDialog(finalMypost);
             }
-
-
             return false;
         });
 
@@ -303,8 +329,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 assert finalMyuser != null;
                 showEditUserImageDialog(finalMyuser, myposts);
             }
-
-
             return false;
         });
 
@@ -338,7 +362,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 posts.add(post);
                 dao.update(post);
             }
-            Collections.sort(posts);
+            //Collections.sort(posts);
             postsViewModel.get().setValue(posts);
             dialog.dismiss();
         });
