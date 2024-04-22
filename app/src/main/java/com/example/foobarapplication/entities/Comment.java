@@ -4,25 +4,29 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import com.example.foobarapplication.R;
 
-public class Comment extends AppCompatActivity {
+import java.io.Serializable;
 
+@Entity
+public class Comment {
+    @PrimaryKey(autoGenerate = true)
     private int commentId;
     private int postId;
     private String commentAuthor;
-    private int profilePicture;
-    private Uri uProfilePicture;
+    private String sProfilePicture;
     private String commentContent;
 
-    public Comment(int commentId, int postId, String commentAuthor, String commentContent, Uri uProfilePicture) {
+    public Comment(int commentId, int postId, String commentAuthor, String commentContent, String sProfilePicture) {
         this.commentId = commentId;
         this.postId = postId;
         this.commentAuthor = commentAuthor;
         this.commentContent = commentContent;
-        this.profilePicture = -1;
-        this.uProfilePicture = uProfilePicture;
+        this.sProfilePicture = sProfilePicture;
     }
 
     public Comment(int commentId, int postId, String commentAuthor, String commentContent, int profilePicture) {
@@ -30,14 +34,7 @@ public class Comment extends AppCompatActivity {
         this.postId = postId;
         this.commentAuthor = commentAuthor;
         this.commentContent = commentContent;
-        this.profilePicture = profilePicture;
-        this.uProfilePicture = null;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.comment_layout);
+        this.sProfilePicture = "";
     }
 
     public int getCommentId() {
@@ -72,19 +69,14 @@ public class Comment extends AppCompatActivity {
         this.commentContent = commentContent;
     }
 
-    public int getProfilePicture() {
-        return profilePicture;
+
+    public String getSProfilePicture() {
+        return sProfilePicture;
     }
 
-    public void setProfilePicture(int profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setSProfilePicture(String uProfilePicture) {
+        this.sProfilePicture = uProfilePicture;
     }
 
-    public Uri getuProfilePicture() {
-        return uProfilePicture;
-    }
 
-    public void setuProfilePicture(Uri uProfilePicture) {
-        this.uProfilePicture = uProfilePicture;
-    }
 }

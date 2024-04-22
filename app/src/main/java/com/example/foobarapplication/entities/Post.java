@@ -1,72 +1,49 @@
 package com.example.foobarapplication.entities;
 
-import android.net.Uri;
-import android.os.Bundle;
-import android.widget.ImageButton;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.foobarapplication.R;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import java.util.ArrayList;
 @Entity
-public class Post extends AppCompatActivity {
+public class Post implements Comparable<Post>{
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private ArrayList<Object> comments;
-    private String author;
-    private String content;
+    private String profile;
+    private String text;
     private String date;
     private int likes;
-    private int picture;
-    private int profilePicture;
-    private Uri uProfilePicture;
-    private Uri uPic;
+    private String img;
+    private String profileImg;
     private boolean isLiked = false;
 
-
-
-    public Post(int id, String author, String content,String date, int likes, Uri uPic, Uri uProfilePicture) {
-        this.id = id;
-        this.author = author;
-        this.content = content;
-        this.date = date;
-        this.likes = likes;
-        this.picture = -1;
-        this.profilePicture = -1;
-        this.uPic = uPic;
-        this.uProfilePicture = uProfilePicture;
-        this.comments = new ArrayList<>();
+    public Post() {
     }
 
-    public Post(int id, String author, String content, String date, int likes, int picture, int profilePicture){
-        this.id = id;
-        this.author = author;
-        this.content = content;
+    // Constructor with essential fields
+    public Post(String author, String content, String date, int likes) {
+        this.profile = author;
+        this.text = content;
         this.date = date;
         this.likes = likes;
-        this.picture = picture;
-        this.profilePicture = profilePicture;
-        this.uPic = null;
-        this.uProfilePicture = null;
-        this.comments = new ArrayList<>();
+        if (this.date.endsWith("\""))
+            this.date = this.date.substring(0, this.date.length()-1);
     }
 
-    public Post(int id, String author, String content, String date, int likes, int picture, Uri uProfilePicture){
-        this.id = id;
-        this.author = author;
-        this.content = content;
-        this.date = date;
-        this.likes = likes;
-        this.picture = picture;
-        this.profilePicture = -1;
-        this.uPic = null;
-        this.uProfilePicture = uProfilePicture;
-        this.comments = new ArrayList<>();
+    // Constructor with image URLs
+    public Post(String author, String content, String date, int likes, String sPic, String sProfilePicture) {
+        this(author, content, date, likes);
+        this.img = sPic;
+        this.profileImg = sProfilePicture;
     }
 
+    // Constructor with profile image URL
+    public Post(String author, String content, String date, int likes, String sProfilePicture) {
+        this(author, content, date, likes);
+        this.profileImg = sProfilePicture;
+    }
 
     public int getId() {
         return id;
@@ -77,19 +54,19 @@ public class Post extends AppCompatActivity {
     }
 
     public String getAuthor() {
-        return author;
+        return profile;
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.profile = author;
     }
 
     public String getContent() {
-        return content;
+        return text;
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.text = content;
     }
 
     public int getLikes() {
@@ -110,26 +87,20 @@ public class Post extends AppCompatActivity {
     public void unLike() {
         this.likes -= 1;
     }
-
-    public int getPic() {
-        return picture;
-    }
-    public int getProfilePicture() {
-        return profilePicture;
-    }
-
-    public String getDate() {
-        return date;
+    public String getCurrentDate() {
+        Date d = new Date();
+        try {
+            d = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+        } catch (ParseException ignored) {
+        }
+        return new SimpleDateFormat("dd-MM-yyyy").format(d);
     }
 
-    public void setPic(int pic) {
-        this.picture = pic;
+    public String getsPic(){
+        return img;
     }
-    public Uri getuPic(){
-        return uPic;
-    }
-    public Uri getuProfilePicture(){
-        return uProfilePicture;
+    public String getsProfilePicture(){
+        return profileImg;
     }
 
     public boolean getIsLiked() {
@@ -139,56 +110,98 @@ public class Post extends AppCompatActivity {
         this.isLiked = liked;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.post_layout);
-        ImageButton likeBtn = findViewById(R.id.likeButton);
-        likeBtn.setOnClickListener(v -> {
-            if (isLiked == false) {
-                isLiked = true;
-                addLike();
-            } else {
-                isLiked = false;
-                unLike();
-            }
-        });
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.post_layout);
+//        ImageButton likeBtn = findViewById(R.id.likeButton);
+//        likeBtn.setOnClickListener(v -> {
+//            if (isLiked == false) {
+//                isLiked = true;
+//                addLike();
+//            } else {
+//                isLiked = false;
+//                unLike();
+//            }
+//        });
+//    }
+    public String getProfile() {
+        return profile;
     }
 
-    public ArrayList<Object> getComments() {
-        return comments;
+    public String getImg() {
+        return img;
     }
 
-    public void setComments(ArrayList<Object> comments) {
-        this.comments = comments;
+    public String getProfileImg() {
+        return profileImg;
+    }
+
+    public String getText() {
+        return text;
+    }
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public void setDate(String date) {
+        if (date.endsWith("\""))
+            date = date.substring(0, date.length()-1);
         this.date = date;
     }
 
-    public int getPicture() {
-        return picture;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setPicture(int picture) {
-        this.picture = picture;
+    @Override
+    public int compareTo(Post o) {
+        Date numberDate = null;
+        try {
+            numberDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(date);
+            Date oNumberDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(o.date);
+            if (numberDate.getTime() > oNumberDate.getTime())
+                return -1;
+            if (numberDate.getTime() == oNumberDate.getTime())
+                return 0;
+            return 1;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void setProfilePicture(int profilePicture) {
-        this.profilePicture = profilePicture;
+
+
+    /*
+    public static List<Post> fromServerModel(List<Post2> serverPosts) {
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        List<Post> posts = new ArrayList<>();
+        for (Post2 serverPost : serverPosts) {
+            Post post = new Post();
+            post.setId(serverPost.getId());
+            post.setAuthor(serverPost.getProfile());
+            post.setContent(serverPost.getText());
+            outputDateFormat.format(serverPost.getDate());
+            post.setLikes(serverPost.getLikes());
+            // Set other fields accordingly based on the server model
+            posts.add(post);
+        }
+        return posts;
     }
 
-    public void setuProfilePicture(Uri uProfilePicture) {
-        this.uProfilePicture = uProfilePicture;
-    }
-
-    public void setuPic(Uri uPic) {
-        this.uPic = uPic;
-    }
-
-    public boolean isLiked() {
-        return isLiked;
-    }
+     */
 }
 

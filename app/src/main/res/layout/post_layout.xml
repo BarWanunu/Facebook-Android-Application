@@ -26,10 +26,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/profile_picture"
                 android:layout_width="104dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="#00000000"
+                android:padding="0dp"
+                android:layout_margin="0dp"/>
 
             <TextView
                 android:id="@+id/tvAuthor"
@@ -41,7 +45,7 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="129dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/date_format"
@@ -53,7 +57,6 @@
                 android:layout_height="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/topLayout"
-                android:layout_marginStart="200dp"
                 android:background="@color/white"
                 app:srcCompat="@drawable/menu" />
 
