@@ -31,8 +31,11 @@ public interface WebServiceAPI {
     @GET("posts/")
     Call<List<Post>> getAllPosts(@Header("Authorization") String token);
 
+    @GET("users/{id}/posts")
+    Call<List<Post>> getPostsByUser(@Path("id") String userId);
+
     @POST("posts/create")
-    Call<Post> createPost(@Header("Authorization") String token, @Body JsonObject postBody);
+    Call<JsonObject> createPost(@Header("Authorization") String token, @Body JsonObject postBody);
 
     @DELETE("users/{userId}/posts/{postId}")
     Call<Post> deletePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token);
