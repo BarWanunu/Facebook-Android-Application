@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
@@ -48,21 +49,19 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
+public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     boolean isDarkMode = false;
-    RecyclerView lstPosts;
+    private RecyclerView lstPosts;
     private PostsListAdapter adapter;
-    UserViewModel userViewModel;
-
-    PostsViewModel postsViewModel;
-    User user;
+    private UserViewModel userViewModel;
+    private PostsViewModel postsViewModel;
+    private User user;
+    private List<User> friendsList;
 
     private static final int GALLERY_REQ_CODE = 1000;
     private static final int CAMERA_REQ_CODE = 1001;
 
     private String selectedImageBase64;
-
-
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -74,17 +73,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         Intent intentUser = getIntent();
         user = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
 
-        //userViewModel = new UserViewModel();
-        //userViewModel.delete(User, token);
-        /*
-        userViewModel.getIsUserDeleted().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                System.out.println("bye");
-            }
-        });
+        postsViewModel = new PostsViewModel(this);
+        userViewModel = new UserViewModel(this);
 
-         */
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        friendsList = userViewModel.getAllFriends(user);
+
+        ImageButton friends = findViewById(R.id.friends);
+        friends.setOnClickListener(v -> {
+            onFriendsClick(v, friendsList);
+        });
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
@@ -159,8 +159,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         Button btnAddPhoto = findViewById(R.id.btnAddPost);
 
-        postsViewModel= new PostsViewModel(this);
-        userViewModel = new UserViewModel(this);
         postsViewModel.deleteAll();
         postsViewModel.getFromCloud(this).observe(this, posts -> {
             adapter.setPosts(posts);
@@ -192,7 +190,31 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    public void onFriendsClick(View v, List<User> friendsList) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.getMenuInflater().inflate(R.menu.friends_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.my_friends) {
+                // get list of friends
+                return true;
+            } else if (id == R.id.friends_request) {
+                // get list of friends request
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     //share button was pressed
@@ -507,6 +529,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 }
+
 
 
 

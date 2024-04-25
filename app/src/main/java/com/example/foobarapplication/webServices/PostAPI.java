@@ -10,7 +10,6 @@ import com.example.foobarapplication.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -140,7 +139,7 @@ public class PostAPI {
 
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Log.e("API Error", "Failed to fetch posts: " + t.getMessage());
+                    Log.e("API Error", "Failed to fetch posts: " + t.getMessage());
             }
 
 
