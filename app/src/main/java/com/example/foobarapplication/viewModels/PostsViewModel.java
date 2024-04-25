@@ -32,6 +32,12 @@ public class PostsViewModel extends ViewModel {
 
     }
 
+    public LiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
+        posts = postsRepository.getPostsByUser(userID, context);
+        return posts;
+    }
+
+
     public LiveData<List<Post>> getFromCloud(LifecycleOwner context) {
         posts = postsRepository.getAllPosts(GlobalToken.token, context);
         return posts;
@@ -58,8 +64,8 @@ public class PostsViewModel extends ViewModel {
         return isGetPosts;
     }
 
-    public void add(Post post) {
-        postsRepository.add(post, GlobalToken.token);
+    public void add(Post post, LifecycleOwner owner) {
+        postsRepository.add(post, GlobalToken.token, owner);
     }
 
     public void delete(Post post) {
@@ -68,6 +74,10 @@ public class PostsViewModel extends ViewModel {
 
     public void edit(Post post) {
         postsRepository.edit(post, GlobalToken.token);
+    }
+
+    public void likePost(Post post, LifecycleOwner owner) {
+        postsRepository.likePost(post, GlobalToken.token, owner);
     }
 
     public void deleteAll() {
