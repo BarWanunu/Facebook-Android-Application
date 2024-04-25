@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_user_edit_name"
-        android:title="Edit Name" />
+        android:id="@+id/action_profile"
+        android:title="Profile" />
     <item
-        android:id="@+id/action_user_edit_image"
-        android:title="Edit Image" />
-    <item
-        android:id="@+id/action_user_delete"
-        android:title="Delete" />
+        android:id="@+id/action_remove_friend"
+        android:title="Remove friend" />
 </menu>

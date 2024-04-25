@@ -37,7 +37,7 @@ public class PostsRepository {
     }
 
     public MutableLiveData<List<Post>> getAllPosts(String token, LifecycleOwner context) {
-        api.getAllPosts( token,postListData);
+        api.getAllPosts(token, postListData);
         Observer<List<Post>> observer = new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
@@ -52,8 +52,20 @@ public class PostsRepository {
         return postListData;
     }
 
-
-
+    public MutableLiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
+        MutableLiveData<List<Post>> userPosts = new MutableLiveData<>();
+        api.getPostsByUser(userID, userPosts);
+        Observer<List<Post>> observer = new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                if (posts != null && !posts.isEmpty()) {
+                    userPosts.setValue(posts);
+                }
+            }
+        };
+        userPosts.observe(context, observer);
+        return userPosts;
+    }
 
 
     public MutableLiveData<List<Post>> get() {
@@ -61,14 +73,19 @@ public class PostsRepository {
     }
 
 
+    public void add(final Post post, String token, LifecycleOwner owner) {
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        api.add(post, token, success);
+        success.observe(owner, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                dao.insert(post);
+                List<Post> posts = get().getValue();
+                posts.add(post);
+                postListData.setValue(posts);
+            }
+        });
 
-
-    public void add(final Post post, String token) {
-        api.add(post, token);
-        dao.insert(post);
-        List<Post> posts = get().getValue();
-        posts.add(post);
-        postListData.setValue(posts);
     }
 
     public void delete(Post post, String token) {
@@ -86,12 +103,20 @@ public class PostsRepository {
         //Collections.sort(posts);
         postListData.setValue(posts);
     }
-    public void likePost(Post post, String token) {
-        api.likePost(post, token);
-        dao.update(post);
-        List<Post> posts = dao.index();
-        //Collections.sort(posts);
-        postListData.setValue(posts);
+
+    public void likePost(Post post, String token, LifecycleOwner owner) {
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        api.likePost(post, token, success);
+        success.observe(owner, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                dao.update(post);
+                List<Post> posts = dao.index();
+                //Collections.sort(posts);
+                postListData.setValue(posts);
+            }
+        });
+
     }
 
     public void deleteAll() {
