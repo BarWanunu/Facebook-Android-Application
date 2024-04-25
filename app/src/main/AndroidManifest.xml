@@ -28,6 +28,8 @@
             android:name=".activities.signup_Activity"
             android:exported="false" />
         <activity
+
+            android:name=".activities.FriendsActivity"
             android:name=".activities.Profile_Activity"
             android:exported="false" />
         <activity

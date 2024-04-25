@@ -200,7 +200,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.my_friends) {
-                // get list of friends
+                Intent intent = new Intent(this, FriendsActivity.class);
+                intent.putExtra("friendsList", new ArrayList<>(friendsList));
+                startActivity(intent);
                 return true;
             } else if (id == R.id.friends_request) {
                 // get list of friends request
@@ -210,6 +212,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         });
         popupMenu.show();
     }
+
 
     @Override
     public void onRefresh() {
