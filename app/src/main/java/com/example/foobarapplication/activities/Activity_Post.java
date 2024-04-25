@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
@@ -38,14 +39,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
+public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     boolean isDarkMode = false;
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
@@ -60,8 +60,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     private String selectedImageBase64;
 
 
-
-
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +69,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         Intent intentUser = getIntent();
         user = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
 
-        //userViewModel = new UserViewModel();
-        //userViewModel.delete(User, token);
-        /*
-        userViewModel.getIsUserDeleted().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                System.out.println("bye");
-            }
-        });
+//        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+//        swipeRefreshLayout.setOnRefreshListener(this);
 
-         */
+        List<User> friendsList = new LinkedList<>();
+        //////////////// add the friends list from the server
+
+        ImageButton friends = findViewById(R.id.friends);
+        friends.setOnClickListener(v -> {
+            onFriendsClick(v);
+        });
 
         ImageButton menu = findViewById(R.id.menu);
         menu.setOnClickListener(v -> {
@@ -156,7 +153,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         Button btnAddPhoto = findViewById(R.id.btnAddPost);
 
-        postsViewModel= new PostsViewModel(this);
+        postsViewModel = new PostsViewModel(this);
         userViewModel = new UserViewModel(this);
 //        postsViewModel.getAllFromDb(token);
 //        postsViewModel.get(token,this);
@@ -191,7 +188,31 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    public void onFriendsClick(View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.getMenuInflater().inflate(R.menu.friends_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.my_friends) {
+                // get list of friends
+                return true;
+            } else if (id == R.id.friends_request) {
+                // get list of friends request
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     //share button was pressed
@@ -516,6 +537,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 }
+
 
 
 

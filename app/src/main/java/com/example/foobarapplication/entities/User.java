@@ -1,4 +1,5 @@
 package com.example.foobarapplication.entities;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -31,11 +32,8 @@ public class User implements Serializable {
     }
 
     public User(String email ,String userName, String password, String confirmPassword, String photo) {
-        this.email = email;
-        this.userName = userName;
-        this.password = password;
+        this(email, password, photo, userName);
         this.confirmPassword = confirmPassword;
-        this.photo = photo;
     }
 
     // Getters and setters for the new field
@@ -68,7 +66,6 @@ public class User implements Serializable {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }

@@ -1,5 +1,7 @@
 package com.example.foobarapplication.webServices;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -122,17 +124,20 @@ public class UserAPI {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
                         isUserDeleted.postValue(success);
+                        Log.d( "deleteUser", "Deleted the user");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
                     isUserDeleted.postValue(false);
+                    Log.d( "deleteUser", "Failed to delete user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                isUserDeleted.postValue(false);
+                Log.d( "deleteUser", "Failed to delete user: " + t.getMessage());
             }
         });
     }
@@ -146,15 +151,15 @@ public class UserAPI {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-
+                    Log.d( "editUser", "Edited the user");
                 } else {
-
+                    Log.d( "editUser", "Failed to edit user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+               Log.d( "editUser", "Failed to edit user: " + t.getMessage());
             }
         });
     }
@@ -168,14 +173,16 @@ public class UserAPI {
                     Gson gson = new Gson();
                     User user2 = gson.fromJson(response.body().get("user"), User.class);
                     user.postValue(user2);
+                    Log.d("getUser", "Got the user");
                 } else {
                     user.postValue(null);
+                    Log.d("getUser", "Failed to get user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                Log.d("getUser", "Failed to get user: " + t.getMessage());
             }
         });
     }
