@@ -28,6 +28,9 @@
             android:name=".activities.signup_Activity"
             android:exported="false" />
         <activity
+            android:name=".activities.FriendsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
