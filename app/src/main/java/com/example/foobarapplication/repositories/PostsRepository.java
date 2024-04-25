@@ -59,7 +59,7 @@ public class PostsRepository {
             @Override
             public void onChanged(List<Post> posts) {
                 if (posts != null && !posts.isEmpty()) {
-                    userPosts.setValue(posts);
+                    userPosts.postValue(posts);
                 }
             }
         };

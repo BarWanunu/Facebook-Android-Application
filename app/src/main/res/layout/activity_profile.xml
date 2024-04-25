@@ -33,17 +33,17 @@
     <LinearLayout
         android:id="@+id/posts_and_friends"
         android:layout_width="match_parent"
-        android:layout_height="555dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/refreshLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_details"
-        tools:ignore="MissingConstraints,NotSibling"
-        tools:layout_editor_absoluteX="1dp">
+        tools:ignore="MissingConstraints,NotSibling">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
-            android:layout_width="282dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
