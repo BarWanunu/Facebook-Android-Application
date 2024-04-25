@@ -74,20 +74,10 @@ public class Post implements Comparable<Post>{
         return likes;
     }
 
-    public void incrementLikes() {
-        likes++;
-    }
     public void setLikes(int likes) {
         this.likes = likes;
     }
 
-    public void addLike() {
-        this.likes += 1;
-    }
-
-    public void unLike() {
-        this.likes -= 1;
-    }
     public String getCurrentDate() {
         Date d = new Date();
         try {

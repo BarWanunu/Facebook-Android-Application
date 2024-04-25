@@ -37,7 +37,7 @@ public class PostsRepository {
     }
 
     public MutableLiveData<List<Post>> getAllPosts(String token, LifecycleOwner context) {
-        api.getAllPosts( token,postListData);
+        api.getAllPosts(token, postListData);
         Observer<List<Post>> observer = new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
@@ -52,15 +52,25 @@ public class PostsRepository {
         return postListData;
     }
 
-
-
+    public MutableLiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
+        MutableLiveData<List<Post>> userPosts = new MutableLiveData<>();
+        api.getPostsByUser(userID, userPosts);
+        Observer<List<Post>> observer = new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                if (posts != null && !posts.isEmpty()) {
+                    userPosts.setValue(posts);
+                }
+            }
+        };
+        userPosts.observe(context, observer);
+        return userPosts;
+    }
 
 
     public MutableLiveData<List<Post>> get() {
         return postListData;
     }
-
-
 
 
     public void add(final Post post, String token, LifecycleOwner owner) {
@@ -93,6 +103,7 @@ public class PostsRepository {
         //Collections.sort(posts);
         postListData.setValue(posts);
     }
+
     public void likePost(Post post, String token, LifecycleOwner owner) {
         MutableLiveData<Post> success = new MutableLiveData<>();
         api.likePost(post, token, success);

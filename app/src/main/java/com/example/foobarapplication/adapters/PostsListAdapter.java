@@ -41,7 +41,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
         void onOptionClick(View v, int id);
 
-        void onPictureClick(View v, String userId);
+        void onPictureClick(View v, String userId, String profileImg);
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
@@ -75,6 +75,12 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     public PostsListAdapter(Context context, boolean isDarkMode) {
         mInflater = LayoutInflater.from(context);
         this.isDarkMode = isDarkMode;
+        this.context = context;
+    }
+
+    public PostsListAdapter(Context context) {
+        mInflater = LayoutInflater.from(context);
+        //this.isDarkMode = isDarkMode;
         this.context = context;
     }
 
@@ -198,7 +204,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                     int adapterPosition = holder.getAdapterPosition();
                     if (adapterPosition != RecyclerView.NO_POSITION) {
                         Post currentPost = posts.get(adapterPosition);
-                        listener.onPictureClick(v, currentPost.getAuthor());
+                        listener.onPictureClick(v, currentPost.getAuthor(), currentPost.getProfileImg());
                     }
                 }
             }

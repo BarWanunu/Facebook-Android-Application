@@ -161,8 +161,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         postsViewModel= new PostsViewModel(this);
         userViewModel = new UserViewModel(this);
-//        postsViewModel.getAllFromDb(token);
-//        postsViewModel.get(token,this);
         postsViewModel.deleteAll();
         postsViewModel.getFromCloud(this).observe(this, posts -> {
             adapter.setPosts(posts);
@@ -296,47 +294,20 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     }
 
     @Override
-    public void onPictureClick(View v, String userId) {
+    public void onPictureClick(View v, String userId, String profileImg) {
         PopupMenu popup = new PopupMenu(this, v);
-        List<Post> myposts = new LinkedList<>();
-        List<Post> posts = postsViewModel.get().getValue();
-        for (Post post : posts) {
-            if (post.getAuthor().equals(userId)) {
-                myposts.add(post);
-            }
-        }
-        // Inflating the Popup using xml file
-        popup.getMenuInflater().inflate(R.menu.menu_user_option, popup.getMenu());
-        User myuser = null;
-        List<User> users = userViewModel.get();
-        for (User user : users) {
-            if (user.getUserName().equals(userId)) {
-                myuser = user;
-                break;
-            }
-        }
 
-        // Set the item click listener
-        User finalMyuser = myuser;
-        if (finalMyuser == null || !finalMyuser.getUserName().equals(user.getUserName())) {
-            new AlertDialog.Builder(this).setMessage("Can't edit/delete other users").show();
-            return;
-        }
-        //Intent intentUser = getIntent();
-        //String token = intentUser.getStringExtra("token");
+        popup.getMenuInflater().inflate(R.menu.menu_user_option, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             // Handle item clicks here
             int id = item.getItemId();
-            if (id == R.id.action_user_delete) {
-                userViewModel.delete(finalMyuser);
-                users.remove(finalMyuser);
-                finish();
-            } else if (id == R.id.action_user_edit_name) {
-                assert finalMyuser != null;
-                showEditUsernameDialog(finalMyuser, myposts);
-            } else if (id == R.id.action_user_edit_image) {
-                assert finalMyuser != null;
-                showEditUserImageDialog(finalMyuser, myposts);
+            if (id == R.id.action_profile) {
+                Intent profiltIntent = new Intent(Activity_Post.this, Profile_Activity.class);
+                profiltIntent.putExtra("userId", userId);
+                profiltIntent.putExtra("profileImg", profileImg);
+                startActivity(profiltIntent);
+            } else if (id == R.id.action_remove_friend) {
+                //handle remove friend
             }
             return false;
         });

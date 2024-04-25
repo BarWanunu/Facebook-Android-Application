@@ -32,6 +32,12 @@ public class PostsViewModel extends ViewModel {
 
     }
 
+    public LiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
+        posts = postsRepository.getPostsByUser(userID, context);
+        return posts;
+    }
+
+
     public LiveData<List<Post>> getFromCloud(LifecycleOwner context) {
         posts = postsRepository.getAllPosts(GlobalToken.token, context);
         return posts;

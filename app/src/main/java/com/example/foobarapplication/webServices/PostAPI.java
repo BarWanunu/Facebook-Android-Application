@@ -146,6 +146,36 @@ public class PostAPI {
 
         });
     }
+
+    public void getPostsByUser(String userId, MutableLiveData<List<Post>> posts) {
+        webServiceAPI.getPostsByUser(userId).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if (response.isSuccessful()) {
+                    List<Post> list = response.body();
+                    Collections.sort(list);
+                    posts.postValue(response.body());
+                    /*
+                    Gson gson = new Gson();
+                    List<Post> postsResponse = gson.fromJson(response.body().get("post"), List.class);
+                    //Collections.sort(postsResponse);
+                    posts.postValue(postsResponse);
+
+                     */
+                    Log.d("getPostsByUser", "succeeded to fetch posts: ");
+                } else {
+                    Log.e("API Error", "Failed to fetch posts");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Log.e("API Error", "Failed to fetch posts: " + t.getMessage());
+            }
+
+
+        });
+    }
 }
 
 

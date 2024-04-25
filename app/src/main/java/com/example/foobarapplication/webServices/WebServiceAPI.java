@@ -32,6 +32,9 @@ public interface WebServiceAPI {
     @GET("posts/")
     Call<List<Post>> getAllPosts(@Header("Authorization") String token);
 
+    @GET("users/{id}/posts")
+    Call<List<Post>> getPostsByUser(@Path("id") String userId);
+
     @POST("posts/create")
     Call<JsonObject> createPost(@Header("Authorization") String token, @Body JsonObject postBody);
 
