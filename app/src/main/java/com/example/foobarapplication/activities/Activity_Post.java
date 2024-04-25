@@ -40,7 +40,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -195,7 +194,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     public void onFriendsClick(View v, List<User> friendsList) {
         PopupMenu popupMenu = new PopupMenu(this, v);
 
-        popupMenu.getMenuInflater().inflate(R.menu.friends_menu, popupMenu.getMenu());
+        popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
@@ -203,10 +202,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Intent intent = new Intent(this, FriendsActivity.class);
                 intent.putExtra("friendsList", new ArrayList<>(friendsList));
                 startActivity(intent);
-                return true;
             } else if (id == R.id.friends_request) {
                 // get list of friends request
-                return true;
             }
             return false;
         });
@@ -320,25 +317,77 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     @Override
     public void onPictureClick(View v, String userId, String profileImg) {
+        boolean isFriend = false;
         PopupMenu popup = new PopupMenu(this, v);
 
+        // menu in case they are friends
+        for (User user1 : friendsList) {
+            if (user1.getUserName().equals(userId)) {
+                isFriend = true;
+                friendsMenu(popup, userId, profileImg);
+                break;
+            }
+        }
+
+        if (!isFriend) {
+            // menu if you are looking at your own user
+            if (userId.equals(user.getUserName())) {
+                userMenu(popup, userId, profileImg);
+            }
+            // menu in case they are not friends
+            else {
+                notFriendsMenu(popup, userId, profileImg);
+            }
+        }
+
+    }
+
+    private void userMenu(PopupMenu popup, String userId, String profileImg) {
         popup.getMenuInflater().inflate(R.menu.menu_user_option, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
-            // Handle item clicks here
             int id = item.getItemId();
             if (id == R.id.action_profile) {
-                Intent profiltIntent = new Intent(Activity_Post.this, Profile_Activity.class);
-                profiltIntent.putExtra("userId", userId);
-                profiltIntent.putExtra("profileImg", profileImg);
-                startActivity(profiltIntent);
-            } else if (id == R.id.action_remove_friend) {
-                //handle remove friend
+                goToProfile(userId, profileImg);
+                return true;
             }
             return false;
         });
-
-        // Showing the popup menu
         popup.show();
+    }
+
+    private void friendsMenu(PopupMenu popup, String userId, String profileImg) {
+        popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.RemoveFriend) {
+                userViewModel.removeFriend(userId);
+            } else if (id == R.id.action_profile) {
+                goToProfile(userId, profileImg);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void notFriendsMenu(PopupMenu popup, String userId, String profileImg) {
+        popup.getMenuInflater().inflate(R.menu.not_friends_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.AddFriend) {
+
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void goToProfile(String userId, String profileImg) {
+        Intent profiltIntent = new Intent(Activity_Post.this, Profile_Activity.class);
+        profiltIntent.putExtra("userId", userId);
+        profiltIntent.putExtra("profileImg", profileImg);
+        startActivity(profiltIntent);
     }
 
     private void showEditUsernameDialog(User user, List<Post> myposts) {

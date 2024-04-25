@@ -195,31 +195,27 @@ public class UserAPI {
 
     public List<User> getAllFriends(String username, String token) {
         List<User> friendsList = new LinkedList<>();
-        Call<JsonObject> call = webServiceAPI.getUser(username, "Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.getAllFriends(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     JsonObject jsonObject = response.body();
                     if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
-                        JsonObject userObject = jsonObject.getAsJsonObject("user");
-                        if (userObject.has("friends")) {
-                            JsonArray friendsArray = userObject.getAsJsonArray("friends");
-                            if (friendsArray != null) {
-                                Gson gson = new Gson();
-                                for (JsonElement element : friendsArray) {
-                                    JsonObject friendObject = element.getAsJsonObject();
-                                    StringBuilder friendNameBuilder = new StringBuilder();
-                                    for (Map.Entry<String, JsonElement> entry : friendObject.entrySet()) {
-                                        if (entry.getKey().equals("_id")) {
-                                            break;
-                                        }
-                                        friendNameBuilder.append(entry.getValue().getAsString());
+                        JsonArray friendsArray = jsonObject.getAsJsonArray("friends");
+                        if (friendsArray != null) {
+                            for (JsonElement element : friendsArray) {
+                                JsonObject friendObject = element.getAsJsonObject();
+                                StringBuilder friendNameBuilder = new StringBuilder();
+                                for (Map.Entry<String, JsonElement> entry : friendObject.entrySet()) {
+                                    if (entry.getKey().equals("_id")) {
+                                        break;
                                     }
-                                    String friendName = friendNameBuilder.toString();
-                                    User friend = new User(friendName);
-                                    friendsList.add(friend);
+                                    friendNameBuilder.append(entry.getValue().getAsString());
                                 }
+                                String friendName = friendNameBuilder.toString();
+                                User friend = new User(friendName);
+                                friendsList.add(friend);
                             }
                         }
                     } else {

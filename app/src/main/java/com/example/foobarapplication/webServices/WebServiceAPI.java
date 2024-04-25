@@ -53,6 +53,6 @@ public interface WebServiceAPI {
     @PATCH("users/{userId}/posts/{postId}/like")
     Call<JsonObject> likePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token, @Body JsonObject likeStatus);
 
-    @GET("id/friends")
-    Call<JsonObject> getAllFriends(@Path("userId")String userId, @Header("AAuthorization") String token);
+    @GET("users/{userId}/friends")
+    Call<JsonObject> getAllFriends(@Path("userId")String userId, @Header("Authorization") String token);
 }
