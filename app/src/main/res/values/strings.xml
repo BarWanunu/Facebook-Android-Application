@@ -21,6 +21,8 @@
     <string name="default_comment_text">default_comment_text</string>
     <string name="whatsapp">WhatsApp</string>
     <string name="copy_link">Copy link</string>
+    <string name="my_friends">My Friends</string>
+    <string name="friend_request">Friends Requests</string>
     <string name="edit">\n</string>
     <string name="Delete">\n</string>
     <string name="date_format">%s</string>

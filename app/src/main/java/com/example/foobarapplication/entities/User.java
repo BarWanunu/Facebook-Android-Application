@@ -1,4 +1,5 @@
 package com.example.foobarapplication.entities;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     @PrimaryKey
     @NonNull
-    private  String userName;
+    private String userName;
     private String email;
     private String password;
     private String confirmPassword;
@@ -21,7 +22,7 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.photo = photo;
-        this.userName =userName;
+        this.userName = userName;
     }
 
     @Ignore
@@ -30,12 +31,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String email ,String userName, String password, String confirmPassword, String photo) {
-        this.email = email;
+    @Ignore
+    public User(String userName) {
         this.userName = userName;
-        this.password = password;
+    }
+
+    public User(String email, String userName, String password, String confirmPassword, String photo) {
+        this(email, password, photo, userName);
         this.confirmPassword = confirmPassword;
-        this.photo = photo;
     }
 
     // Getters and setters for the new field
@@ -47,15 +50,21 @@ public class User implements Serializable {
         this.photo = photo;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
-    public String getPassword()
-    {
+
+    public String getPassword() {
         return this.password;
     }
-    public String getConfirmPasswordPassword() {return this.confirmPassword;}
-    public String getUserName(){return this.userName;}
+
+    public String getConfirmPasswordPassword() {
+        return this.confirmPassword;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
 
     public String getConfirmPassword() {
         return confirmPassword;

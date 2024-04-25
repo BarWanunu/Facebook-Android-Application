@@ -19,7 +19,6 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<Boolean> isUserAdded = new MutableLiveData<>();
     private MutableLiveData<Boolean> isUserChecked = new MutableLiveData<>();
     private MutableLiveData<String> AuthToken = new MutableLiveData<>();
-
     private MutableLiveData<Boolean> isUserDeleted = new MutableLiveData<>();
 
 
@@ -74,5 +73,9 @@ public class UserViewModel extends ViewModel {
 
     public void getUser(String username, MutableLiveData<User> user, LifecycleOwner owner) {
         userRepository.getUser(username, GlobalToken.token, user, owner);
+    }
+
+    public List<User> getAllFriends(User user){
+        return userRepository.getAllFriends(user, GlobalToken.token);
     }
 }

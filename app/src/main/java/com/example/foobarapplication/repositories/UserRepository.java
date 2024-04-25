@@ -24,6 +24,10 @@ public class UserRepository {
         dao = LocalDB.getInstance(context).userDao();
     }
 
+    public List<User> getAllFriends(User user, String token) {
+        return api.getAllFriends(user.getUserName(), token);
+    }
+
 
     class UserListData extends MutableLiveData<List<User>> {
 
