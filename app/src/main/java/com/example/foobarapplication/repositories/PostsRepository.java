@@ -63,12 +63,19 @@ public class PostsRepository {
 
 
 
-    public void add(final Post post, String token) {
-        api.add(post, token);
-        dao.insert(post);
-        List<Post> posts = get().getValue();
-        posts.add(post);
-        postListData.setValue(posts);
+    public void add(final Post post, String token, LifecycleOwner owner) {
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        api.add(post, token, success);
+        success.observe(owner, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                dao.insert(post);
+                List<Post> posts = get().getValue();
+                posts.add(post);
+                postListData.setValue(posts);
+            }
+        });
+
     }
 
     public void delete(Post post, String token) {
@@ -86,12 +93,19 @@ public class PostsRepository {
         //Collections.sort(posts);
         postListData.setValue(posts);
     }
-    public void likePost(Post post, String token) {
-        api.likePost(post, token);
-        dao.update(post);
-        List<Post> posts = dao.index();
-        //Collections.sort(posts);
-        postListData.setValue(posts);
+    public void likePost(Post post, String token, LifecycleOwner owner) {
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        api.likePost(post, token, success);
+        success.observe(owner, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                dao.update(post);
+                List<Post> posts = dao.index();
+                //Collections.sort(posts);
+                postListData.setValue(posts);
+            }
+        });
+
     }
 
     public void deleteAll() {

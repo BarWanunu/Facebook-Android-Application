@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,8 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     private boolean isDarkMode;
     private final LayoutInflater mInflater;
     private List<Post> posts;
+    private Context context;
+
 
     public interface OnItemClickListener {
 
@@ -72,6 +75,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
     public PostsListAdapter(Context context, boolean isDarkMode) {
         mInflater = LayoutInflater.from(context);
         this.isDarkMode = isDarkMode;
+        this.context = context;
     }
 
     @Override
@@ -102,6 +106,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 //                holder.profilePicture.setImageResource(current.getProfilePicture());
 //
             // Check if the image data is provided as Base64 strings
+            holder.ivPic.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.pingpong));
             String imageBase64 = current.getsPic();
             String profileImageBase64 = current.getsProfilePicture();
 
@@ -159,7 +164,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                     Post currentPost = posts.get(adapterPosition);
                     listener.onLikeClick(currentPost, holder.likesTextView);
                     // Toggle the isLiked state for the current post
-                    currentPost.setLiked(!currentPost.getIsLiked());
+                    //currentPost.setLiked(!currentPost.getIsLiked());
                 }
             }
         });

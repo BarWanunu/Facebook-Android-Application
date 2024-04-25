@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 public class Post implements Comparable<Post>{
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
     private String profile;
     private String text;
@@ -24,6 +24,7 @@ public class Post implements Comparable<Post>{
 
     // Constructor with essential fields
     public Post(String author, String content, String date, int likes) {
+        id = 0;
         this.profile = author;
         this.text = content;
         this.date = date;

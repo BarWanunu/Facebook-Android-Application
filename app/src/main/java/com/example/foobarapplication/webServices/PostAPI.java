@@ -30,16 +30,19 @@ public class PostAPI {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public void add(Post post, String token) {
+    public void add(Post post, String token, MutableLiveData<Post> success) {
         JsonObject postCreate = new JsonObject();
         postCreate.addProperty("text", post.getContent());
         postCreate.addProperty("date", post.getDate());
-        postCreate.addProperty("image", "");
-        Call<Post> call = webServiceAPI.createPost("Bearer " + token, postCreate);
-        call.enqueue(new Callback<Post>() {
+        postCreate.addProperty("img", post.getImg());
+        Call<JsonObject> call = webServiceAPI.createPost("Bearer " + token, postCreate);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    Gson gson = new Gson();
+                    Post post = gson.fromJson(response.body().get("post"), Post.class);
+                    success.postValue(post);
                     Log.d("AddPost", "Post added");
                 } else {
                     Log.d("AddPost", "Failed to add post");
@@ -47,7 +50,7 @@ public class PostAPI {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 Log.d("AddPost", "Failed to add post: " + t.getMessage());
             }
         });
@@ -59,15 +62,15 @@ public class PostAPI {
             @Override
             public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                 if (response.isSuccessful()) {
-                    Log.d("AddPost", "Post added");
+                    Log.d("DeletePost", "Post deleted");
                 } else {
-                    Log.d("AddPost", "Failed to add post");
+                    Log.d("DeletePost", "Failed to delete post");
                 }
             }
 
             @Override
             public void onFailure(Call<Post> call, Throwable t) {
-
+                Log.e("DeletePost", "Network error: " + t.getMessage());
             }
         });
     }
@@ -93,7 +96,7 @@ public class PostAPI {
         });
     }
 
-    public void likePost(Post post, String token) {
+    public void likePost(Post post, String token, MutableLiveData<Post> success) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("isLiked", post.getIsLiked());
         Call<JsonObject> call = webServiceAPI.likePost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
@@ -102,7 +105,10 @@ public class PostAPI {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     Gson gson = new Gson();
-                    User user2 = gson.fromJson(response.body().get("likes"), User.class);
+                    int likes = gson.fromJson(response.body().get("likes"), int.class);
+                    post.setLikes(likes);
+                    post.setLiked(!post.getIsLiked());
+                    success.postValue(post);
                     Log.d("LikePost", "Post liked successfully");
                 } else {
                     Log.d("LikePost", "Failed to like post");
@@ -119,7 +125,6 @@ public class PostAPI {
 
 
     public void getAllPosts(String token, MutableLiveData<List<Post>> posts) {
-//        ApiResponseCallback<List<Post>> callback
         webServiceAPI.getAllPosts("Bearer " + token).enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {

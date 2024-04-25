@@ -38,12 +38,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class Activity_Post extends AppCompatActivity implements PostsListAdapter.OnItemClickListener {
     boolean isDarkMode = false;
@@ -179,7 +182,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     newPost = new Post(user.getUserName(), enteredText, currentDate, 0, user.getPhoto());
                 }
 
-                postsViewModel.add(newPost);
+                postsViewModel.add(newPost, Activity_Post.this);
 
                 // Show a toast message
                 Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
@@ -209,11 +212,14 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     //like button was pressed
     public void onLikeClick(Post post, TextView likesTextView) {
+
+        postsViewModel.likePost(post, Activity_Post.this);
         // Get the current number of likes as a string
         String currentLikesString = likesTextView.getText().toString();
 
         // Extract the number of likes from the string
         int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
+        /*
 
         // Check if the like button is already liked
         boolean isLiked = post.getIsLiked();
@@ -232,6 +238,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Update the TextView with the new number of likes
         likesTextView.setText(newLikes + " likes");
+        */
+
+        likesTextView.setText(currentLikes + " likes");
     }
 
     //comment button was pressed
@@ -347,24 +356,35 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Set up the buttons
         builder.setPositiveButton("Submit", (dialog, which) -> {
-            String newContent = input.getText().toString();
-            // Update the post content
+            String newUserName = input.getText().toString();
             String oldUserName = user.getUserName();
-            user.setUserName(newContent);
-            this.user = user;
-            // Update post on server
+
+            // Update user's name in the local user object and ViewModel
+            user.setUserName(newUserName);
             userViewModel.edit(user, oldUserName);
-            PostsDao dao = LocalDB.getInstance(this).postDao();
-            List<Post> posts = postsViewModel.get().getValue();
-            for (Post post : myposts) {
-                posts.remove(post);
-                post.setAuthor(newContent);
-                posts.add(post);
-                dao.update(post);
-            }
-            //Collections.sort(posts);
-            postsViewModel.get().setValue(posts);
-            dialog.dismiss();
+
+            // Prepare to update posts
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                PostsDao dao = LocalDB.getInstance(this).postDao();
+                List<Post> updatedPosts = new ArrayList<>();
+                for (Post post : myposts) {
+                    if (post.getAuthor().equals(oldUserName)) {
+                        Post updatedPost = post; // Create a new object to ensure immutability
+                        updatedPost.setAuthor(newUserName);
+                        dao.update(updatedPost); // Update the post in the database
+                        updatedPosts.add(updatedPost);
+                    } else {
+                        updatedPosts.add(post);
+                    }
+                }
+
+                // Run on the UI thread after updates
+                runOnUiThread(() -> {
+                    postsViewModel.get().setValue(updatedPosts); // This should trigger UI update correctly
+                    dialog.dismiss();
+                });
+            });
         });
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
