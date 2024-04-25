@@ -1,5 +1,7 @@
 package com.example.foobarapplication.webServices;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -7,10 +9,16 @@ import com.example.foobarapplication.Globals.GlobalToken;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -113,7 +121,7 @@ public class UserAPI {
     }
 
     public void delete(User user, MutableLiveData<Boolean> isUserDeleted, String token) {
-        Call<JsonObject> call = webServiceAPI.deleteUser(user.getUserName(),"Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.deleteUser(user.getUserName(), "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -122,17 +130,20 @@ public class UserAPI {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
                         isUserDeleted.postValue(success);
+                        Log.d("deleteUser", "Deleted the user");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
                     isUserDeleted.postValue(false);
+                    Log.d("deleteUser", "Failed to delete user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                isUserDeleted.postValue(false);
+                Log.e("deleteUser", "Failed to delete user: " + t.getMessage());
             }
         });
     }
@@ -141,26 +152,26 @@ public class UserAPI {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("editedUsername", user.getUserName());
         jsonObject.addProperty("imageData", user.getPhoto());
-        Call<JsonObject> call = webServiceAPI.editUser(user.getUserName(),"Bearer " + token, jsonObject);
+        Call<JsonObject> call = webServiceAPI.editUser(user.getUserName(), "Bearer " + token, jsonObject);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-
+                    Log.d("editUser", "Edited the user");
                 } else {
-
+                    Log.d("editUser", "Failed to edit user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                Log.e("editUser", "Failed to edit user: " + t.getMessage());
             }
         });
     }
 
     public void getUser(String username, String token, MutableLiveData<User> user) {
-        Call<JsonObject> call = webServiceAPI.getUser(username,"Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.getUser(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -168,15 +179,63 @@ public class UserAPI {
                     Gson gson = new Gson();
                     User user2 = gson.fromJson(response.body().get("user"), User.class);
                     user.postValue(user2);
+                    Log.d("getUser", "Got the user");
                 } else {
                     user.postValue(null);
+                    Log.d("getUser", "Failed to get user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                Log.e("getUser", "Failed to get user: " + t.getMessage());
             }
         });
+    }
+
+    public List<User> getAllFriends(String username, String token) {
+        List<User> friendsList = new LinkedList<>();
+        Call<JsonObject> call = webServiceAPI.getUser(username, "Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject jsonObject = response.body();
+                    if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
+                        JsonObject userObject = jsonObject.getAsJsonObject("user");
+                        if (userObject.has("friends")) {
+                            JsonArray friendsArray = userObject.getAsJsonArray("friends");
+                            if (friendsArray != null) {
+                                Gson gson = new Gson();
+                                for (JsonElement element : friendsArray) {
+                                    JsonObject friendObject = element.getAsJsonObject();
+                                    StringBuilder friendNameBuilder = new StringBuilder();
+                                    for (Map.Entry<String, JsonElement> entry : friendObject.entrySet()) {
+                                        if (entry.getKey().equals("_id")) {
+                                            break;
+                                        }
+                                        friendNameBuilder.append(entry.getValue().getAsString());
+                                    }
+                                    String friendName = friendNameBuilder.toString();
+                                    User friend = new User(friendName);
+                                    friendsList.add(friend);
+                                }
+                            }
+                        }
+                    } else {
+                        String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
+                        Log.d("getAllFriends", "Failed to get friends: " + errorMessage);
+                    }
+                } else {
+                    Log.d("getAllFriends", "Failed to get all of the friends");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("getAllFriends", "Failed to fetch friends" + t.getMessage());
+            }
+        });
+        return friendsList;
     }
 }
