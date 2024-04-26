@@ -10,6 +10,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +39,7 @@ public class Profile_Activity extends AppCompatActivity {
 
     String profileImg;
 
-    private List<User> friendsList;
+    private LiveData<List<User>> friendsList = new MutableLiveData<>();
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -49,10 +52,23 @@ public class Profile_Activity extends AppCompatActivity {
         profileImg = (String) intentUser.getSerializableExtra("profileImg");
         user = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
         userViewModel = new UserViewModel(this);
+        postsViewModel= new PostsViewModel(this);
 
-
-
-        friendsList = userViewModel.getAllFriends(user);
+        userViewModel.createToken(user);
+        userViewModel.getToken().observe(Profile_Activity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String token) {
+                friendsList =userViewModel.getAllFriendsLiveData(user);
+                lstPosts = findViewById(R.id.lstPosts);
+                adapter = new PostsListAdapter(Profile_Activity.this);
+                lstPosts.setAdapter(adapter);
+                lstPosts.setLayoutManager(new LinearLayoutManager(Profile_Activity.this));
+                postsViewModel.deleteAll();
+                postsViewModel.getPostsByUser(userId, Profile_Activity.this).observe(Profile_Activity.this, posts -> {
+                    adapter.setPosts(posts);
+                });
+            }
+        });
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
@@ -68,22 +84,10 @@ public class Profile_Activity extends AppCompatActivity {
         if (profileImg != null && !profileImg.isEmpty()) {
             Glide.with(this).load(profileImg).into(profileImageView);
         }
-
-        lstPosts = findViewById(R.id.lstPosts);
-        adapter = new PostsListAdapter(this);
-        lstPosts.setAdapter(adapter);
-        lstPosts.setLayoutManager(new LinearLayoutManager(this));
-        //adapter.setOnItemClickListener(this);
-
-        postsViewModel= new PostsViewModel(this);
-        userViewModel = new UserViewModel(this);
-        postsViewModel.deleteAll();
-        postsViewModel.getPostsByUser(userId, this).observe(this, posts -> {
-            adapter.setPosts(posts);
-        });
     }
 
-    public void onFriendsClick(View v, List<User> friendsList) {
+    public void onFriendsClick(View v, LiveData<List<User>> friendsList) {
+        List<User> friends = friendsList.getValue();
         PopupMenu popupMenu = new PopupMenu(this, v);
 
         popupMenu.getMenuInflater().inflate(R.menu.friends_profile_menu, popupMenu.getMenu());
@@ -92,7 +96,7 @@ public class Profile_Activity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.my_friends) {
                 Intent intent = new Intent(this, FriendsActivity.class);
-                intent.putExtra("friendsList", new ArrayList<>(friendsList));
+                intent.putExtra("friendsList", new ArrayList<>(friends));
                 startActivity(intent);
                 return true;
             }

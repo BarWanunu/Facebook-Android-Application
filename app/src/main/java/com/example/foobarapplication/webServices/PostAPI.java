@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.entities.Post;
-import com.example.foobarapplication.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -19,8 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class PostAPI {
-    // private MutableLiveData<List<Post>> postListData;
-    // private PostDao dao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
 
@@ -154,13 +151,6 @@ public class PostAPI {
                     List<Post> list = response.body();
                     Collections.sort(list);
                     posts.postValue(response.body());
-                    /*
-                    Gson gson = new Gson();
-                    List<Post> postsResponse = gson.fromJson(response.body().get("post"), List.class);
-                    //Collections.sort(postsResponse);
-                    posts.postValue(postsResponse);
-
-                     */
                     Log.d("getPostsByUser", "succeeded to fetch posts: ");
                 } else {
                     Log.e("API Error", "Failed to fetch posts");
@@ -176,59 +166,3 @@ public class PostAPI {
         });
     }
 }
-
-
-//            @Override//            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-//                // Handle response
-//                if (response.isSuccessful()) {
-//                    // Process successful response
-//                    try {
-//                        // Parse JSON response
-//                        JSONObject jsonObject = new JSONObject(response.body().toString());
-//                        boolean success = jsonObject.getBoolean("success");
-//                        isGetPosts.postValue(success);
-//
-//                        if (success) {
-//                            // Parse posts array and update LiveData
-//                            JSONArray postsArray = jsonObject.getJSONArray("posts");
-//                            List<Post> posts = new ArrayList<>();
-//                            posts = ReadingPostDb.readingPosts(postsArray, posts, context,callback); // Pass the latch to readingPosts
-//                            postListData.postValue(posts);
-//
-//                            Log.i(TAG, "hello"+posts.size());
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        isGetPosts.postValue(false);
-//                    }
-//                } else {
-//                    // Handle unsuccessful response
-//                    isGetPosts.postValue(false);
-//                }
-//
-//                // Release the latch after handling the response
-////                latch.countDown();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<JsonObject> call, Throwable t) {
-//                isGetPosts.postValue(false);
-////                latch.countDown(); // Release the latch in case of failure
-//            }
-
-
-//    private void parsePostFromJson(JSONObject postJson) throws JSONException {
-//        Log.d("TAG", postJson.toString());
-//        int id = postJson.getInt("id");
-//        String text = postJson.getString("text");
-//        String profile = postJson.getString("profile");
-//        String dateString = postJson.getString("date");
-//        int likes = postJson.getInt("likes");
-////        Post2 post = new Post2(id, profile, text, dateString, likes);
-//
-//
-//        // Create a new Handler associated with the main UI thread
-//
-//
-//    }
-//}

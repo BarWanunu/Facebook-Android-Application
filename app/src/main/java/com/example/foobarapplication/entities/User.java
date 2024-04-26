@@ -30,6 +30,11 @@ public class User implements Serializable {
         this.userName = userName;
         this.password = password;
     }
+    @Ignore
+    public User(String userName, String password, String photo) {
+        this(userName, password);
+        this.photo = photo;
+    }
 
     @Ignore
     public User(String userName) {

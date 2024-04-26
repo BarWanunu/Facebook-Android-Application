@@ -55,7 +55,7 @@ public class UserViewModel extends ViewModel {
         return isUserChecked;
     }
 
-    public void  createToken(User user) {
+    public void createToken(User user) {
         userRepository.createToken(user, this);
     }
 
@@ -75,7 +75,12 @@ public class UserViewModel extends ViewModel {
         userRepository.getUser(username, GlobalToken.token, user, owner);
     }
 
-    public List<User> getAllFriends(User user){
-        return userRepository.getAllFriends(user, GlobalToken.token);
+    public LiveData<List<User>> getAllFriendsLiveData(User user) {
+        return userRepository.getAllFriendsLiveData(user, GlobalToken.token);
+    }
+
+    public void removeFriend(String userId, String friendId) {
+        userRepository.removeFriend(userId, friendId, GlobalToken.token);
     }
 }
+

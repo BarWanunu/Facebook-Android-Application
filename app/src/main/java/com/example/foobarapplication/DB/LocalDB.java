@@ -13,7 +13,7 @@ import com.example.foobarapplication.entities.Comment;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
 
-@Database(entities = {Post.class, User.class, Comment.class}, version = 1)
+@Database(entities = {Post.class, User.class, Comment.class}, version = 2)
  public abstract class LocalDB extends RoomDatabase {
  private static volatile LocalDB INSTANCE;
  public static LocalDB getInstance(Context context) {

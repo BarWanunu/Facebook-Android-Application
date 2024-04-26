@@ -11,9 +11,12 @@ import com.example.foobarapplication.adapters.FriendsAdapter;
 import com.example.foobarapplication.entities.User;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FriendsActivity extends AppCompatActivity {
+
+    private List<User> friendsList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
