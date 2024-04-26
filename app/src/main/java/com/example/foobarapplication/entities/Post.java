@@ -101,21 +101,6 @@ public class Post implements Comparable<Post>{
         this.isLiked = liked;
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.post_layout);
-//        ImageButton likeBtn = findViewById(R.id.likeButton);
-//        likeBtn.setOnClickListener(v -> {
-//            if (isLiked == false) {
-//                isLiked = true;
-//                addLike();
-//            } else {
-//                isLiked = false;
-//                unLike();
-//            }
-//        });
-//    }
     public String getProfile() {
         return profile;
     }
@@ -172,27 +157,5 @@ public class Post implements Comparable<Post>{
             throw new RuntimeException(e);
         }
     }
-
-
-
-    /*
-    public static List<Post> fromServerModel(List<Post2> serverPosts) {
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-        List<Post> posts = new ArrayList<>();
-        for (Post2 serverPost : serverPosts) {
-            Post post = new Post();
-            post.setId(serverPost.getId());
-            post.setAuthor(serverPost.getProfile());
-            post.setContent(serverPost.getText());
-            outputDateFormat.format(serverPost.getDate());
-            post.setLikes(serverPost.getLikes());
-            // Set other fields accordingly based on the server model
-            posts.add(post);
-        }
-        return posts;
-    }
-
-     */
 }
 

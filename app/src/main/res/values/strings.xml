@@ -24,6 +24,7 @@
     <string name="my_friends">My Friends</string>
     <string name="user_profile">User Profile</string>
     <string name="remove_friend">Remove Friend</string>
+    <string name="profile_friends">Profile Friends</string>
     <string name="add_friend">Add Friend</string>
     <string name="Profile">Profile</string>
     <string name="friend_request">Friends Requests</string>

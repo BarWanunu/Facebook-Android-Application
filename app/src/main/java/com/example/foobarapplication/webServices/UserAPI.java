@@ -3,6 +3,7 @@ package com.example.foobarapplication.webServices;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.Globals.GlobalToken;
@@ -18,7 +19,6 @@ import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -194,48 +194,6 @@ public class UserAPI {
         });
     }
 
-    public List<User> getAllFriends(String username, String token) {
-        List<User> friendsList = new LinkedList<>();
-        Call<JsonObject> call = webServiceAPI.getAllFriends(username, "Bearer " + token);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject jsonObject = response.body();
-                    if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
-                        JsonArray friendsArray = jsonObject.getAsJsonArray("friends");
-                        if (friendsArray != null) {
-                            for (JsonElement element : friendsArray) {
-                                JsonObject friendObject = element.getAsJsonObject();
-                                StringBuilder friendNameBuilder = new StringBuilder();
-                                for (Map.Entry<String, JsonElement> entry : friendObject.entrySet()) {
-                                    if (entry.getKey().equals("_id")) {
-                                        break;
-                                    }
-                                    friendNameBuilder.append(entry.getValue().getAsString());
-                                }
-                                String friendName = friendNameBuilder.toString();
-                                User friend = new User(friendName);
-                                friendsList.add(friend);
-                            }
-                        }
-                    } else {
-                        String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
-                        Log.d("getAllFriends", "Failed to get friends: " + errorMessage);
-                    }
-                } else {
-                    Log.d("getAllFriends", "Failed to get all of the friends");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e("getAllFriends", "Failed to fetch friends" + t.getMessage());
-            }
-        });
-        return friendsList;
-    }
-
     public void removeFriend(String userId, String friendId, String token) {
 
         Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId,"Bearer " + token);
@@ -254,5 +212,42 @@ public class UserAPI {
                 Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
             }
         });
+    }
+
+    public LiveData<List<User>> getAllFriendsLiveData(String username, String token) {
+        List<User> friendsList = new LinkedList<>();
+        MutableLiveData<List<User>> friendsListLiveData = new MutableLiveData<>();
+        Call<JsonObject> call = webServiceAPI.getAllFriends(username, "Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject jsonObject = response.body();
+                    if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
+                        JsonArray friendsArray = jsonObject.getAsJsonArray("friends");
+                        if (friendsArray != null) {
+                            for (JsonElement element : friendsArray) {
+                                JsonObject friendObject = element.getAsJsonObject();
+                                String friendName = friendObject.get("username").getAsString();
+                                String photo = friendObject.get("photo").getAsString();
+                                friendsList.add(new User(friendName,"", photo));
+                            }
+                            friendsListLiveData.postValue(friendsList);
+                        }
+                    } else {
+                        String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
+                        Log.d("getAllFriends", "Failed to get friends: " + errorMessage);
+                    }
+                } else {
+                    Log.d("getAllFriends", "Failed to get all of the friends");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e("getAllFriends", "Failed to fetch friends" + t.getMessage());
+            }
+        });
+        return friendsListLiveData;
     }
 }
