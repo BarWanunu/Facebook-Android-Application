@@ -32,6 +32,18 @@ public class UserRepository {
         api.removeFriend(userId, friendId, token);
     }
 
+    public List<User> getAllFriendsRequest(String username, String token) {
+        return api.getAllFriendsRequest(username, token);
+    }
+
+    public void addFriendRequest(String userName, String token) {
+        api.addFriendRequest(userName, token);
+    }
+
+    public void approveFriendsRequest(String userId, String friendId, String token) {
+        api.approveFriendsRequest(userId, friendId, token);
+    }
+
 
     class UserListData extends MutableLiveData<List<User>> {
 

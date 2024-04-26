@@ -195,10 +195,10 @@ public class UserAPI {
 
     public void removeFriend(String userId, String friendId, String token) {
 
-        Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId,"Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     Log.d("deleteFriend", "Succeed to delete friend");
                 } else {
@@ -207,7 +207,7 @@ public class UserAPI {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
             }
         });
@@ -228,7 +228,7 @@ public class UserAPI {
                                 JsonObject friendObject = element.getAsJsonObject();
                                 String friendName = friendObject.get("username").getAsString();
                                 String photo = friendObject.get("photo").getAsString();
-                                friendsList.add(new User(friendName,"", photo));
+                                friendsList.add(new User(friendName, "", photo));
                             }
                         }
                     } else {
@@ -246,5 +246,76 @@ public class UserAPI {
             }
         });
         return friendsList;
+    }
+
+    public List<User> getAllFriendsRequest(String username, String token) {
+        List<User> friendsRequest = new LinkedList<>();
+        Call<JsonObject> call = webServiceAPI.getAllFriendsRequest(username, "Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    JsonObject jsonObject = response.body();
+                    if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
+                        JsonArray friendsArray = jsonObject.getAsJsonArray("friendsRequest");
+                        if (friendsArray != null) {
+                            for (JsonElement element : friendsArray) {
+                                JsonObject friendObject = element.getAsJsonObject();
+                                String friendName = friendObject.get("username").getAsString();
+                                String photo = friendObject.get("photo").getAsString();
+                                friendsRequest.add(new User(friendName, "", photo));
+                            }
+                        }
+                    } else {
+                        String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
+                        Log.d("getAllFriendsRequests", "Failed to get friends requests: " + errorMessage);
+                    }
+                } else {
+                    Log.d("getAllFriendsRequest", "Failed to get all of the friends requests");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.e("getAllFriendsRequests", "Failed to fetch friends requests" + t.getMessage());
+            }
+        });
+        return friendsRequest;
+    }
+
+    public void addFriendRequest(String userName, String token) {
+        Call<JsonObject> call = webServiceAPI.addFriendRequest(userName, "Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.d("addFriendRequest", "Succeed to add the request");
+                } else {
+                    Log.d("addFriendRequest", "Failed to add the request");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.e("addFriendRequest", "Failed to add the request" + t.getMessage());
+            }
+        });
+    }
+
+    public void approveFriendsRequest(String userId, String friendId, String token) {
+        Call<JsonObject> call = webServiceAPI.approveFriendsRequest(userId, friendId, "Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.d("approveFriendsRequest", "Succeed to add the friend");
+                } else {
+                    Log.d("approveFriendsRequest", "Failed to add the friend");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.e("approveFriendsRequest", "Failed to add the friend" + t.getMessage());
+            }
+        });
     }
 }

@@ -56,6 +56,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     private PostsViewModel postsViewModel;
     private User user;
     private List<User> friendsList = new LinkedList<>();
+    private List<User> friendsRequest = new LinkedList<>();
 
     private static final int GALLERY_REQ_CODE = 1000;
     private static final int CAMERA_REQ_CODE = 1001;
@@ -78,7 +79,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        friendsList =userViewModel.getAllFriends(user);
+        friendsList = userViewModel.getAllFriends(user);
+        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
@@ -89,11 +91,11 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         menu.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, v);
             popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
-            List<Post> myposts = new LinkedList<>();
+            List<Post> myPosts = new LinkedList<>();
             List<Post> posts = postsViewModel.get().getValue();
             for (Post post : posts) {
                 if (post.getAuthor().equals(post.getAuthor())) {
-                    myposts.add(post);
+                    myPosts.add(post);
                 }
             }
             // Inflating the Popup using xml file
@@ -138,10 +140,10 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     finish();
                 } else if (id == R.id.action_user_edit_name) {
                     assert finalMyuser != null;
-                    showEditUsernameDialog(finalMyuser, myposts);
+                    showEditUsernameDialog(finalMyuser, myPosts);
                 } else if (id == R.id.action_user_edit_image) {
                     assert finalMyuser != null;
-                    showEditUserImageDialog(finalMyuser, myposts);
+                    showEditUserImageDialog(finalMyuser, myPosts);
                 }
                 return false;
             });
@@ -197,14 +199,19 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.my_friends && friendsList !=null) {
+            if (id == R.id.my_friends && friendsList != null) {
                 Intent intent = new Intent(this, FriendsActivity.class);
                 intent.putExtra("username", user.getUserName());
                 intent.putExtra("friendsList", new ArrayList<>(friendsList));
                 startActivity(intent);
                 return true;
             } else if (id == R.id.friends_request) {
-                // get list of friends request
+                Intent intent = new Intent(this, FriendsRequestsActivity.class);
+                intent.putExtra("username", user.getUserName());
+                intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
+                startActivity(intent);
+                friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+                return true;
             }
             return false;
         });
@@ -277,8 +284,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             new AlertDialog.Builder(this).setMessage("Can't edit/delete posts of other users").show();
             return;
         }
-        //Intent intentUser = getIntent();
-        //String token = intentUser.getStringExtra("token");
         popup.setOnMenuItemClickListener(item -> {
             // Handle item clicks here
             int id = item.getItemId();
@@ -317,7 +322,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             }
             // menu in case they are not friends
             else {
-                notFriendsMenu(popup, userId, profileImg);
+                notFriendsMenu(popup, userId);
             }
         }
 
@@ -343,6 +348,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             if (id == R.id.RemoveFriend) {
                 userViewModel.removeFriend(user.getUserName(), userId);
                 friendsList = userViewModel.getAllFriends(user);
+                return true;
             } else if (id == R.id.action_profile) {
                 goToProfile(userId, profileImg);
                 return true;
@@ -352,12 +358,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
     }
 
-    private void notFriendsMenu(PopupMenu popup, String userId, String profileImg) {
+    private void notFriendsMenu(PopupMenu popup, String userId) {
         popup.getMenuInflater().inflate(R.menu.not_friends_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.AddFriend) {
-
+                userViewModel.addFriendRequest(userId);
+                friendsRequest = userViewModel.getAllFriendsRequest(userId);
                 return true;
             }
             return false;
