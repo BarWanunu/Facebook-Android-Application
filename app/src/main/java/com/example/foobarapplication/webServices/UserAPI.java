@@ -3,7 +3,9 @@ package com.example.foobarapplication.webServices;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.Globals.GlobalToken;
 import com.example.foobarapplication.entities.User;
@@ -148,7 +150,7 @@ public class UserAPI {
         });
     }
 
-    public void edit(User user, String token) {
+    public void edit(User user, String token, UserViewModel userViewModel) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("editedUsername", user.getUserName());
         jsonObject.addProperty("imageData", user.getPhoto());
@@ -157,6 +159,7 @@ public class UserAPI {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    createToken(user.getUserName(), userViewModel);
                     Log.d("editUser", "Edited the user");
                 } else {
                     Log.d("editUser", "Failed to edit user");

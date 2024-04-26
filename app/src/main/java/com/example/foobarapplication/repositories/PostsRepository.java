@@ -82,6 +82,7 @@ public class PostsRepository {
                 dao.insert(post);
                 List<Post> posts = get().getValue();
                 posts.add(post);
+                Collections.sort(posts);
                 postListData.setValue(posts);
             }
         });
@@ -93,6 +94,7 @@ public class PostsRepository {
         dao.delete(post);
         List<Post> posts = get().getValue();
         posts.remove(post);
+        Collections.sort(posts);
         postListData.setValue(posts);
     }
 
@@ -100,7 +102,7 @@ public class PostsRepository {
         api.edit(post, token);
         dao.update(post);
         List<Post> posts = dao.index();
-        //Collections.sort(posts);
+        Collections.sort(posts);
         postListData.setValue(posts);
     }
 
@@ -112,7 +114,7 @@ public class PostsRepository {
             public void onChanged(Post post) {
                 dao.update(post);
                 List<Post> posts = dao.index();
-                //Collections.sort(posts);
+                Collections.sort(posts);
                 postListData.setValue(posts);
             }
         });

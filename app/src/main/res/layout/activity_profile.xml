@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
         android:id="@+id/profile_details"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="73dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,39 +19,121 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:autoSizeTextType="uniform"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="8dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:scaleType="centerInside"
             app:srcCompat="@drawable/bar" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/posts_and_friends"
+        android:id="@+id/posts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_details"
+        app:layout_constraintBottom_toTopOf="@+id/facebook_bottom"
         tools:ignore="MissingConstraints,NotSibling">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="595dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/lstPosts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white" />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/facebook_bottom"
+        android:layout_width="411dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/facebook"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_details"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/menu">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/notifications"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/notifications">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/market"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/marketplace">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/friends"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/friends">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/tv"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/tv">
+
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="70dp"
+            android:layout_height="54dp"
+            android:background="@color/facebook"
+            android:src="@drawable/home">
+
+        </ImageButton>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

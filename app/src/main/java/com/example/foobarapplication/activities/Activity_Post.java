@@ -93,7 +93,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             List<Post> myposts = new LinkedList<>();
             List<Post> posts = postsViewModel.get().getValue();
             for (Post post : posts) {
-                if (post.getAuthor().equals(post.getAuthor())) {
+                if (post.getAuthor().equals(user.getUserName())) {
                     myposts.add(post);
                 }
             }
@@ -102,7 +102,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             User myuser = null;
             List<User> users = userViewModel.get();
             for (User user : users) {
-                if (user.getUserName().equals(user.getUserName())) {
+                if (user.getUserName().equals(this.user.getUserName())) {
                     myuser = user;
                     break;
                 }
@@ -330,7 +330,17 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Intent profiltIntent = new Intent(Activity_Post.this, Profile_Activity.class);
                 profiltIntent.putExtra("userId", userId);
                 profiltIntent.putExtra("profileImg", profileImg);
+                User myuser = null;
+                List<User> users = userViewModel.get();
+                for (User user : users) {
+                    if (user.getUserName().equals(userId)) {
+                        myuser = user;
+                        break;
+                    }
+                }
+                profiltIntent.putExtra("user", myuser);
                 startActivity(profiltIntent);
+                Toast.makeText(Activity_Post.this, "Welcome to " + userId + "'s profile, the posts here are only for display", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.action_remove_friend) {
                 //handle remove friend
             }
@@ -356,8 +366,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             String oldUserName = user.getUserName();
 
             // Update user's name in the local user object and ViewModel
-            user.setUserName(newUserName);
-            userViewModel.edit(user, oldUserName);
+            this.user.setUserName(newUserName);
+            userViewModel.edit(this.user, oldUserName);
 
             // Prepare to update posts
             Executor executor = Executors.newSingleThreadExecutor();
