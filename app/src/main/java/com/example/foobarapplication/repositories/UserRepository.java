@@ -28,6 +28,10 @@ public class UserRepository {
         return api.getAllFriends(user.getUserName(), token);
     }
 
+    public void removeFriend(String userId, String friendId, String token) {
+        api.removeFriend(userId, friendId, token);
+    }
+
 
     class UserListData extends MutableLiveData<List<User>> {
 

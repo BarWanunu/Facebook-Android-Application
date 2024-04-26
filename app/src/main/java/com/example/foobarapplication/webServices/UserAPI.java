@@ -3,9 +3,7 @@ package com.example.foobarapplication.webServices;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.Globals.GlobalToken;
 import com.example.foobarapplication.entities.User;
@@ -236,5 +234,25 @@ public class UserAPI {
             }
         });
         return friendsList;
+    }
+
+    public void removeFriend(String userId, String friendId, String token) {
+
+        Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId,"Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call,@NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.d("deleteFriend", "Succeed to delete friend");
+                } else {
+                    Log.d("deleteFriend", "Failed to delete friend");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call,@NonNull Throwable t) {
+                Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
+            }
+        });
     }
 }

@@ -55,4 +55,7 @@ public interface WebServiceAPI {
 
     @GET("users/{userId}/friends")
     Call<JsonObject> getAllFriends(@Path("userId")String userId, @Header("Authorization") String token);
+
+    @DELETE("users/{userId}/friends/{friendId}")
+    Call<JsonObject> deleteFriend(@Path("userId")String userId ,@Path("friendId") String friendId, @Header("Authorization") String token);
 }
