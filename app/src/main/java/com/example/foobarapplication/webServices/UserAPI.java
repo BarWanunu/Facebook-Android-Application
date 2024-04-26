@@ -3,7 +3,6 @@ package com.example.foobarapplication.webServices;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.Globals.GlobalToken;
@@ -214,9 +213,8 @@ public class UserAPI {
         });
     }
 
-    public LiveData<List<User>> getAllFriendsLiveData(String username, String token) {
+    public List<User> getAllFriends(String username, String token) {
         List<User> friendsList = new LinkedList<>();
-        MutableLiveData<List<User>> friendsListLiveData = new MutableLiveData<>();
         Call<JsonObject> call = webServiceAPI.getAllFriends(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -232,7 +230,6 @@ public class UserAPI {
                                 String photo = friendObject.get("photo").getAsString();
                                 friendsList.add(new User(friendName,"", photo));
                             }
-                            friendsListLiveData.postValue(friendsList);
                         }
                     } else {
                         String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
@@ -248,6 +245,6 @@ public class UserAPI {
                 Log.e("getAllFriends", "Failed to fetch friends" + t.getMessage());
             }
         });
-        return friendsListLiveData;
+        return friendsList;
     }
 }

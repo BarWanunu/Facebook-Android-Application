@@ -21,8 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -57,7 +55,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     private UserViewModel userViewModel;
     private PostsViewModel postsViewModel;
     private User user;
-    private LiveData<List<User>> friendsList = new MutableLiveData<>();
+    private List<User> friendsList = new LinkedList<>();
 
     private static final int GALLERY_REQ_CODE = 1000;
     private static final int CAMERA_REQ_CODE = 1001;
@@ -80,7 +78,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        friendsList =userViewModel.getAllFriendsLiveData(user);
+        friendsList =userViewModel.getAllFriends(user);
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
@@ -192,8 +190,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         });
     }
 
-    public void onFriendsClick(View v, LiveData<List<User>> friendsList) {
-        List<User> friends = friendsList.getValue();
+    public void onFriendsClick(View v, List<User> friendsList) {
         PopupMenu popupMenu = new PopupMenu(this, v);
 
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
@@ -203,7 +200,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             if (id == R.id.my_friends && friendsList !=null) {
                 Intent intent = new Intent(this, FriendsActivity.class);
                 intent.putExtra("username", user.getUserName());
-                intent.putExtra("friendsList", new ArrayList<>(friends));
+                intent.putExtra("friendsList", new ArrayList<>(friendsList));
                 startActivity(intent);
                 return true;
             } else if (id == R.id.friends_request) {
@@ -304,9 +301,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         boolean isFriend = false;
         PopupMenu popup = new PopupMenu(this, v);
 
-        List<User> friends = friendsList.getValue();
         // menu in case they are friends
-        for (User user1 : friends) {
+        for (User user1 : friendsList) {
             if (user1.getUserName().equals(userId)) {
                 isFriend = true;
                 friendsMenu(popup, userId, profileImg);
@@ -346,7 +342,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             int id = item.getItemId();
             if (id == R.id.RemoveFriend) {
                 userViewModel.removeFriend(user.getUserName(), userId);
-                friendsList = userViewModel.getAllFriendsLiveData(user);
+                friendsList = userViewModel.getAllFriends(user);
             } else if (id == R.id.action_profile) {
                 goToProfile(userId, profileImg);
                 return true;
