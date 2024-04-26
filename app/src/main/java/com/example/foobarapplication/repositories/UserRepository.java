@@ -59,8 +59,8 @@ public class UserRepository {
         return dao.getAll();
     }
 
-    public void edit(User user, String oldUserName, String token) {
-        api.edit(user, token);
+    public void edit(User user, String oldUserName, String token, UserViewModel model) {
+        api.edit(user, token, model);
         dao.delete(oldUserName);
         dao.add(user);
     }
