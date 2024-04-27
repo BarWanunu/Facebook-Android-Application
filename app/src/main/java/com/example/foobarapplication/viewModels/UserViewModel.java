@@ -75,12 +75,24 @@ public class UserViewModel extends ViewModel {
         userRepository.getUser(username, GlobalToken.token, user, owner);
     }
 
-    public LiveData<List<User>> getAllFriendsLiveData(User user) {
-        return userRepository.getAllFriendsLiveData(user, GlobalToken.token);
+    public List<User> getAllFriends(User user) {
+        return userRepository.getAllFriends(user, GlobalToken.token);
     }
 
     public void removeFriend(String userId, String friendId) {
         userRepository.removeFriend(userId, friendId, GlobalToken.token);
+    }
+
+    public List<User> getAllFriendsRequest(String username) {
+        return userRepository.getAllFriendsRequest(username, GlobalToken.token);
+    }
+
+    public void addFriendRequest(String userName) {
+        userRepository.addFriendRequest(userName, GlobalToken.token);
+    }
+
+    public void approveFriendsRequest(String userId, String friendId) {
+        userRepository.approveFriendsRequest(userId, friendId, GlobalToken.token);
     }
 }
 

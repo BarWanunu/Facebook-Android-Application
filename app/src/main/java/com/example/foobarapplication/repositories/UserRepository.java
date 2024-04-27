@@ -3,7 +3,6 @@ package com.example.foobarapplication.repositories;
 import android.content.Context;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -25,12 +24,24 @@ public class UserRepository {
         dao = LocalDB.getInstance(context).userDao();
     }
 
-    public LiveData<List<User>> getAllFriendsLiveData(User user, String token) {
-        return api.getAllFriendsLiveData(user.getUserName(), token);
+    public List<User> getAllFriends(User user, String token) {
+        return api.getAllFriends(user.getUserName(), token);
     }
 
     public void removeFriend(String userId, String friendId, String token) {
         api.removeFriend(userId, friendId, token);
+    }
+
+    public List<User> getAllFriendsRequest(String username, String token) {
+        return api.getAllFriendsRequest(username, token);
+    }
+
+    public void addFriendRequest(String userName, String token) {
+        api.addFriendRequest(userName, token);
+    }
+
+    public void approveFriendsRequest(String userId, String friendId, String token) {
+        api.approveFriendsRequest(userId, friendId, token);
     }
 
 

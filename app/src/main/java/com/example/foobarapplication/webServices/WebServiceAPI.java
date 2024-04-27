@@ -54,8 +54,17 @@ public interface WebServiceAPI {
     Call<JsonObject> likePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token, @Body JsonObject likeStatus);
 
     @GET("users/{userId}/friends")
-    Call<JsonObject> getAllFriends(@Path("userId")String userId, @Header("Authorization") String token);
+    Call<JsonObject> getAllFriends(@Path("userId") String userId, @Header("Authorization") String token);
 
     @DELETE("users/{userId}/friends/{friendId}")
-    Call<JsonObject> deleteFriend(@Path("userId")String userId ,@Path("friendId") String friendId, @Header("Authorization") String token);
+    Call<JsonObject> deleteFriend(@Path("userId") String userId, @Path("friendId") String friendId, @Header("Authorization") String token);
+
+    @GET("users/{userId}/friends/requests")
+    Call<JsonObject> getAllFriendsRequest(@Path("userId") String userId, @Header("Authorization") String token);
+
+    @POST("users/{userId}/friends")
+    Call<JsonObject> addFriendRequest(@Path("userId") String userId, @Header("Authorization") String token);
+
+    @PATCH("users/{userId}/friends/{friendId}")
+    Call<JsonObject> approveFriendsRequest(@Path("userId") String userId, @Path("friendId") String friendId, @Header("Authorization") String token);
 }

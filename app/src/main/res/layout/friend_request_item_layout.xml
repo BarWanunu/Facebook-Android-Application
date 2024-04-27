@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/friendNameTextView"
+        android:layout_width="150dp"
+        android:layout_height="48dp"
+        android:textColor="@android:color/black"
+        android:textSize="23sp" />
+
+    <ImageButton
+        android:id="@+id/approveButton"
+        android:layout_width="41dp"
+        android:layout_height="37dp"
+        android:layout_marginLeft="110dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+        android:src="@drawable/baseline_add_24"></ImageButton>
+
+
+    <ImageButton
+        android:id="@+id/declineButton"
+        android:layout_width="41dp"
+        android:layout_height="37dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/white"
+        android:scaleType="fitCenter"
+
+        android:src="@drawable/baseline_disabled_by_default_24">
+
+    </ImageButton>
+
+</LinearLayout>

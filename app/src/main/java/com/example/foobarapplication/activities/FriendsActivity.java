@@ -11,12 +11,9 @@ import com.example.foobarapplication.adapters.FriendsAdapter;
 import com.example.foobarapplication.entities.User;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FriendsActivity extends AppCompatActivity {
-
-    private List<User> friendsList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +24,6 @@ public class FriendsActivity extends AppCompatActivity {
         List<User> friendsList = (List<User>) getIntent().getSerializableExtra("friendsList");
 
         // Display the list of friends in a ListView or RecyclerView
-        // For example:
         RecyclerView recyclerView = findViewById(R.id.friendsRecyclerView);
         if (friendsList.size() == 0) {
             List<User> friends = new ArrayList<>();

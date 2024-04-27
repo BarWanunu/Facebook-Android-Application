@@ -10,8 +10,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +37,7 @@ public class Profile_Activity extends AppCompatActivity {
 
     String profileImg;
 
-    private LiveData<List<User>> friendsList = new MutableLiveData<>();
+    private List<User> friendsList;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -58,7 +56,7 @@ public class Profile_Activity extends AppCompatActivity {
         userViewModel.getToken().observe(Profile_Activity.this, new Observer<String>() {
             @Override
             public void onChanged(String token) {
-                friendsList =userViewModel.getAllFriendsLiveData(user);
+                friendsList =userViewModel.getAllFriends(user);
                 lstPosts = findViewById(R.id.lstPosts);
                 adapter = new PostsListAdapter(Profile_Activity.this);
                 lstPosts.setAdapter(adapter);
@@ -86,8 +84,7 @@ public class Profile_Activity extends AppCompatActivity {
         }
     }
 
-    public void onFriendsClick(View v, LiveData<List<User>> friendsList) {
-        List<User> friends = friendsList.getValue();
+    public void onFriendsClick(View v, List<User> friendsList) {
         PopupMenu popupMenu = new PopupMenu(this, v);
 
         popupMenu.getMenuInflater().inflate(R.menu.friends_profile_menu, popupMenu.getMenu());
@@ -96,7 +93,7 @@ public class Profile_Activity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.my_friends) {
                 Intent intent = new Intent(this, FriendsActivity.class);
-                intent.putExtra("friendsList", new ArrayList<>(friends));
+                intent.putExtra("friendsList", new ArrayList<>(friendsList));
                 startActivity(intent);
                 return true;
             }
