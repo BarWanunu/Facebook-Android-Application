@@ -46,7 +46,7 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
     @Override
     public void onApproveClick(User user) {
-//        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
     }
 
     @Override
