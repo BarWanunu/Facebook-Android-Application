@@ -44,8 +44,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         holder.friendNameTextView.setText(friendRequest.getUserName());
 
         // Set click listeners for the action buttons
-        holder.approveButton.setOnClickListener(v -> listener.onApproveClick(friendRequest));
-        holder.declineButton.setOnClickListener(v -> listener.onDeclineClick(friendRequest));
+//        holder.approveButton.setOnClickListener(v -> listener.onApproveClick(friendRequest));
+//        holder.declineButton.setOnClickListener(v -> listener.onDeclineClick(friendRequest));
     }
 
     @Override
@@ -61,8 +61,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             friendNameTextView = itemView.findViewById(R.id.friendNameTextView);
-            approveButton = itemView.findViewById(R.id.approveButton);
-            declineButton = itemView.findViewById(R.id.declineButton);
+//            approveButton = itemView.findViewById(R.id.approveButton);
+//            declineButton = itemView.findViewById(R.id.declineButton);
         }
     }
 

@@ -12,12 +12,11 @@ import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsRequestsActivity extends AppCompatActivity implements FriendsRequestsAdapter.OnRequestActionClickListener {
 
-    private RecyclerView recyclerView;
-    private FriendsRequestsAdapter adapter;
     private UserViewModel userViewModel;
 
     @Override
@@ -27,25 +26,27 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
         userViewModel = new UserViewModel(this);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        List<User> friendRequests = (List<User>) getIntent().getSerializableExtra("friendsRequest");
+
+        RecyclerView recyclerView = findViewById(R.id.friendsRequestRecyclerView);
+
+        if (friendRequests != null && friendRequests.size() == 0) {
+            List<User> friends = new ArrayList<>();
+            friends.add(new User("You don't have any friends requests"));
+            friendRequests = friends;
+        }
+
+        FriendsRequestsAdapter adapter = new FriendsRequestsAdapter(this, this);
+        adapter.setFriendRequests(friendRequests);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FriendsRequestsAdapter(this, this);
         recyclerView.setAdapter(adapter);
 
-        // Get data from intent
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String username = extras.getString("username");
-            List<User> friendRequests = (List<User>) getIntent().getSerializableExtra("friendRequests");
-            if (friendRequests != null) {
-                adapter.setFriendRequests(friendRequests);
-            }
-        }
+
     }
 
     @Override
     public void onApproveClick(User user) {
-        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+//        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
     }
 
     @Override
