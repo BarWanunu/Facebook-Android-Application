@@ -28,8 +28,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
 import com.example.foobarapplication.R;
-import com.example.foobarapplication.adapters.FriendsAdapter;
-import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
@@ -54,9 +52,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     boolean isDarkMode = false;
     private RecyclerView lstPosts;
     private PostsListAdapter adapter;
-
-    private FriendsAdapter friendsAdapter;
-    private FriendsRequestsAdapter friendsRequestsAdapter;
     private UserViewModel userViewModel;
     private PostsViewModel postsViewModel;
     private User userIntent;
