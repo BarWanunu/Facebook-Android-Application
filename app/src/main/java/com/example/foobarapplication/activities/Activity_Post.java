@@ -54,7 +54,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     private PostsListAdapter adapter;
     private UserViewModel userViewModel;
     private PostsViewModel postsViewModel;
-    private User user;
+    private User userIntent;
     private List<User> friendsList = new LinkedList<>();
     private List<User> friendsRequest = new LinkedList<>();
 
@@ -71,7 +71,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         setContentView(R.layout.activity_post);
 
         Intent intentUser = getIntent();
-        user = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
+        userIntent = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
 
         postsViewModel = new PostsViewModel(this);
         userViewModel = new UserViewModel(this);
@@ -79,8 +79,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        friendsList = userViewModel.getAllFriends(user);
-        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+        friendsList = userViewModel.getAllFriends(userIntent);
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
@@ -99,15 +99,19 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 }
             }
             // Inflating the Popup using xml file
-            User myuser = null;
+
+            //User myuser = null;
             List<User> users = userViewModel.get();
+            /*
             for (User user : users) {
-                if (user.getUserName().equals(user.getUserName())) {
+                if (user.getUserName().equals(userIntent.getUserName())) {
                     myuser = user;
                     break;
                 }
             }
-            User finalMyuser = myuser;
+
+             */
+            User finalMyuser = userIntent;
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.action_dark_mode) {
@@ -173,9 +177,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Post newPost;
                 String currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(new Date());
                 if (selectedImageBase64 != null) {
-                    newPost = new Post(user.getUserName(), enteredText, currentDate, 0, selectedImageBase64, user.getPhoto());
+                    newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, selectedImageBase64, userIntent.getPhoto());
                 } else {
-                    newPost = new Post(user.getUserName(), enteredText, currentDate, 0, user.getPhoto());
+                    newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
                 }
 
                 postsViewModel.add(newPost, Activity_Post.this);
@@ -201,16 +205,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             int id = item.getItemId();
             if (id == R.id.my_friends && friendsList != null) {
                 Intent intent = new Intent(this, FriendsActivity.class);
-                intent.putExtra("username", user.getUserName());
+                intent.putExtra("username", userIntent.getUserName());
                 intent.putExtra("friendsList", new ArrayList<>(friendsList));
                 startActivity(intent);
                 return true;
             } else if (id == R.id.friends_request) {
                 Intent intent = new Intent(this, FriendsRequestsActivity.class);
-                intent.putExtra("username", user.getUserName());
+                intent.putExtra("username", userIntent.getUserName());
                 intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
                 startActivity(intent);
-                friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+                friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
                 return true;
             }
             return false;
@@ -280,7 +284,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Set the item click listener
         Post finalMypost = mypost;
-        if (!finalMypost.getAuthor().equals(user.getUserName())) {
+        if (!finalMypost.getAuthor().equals(userIntent.getUserName())) {
             new AlertDialog.Builder(this).setMessage("Can't edit/delete posts of other users").show();
             return;
         }
@@ -317,7 +321,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         if (!isFriend) {
             // menu if you are looking at your own user
-            if (userId.equals(user.getUserName())) {
+            if (userId.equals(userIntent.getUserName())) {
                 userMenu(popup, userId, profileImg);
             }
             // menu in case they are not friends
@@ -346,8 +350,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.RemoveFriend) {
-                userViewModel.removeFriend(user.getUserName(), userId);
-                friendsList = userViewModel.getAllFriends(user);
+                userViewModel.removeFriend(userIntent.getUserName(), userId);
+                friendsList = userViewModel.getAllFriends(userIntent);
                 return true;
             } else if (id == R.id.action_profile) {
                 goToProfile(userId, profileImg);
@@ -380,7 +384,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         profiltIntent.putExtra("user", myuser);
         startActivity(profiltIntent);
         Toast.makeText(Activity_Post.this, "Welcome to " + userId + "'s profile, the posts here are only for display", Toast.LENGTH_SHORT).show();
-        userViewModel.createToken(user);
+        userViewModel.createToken(userIntent);
     }
 
     private void showEditUsernameDialog(User user, List<Post> myposts) {

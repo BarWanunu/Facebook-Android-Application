@@ -80,8 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:srcCompat="@drawable/pingpong" />
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"/>
+            <!--app:srcCompat="@drawable/pingpong" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
