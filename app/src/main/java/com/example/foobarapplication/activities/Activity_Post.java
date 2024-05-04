@@ -150,6 +150,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 } else if (id == R.id.action_user_edit_image) {
                     assert finalMyuser != null;
                     showEditUserImageDialog(finalMyuser, myPosts);
+                } else if (id == R.id.profile) {
+                    goToProfile(user.getUserName(), user.getPhoto());
                 }
                 return false;
             });
