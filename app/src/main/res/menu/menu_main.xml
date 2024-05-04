@@ -3,9 +3,7 @@
     <item
         android:id="@+id/action_dark_mode"
         android:title="@string/light_mode" />
-    <item
-        android:id="@+id/action_logout"
-        android:title="@string/Log_out" />
+
     <item
         android:id="@+id/action_user_edit_name"
         android:title="Edit name" />
@@ -15,4 +13,10 @@
     <item
         android:id="@+id/action_user_delete"
         android:title="Delete user" />
+    <item
+        android:id="@+id/profile"
+        android:title="My Profile" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/Log_out" />
 </menu>

@@ -318,4 +318,22 @@ public class UserAPI {
             }
         });
     }
+
+    public void rejectFriendsRequest(String userId, String friendId, String token) {
+        Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId,"Bearer " + token);
+        call.enqueue(new Callback<JsonObject>() {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.d("rejectFriendsRequest", "Succeed to reject the friend");
+                } else {
+                    Log.d("rejectFriendsRequest", "Failed to reject the friend");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                Log.e("rejectFriendsRequest", "Failed to reject the friend" + t.getMessage());
+            }
+        });
+    }
 }

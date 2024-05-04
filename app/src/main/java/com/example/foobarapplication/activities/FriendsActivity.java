@@ -10,10 +10,12 @@ import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.FriendsAdapter;
 import com.example.foobarapplication.entities.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private FriendsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +25,18 @@ public class FriendsActivity extends AppCompatActivity {
         // Get the list of friends passed from the previous activity
         List<User> friendsList = (List<User>) getIntent().getSerializableExtra("friendsList");
 
-        // Display the list of friends in a ListView or RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.friendsRecyclerView);
-        if (friendsList.size() == 0) {
-            List<User> friends = new ArrayList<>();
-            friends.add(new User("No friends yet :("));
-            friendsList = friends;
-        }
-        FriendsAdapter adapter = new FriendsAdapter(this, friendsList);
+        // Initialize RecyclerView and adapter
+        recyclerView = findViewById(R.id.friendsRecyclerView);
+        adapter = new FriendsAdapter(this, friendsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
+
+    // Method to update friends list (e.g., after removing a friend)
+    private void updateFriendsList(List<User> updatedFriendsList) {
+        adapter.updateList(updatedFriendsList);
+        adapter.notifyDataSetChanged();
+    }
 }
+
 
