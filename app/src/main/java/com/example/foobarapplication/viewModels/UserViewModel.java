@@ -94,5 +94,9 @@ public class UserViewModel extends ViewModel {
     public void approveFriendsRequest(String userId, String friendId) {
         userRepository.approveFriendsRequest(userId, friendId, GlobalToken.token);
     }
+
+    public void rejectFriendsRequest(String userId, String friendId) {
+        userRepository.rejectFriendsRequest(userId, friendId, GlobalToken.token);
+    }
 }
 

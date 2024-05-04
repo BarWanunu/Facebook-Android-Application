@@ -44,6 +44,10 @@ public class UserRepository {
         api.approveFriendsRequest(userId, friendId, token);
     }
 
+    public void rejectFriendsRequest(String userId, String friendId, String token) {
+        api.rejectFriendsRequest(userId, friendId, token);
+    }
+
 
     class UserListData extends MutableLiveData<List<User>> {
 

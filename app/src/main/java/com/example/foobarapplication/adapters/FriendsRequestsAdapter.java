@@ -49,7 +49,6 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
     private static class NoFriendRequestViewHolder extends ViewHolder {
         public NoFriendRequestViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Initialize any views specific to the "no friend request" layout here
         }
     }
 
@@ -68,8 +67,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
             holder.declineButton.setVisibility(View.VISIBLE);
 
             // Set click listeners for the action buttons
-            holder.approveButton.setOnClickListener(v -> listener.onApproveClick(friendRequest));
-            holder.declineButton.setOnClickListener(v -> listener.onDeclineClick(friendRequest));
+            holder.approveButton.setOnClickListener(v -> listener.onApproveClick(friendRequest, this));
+            holder.declineButton.setOnClickListener(v -> listener.onDeclineClick(friendRequest, this));
         }
     }
 
@@ -97,8 +96,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
     // Interface for handling click events on action buttons
     public interface OnRequestActionClickListener {
-        void onApproveClick(User user);
+        void onApproveClick(User user, FriendsRequestsAdapter adapter);
 
-        void onDeclineClick(User user);
+        void onDeclineClick(User user, FriendsRequestsAdapter adapter);
     }
 }
