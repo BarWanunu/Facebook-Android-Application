@@ -112,7 +112,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 //                holder.profilePicture.setImageResource(current.getProfilePicture());
 //
             // Check if the image data is provided as Base64 strings
-            holder.ivPic.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.pingpong));
+            //holder.ivPic.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.pingpong));
             String imageBase64 = current.getsPic();
             String profileImageBase64 = current.getsProfilePicture();
 
@@ -124,8 +124,12 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 // Set the Bitmap to the ImageView
                 holder.ivPic.setImageBitmap(bitmap);
-
+                holder.ivPic.setVisibility(View.VISIBLE);  // Make the ImageView visible if there is an image
+            } else {
+                holder.ivPic.setVisibility(View.GONE);  // Hide the ImageView if there is no image
             }
+
+
 
             if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
                 String formattedBase64 = profileImageBase64.substring(23);
