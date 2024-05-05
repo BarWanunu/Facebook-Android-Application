@@ -6,18 +6,19 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ImageUtils {
 
+    // This method decodes a Base64 encoded string into a Bitmap object
     public static Bitmap decodeBase64ToBitmap(String base64String) {
         byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
+    // This method generates a Base64 encoded string from an image URI
     public static String base64FromUri(Uri uri, Context context) {
         Bitmap bitmap = null;
         try {
@@ -32,6 +33,7 @@ public class ImageUtils {
         return "data:image/jpeg;base64,"+encodedString;
     }
 
+    // This method generates a Base64 encoded string from an image file path
     public static String base64FromImageFile(String path) {
         Bitmap bm = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

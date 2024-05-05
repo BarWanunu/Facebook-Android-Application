@@ -52,11 +52,13 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
         submitCommentButton.setOnClickListener(v -> {
             String commentText = editTextComment.getText().toString().trim();
             if (!commentText.isEmpty()) {
-                List<Comment> currentComments = repository.getCommentsOfPost(POST_ID); // Fetch the latest comments
-                int id = currentComments.size() + 1; // This might need adjustment based on how you manage IDs
+                // Fetch the latest comments
+                List<Comment> currentComments = repository.getCommentsOfPost(POST_ID);
+                int id = currentComments.size() + 1;
                 Comment newComment = new Comment(id, POST_ID, user.getUserName(), commentText, user.getPhoto());
                 repository.add(newComment);
-                commentListAdapter.setComments(repository.getCommentsOfPost(POST_ID)); // Refresh adapter with updated list
+                // Refresh adapter with updated list
+                commentListAdapter.setComments(repository.getCommentsOfPost(POST_ID));
                 commentListAdapter.notifyItemInserted(currentComments.size() - 1);
                 Toast.makeText(this, "Comment added successfully", Toast.LENGTH_SHORT).show();
                 editTextComment.setText("");
@@ -66,7 +68,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
         });
     }
 
-    //happens to handle the GlobalCommentsHolder list
+    // Happens to handle the GlobalCommentsHolder list
     protected void onResume() {
         super.onResume();
         List<Comment> commentsForThisPost = repository.getCommentsOfPost(POST_ID);
@@ -89,10 +91,13 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
                     .setPositiveButton("Update", (dialog, which) -> {
                         String updatedCommentText = editTextField.getText().toString();
                         if (updatedCommentText.isEmpty()) {
+                            // Show error message if updated comment text is empty
                             Toast.makeText(Comment_Activity.this, "Comment cannot be empty", Toast.LENGTH_SHORT).show();
                         } else if (updatedCommentText.equals(commentToEdit.getCommentContent())) {
+                            // Show message if comment is not edited
                             Toast.makeText(Comment_Activity.this, "Comment did not edit", Toast.LENGTH_SHORT).show();
                         } else {
+                            // Refresh the adapter
                             commentToEdit.setCommentContent(updatedCommentText);
                             commentListAdapter.notifyItemChanged(position);
                             repository.update(commentToEdit);
@@ -103,12 +108,13 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
                     .show();
         }
         else{
+            // Show message if user is not authorized to edit the comment
             new AlertDialog.Builder(this).setMessage("Can't edit comments of other users").show();
         }
 
     }
 
-    //delete comment button was pressed
+    // Delete comment button was pressed
     @Override
     public void onDeleteCommentClick(int position) {
         Comment commentToDelete = commentListAdapter.getCommentAt(position);
@@ -128,6 +134,7 @@ public class Comment_Activity extends AppCompatActivity implements CommentListAd
                     .show();
         }
         else{
+            // Show message if user is not authorized to delete the comment
             new AlertDialog.Builder(this).setMessage("Can't delete comments of other users").show();
         }
     }

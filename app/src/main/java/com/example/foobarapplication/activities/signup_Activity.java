@@ -65,38 +65,50 @@ public class signup_Activity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Retrieve user input from EditText fields
                 String email = editTextEmailAddress.getText().toString().trim();
                 String password = editTextPasswordSign.getText().toString().trim();
                 String confirmPassword = editTextConfirmPassword.getText().toString().trim();
                 String username = usernameText.getText().toString().trim();
 
+                // Validate email format
                 if (!isValidEmail(email)) {
                     Toast.makeText(signup_Activity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // Validate password requirements
                 if (password.length() < 8 || !containsLetterAndNumber(password)) {
                     Toast.makeText(signup_Activity.this, "Password must be at least 8 characters long and contain both letters and numbers", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-
+                // Confirm password match
                 if (!password.equals(confirmPassword)) {
                     Toast.makeText(signup_Activity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                // Check if username is provided
                 if (username.length() < 1) {
                     Toast.makeText(signup_Activity.this, "please enter a username", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // Check if a photo is selected
                 if (TextUtils.isEmpty(selectedImageBase64)) {
                     Toast.makeText(signup_Activity.this, "Please add a photo", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                User newUser = new User(email, username, password,confirmPassword, selectedImageBase64);
+
+                // Create a new User object with provided details
+                User newUser = new User(email, username, password, confirmPassword, selectedImageBase64);
+
+                // Add the new user to the database using ViewModel
                 UserViewModel userViewModel = new UserViewModel(signup_Activity.this);
                 userViewModel.add(newUser);
+
+                // Proceed to MainActivity and pass the new user
                 Intent signInIntent = new Intent(signup_Activity.this, MainActivity.class);
                 signInIntent.putExtra("user", newUser);
                 startActivity(signInIntent);
@@ -105,12 +117,14 @@ public class signup_Activity extends AppCompatActivity {
         });
     }
 
+    // Open the gallery to select an image
     private void openGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY_REQ_CODE);
     }
 
+    // Open the camera to take an image
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQ_CODE);
@@ -119,12 +133,14 @@ public class signup_Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        // Handle the result of gallery or camera activity
         if (resultCode == RESULT_OK) {
+            // Process the selected image from the gallery
             if (requestCode == GALLERY_REQ_CODE && data != null) {
                 handleGalleryResult(data.getData());
             } else if (requestCode == CAMERA_REQ_CODE && data != null) {
                 try {
+                    // Process the captured image from the camera
                     handleCameraResult(data);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -133,11 +149,13 @@ public class signup_Activity extends AppCompatActivity {
         }
     }
 
+    // Convert the selected image to Base64 and display it
     private void handleGalleryResult(Uri selectedImageUri) {
         selectedImageBase64 = ImageUtils.base64FromUri(selectedImageUri, this);
         profileView.setImageURI(selectedImageUri);
     }
 
+    // Retrieve the captured image bitmap and display it
     private void handleCameraResult(Intent data) throws IOException {
         Bundle extras = data.getExtras();
         if (extras != null) {
@@ -147,6 +165,7 @@ public class signup_Activity extends AppCompatActivity {
         }
     }
 
+    // Save the captured image to a file and return its URI
     private Uri saveCameraImage(Bitmap imageBitmap) throws IOException {
         File imageFile = createImageFile();
         try {
@@ -160,6 +179,7 @@ public class signup_Activity extends AppCompatActivity {
         return Uri.fromFile(imageFile);
     }
 
+    // Save the captured image to a file and return its URI
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -168,6 +188,7 @@ public class signup_Activity extends AppCompatActivity {
         return imageFile;
     }
 
+    // Checking if the email is valid
     private boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
@@ -176,6 +197,7 @@ public class signup_Activity extends AppCompatActivity {
         boolean containsLetter = false;
         boolean containsNumber = false;
 
+        // Goes over the password to check letter and a number existence
         for (char c : password.toCharArray()) {
             if (Character.isLetter(c)) {
                 containsLetter = true;
@@ -183,12 +205,13 @@ public class signup_Activity extends AppCompatActivity {
                 containsNumber = true;
             }
 
+            // Password contains both letters and numbers
             if (containsLetter && containsNumber) {
-                return true;  // Password contains both letters and numbers
+                return true;
             }
         }
-
-        return false;  // Password does not contain both letters and numbers
+    // Password does not contain both letters and numbers
+        return false;
     }
 
 }

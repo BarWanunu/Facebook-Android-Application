@@ -26,16 +26,20 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
         userViewModel = new UserViewModel(this);
 
+        // Get the list of friends requests passed from the previous activity
         List<User> friendRequests = (List<User>) getIntent().getSerializableExtra("friendsRequest");
 
+        // Initialize RecyclerView
         RecyclerView recyclerView = findViewById(R.id.friendsRequestRecyclerView);
 
+        // Checks if there aren't any friends requests
         if (friendRequests != null && friendRequests.size() == 0) {
             List<User> friends = new ArrayList<>();
             friends.add(new User("You don't have any friends requests"));
             friendRequests = friends;
         }
 
+        // Initialize adapter
         FriendsRequestsAdapter adapter = new FriendsRequestsAdapter(this, this);
         adapter.setFriendRequests(friendRequests);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,6 +50,7 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
+    // Approving the friend request
     public void onApproveClick(User user, FriendsRequestsAdapter adapter) {
         userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
         adapter.notifyDataSetChanged();
@@ -53,6 +58,7 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
+    // Rejecting the friend request
     public void onDeclineClick(User user, FriendsRequestsAdapter adapter) {
         userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
         adapter.notifyDataSetChanged();

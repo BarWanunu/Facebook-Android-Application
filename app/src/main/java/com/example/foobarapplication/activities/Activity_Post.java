@@ -99,19 +99,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     myPosts.add(post);
                 }
             }
-            // Inflating the Popup using xml file
 
-            //User myuser = null;
             List<User> users = userViewModel.get();
-            /*
-            for (User user : users) {
-                if (user.getUserName().equals(userIntent.getUserName())) {
-                    myuser = user;
-                    break;
-                }
-            }
-
-             */
             User finalMyuser = userIntent;
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(Boolean isUserChecked) {
                     if (isUserChecked != null && isUserChecked) {
-                        // Successful login, navigate to the next activity
+                        // Successful login, navigate to the next activity after creating token
                         userViewModel.createToken(user);
                         userViewModel.getToken().observe(MainActivity.this, new Observer<String>() {
                             @Override
