@@ -126,7 +126,7 @@ public class PostAPI {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 if (response.isSuccessful()) {
                     List<Post> list = response.body();
-                    Collections.sort(list);
+                    //Collections.sort(list);
                     posts.postValue(response.body());
                     Log.d("getAllPosts", "succeeded to fetch posts: ");
                 } else {
@@ -148,8 +148,8 @@ public class PostAPI {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 if (response.isSuccessful()) {
-                    List<Post> list = response.body();
-                    Collections.sort(list);
+                    //List<Post> list = response.body();
+                    //Collections.sort(list);
                     posts.postValue(response.body());
                     Log.d("getPostsByUser", "succeeded to fetch posts: ");
                 } else {

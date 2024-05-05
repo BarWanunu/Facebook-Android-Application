@@ -4,19 +4,23 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.PostsListAdapter;
+import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.PostsViewModel;
 import com.example.foobarapplication.viewModels.UserViewModel;
@@ -24,7 +28,7 @@ import com.example.foobarapplication.viewModels.UserViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Profile_Activity extends AppCompatActivity {
+public class Profile_Activity extends AppCompatActivity implements PostsListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
     RecyclerView lstPosts;
     private PostsListAdapter adapter;
 
@@ -33,7 +37,7 @@ public class Profile_Activity extends AppCompatActivity {
     PostsViewModel postsViewModel;
     String userId;
 
-    User user;
+    User userIntent;
 
     String profileImg;
 
@@ -48,15 +52,19 @@ public class Profile_Activity extends AppCompatActivity {
         Intent intentUser = getIntent();
         userId = (String) intentUser.getSerializableExtra("userId");
         profileImg = (String) intentUser.getSerializableExtra("profileImg");
-        user = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
+        userIntent = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
+
         userViewModel = new UserViewModel(this);
         postsViewModel= new PostsViewModel(this);
 
-        userViewModel.createToken(user);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        userViewModel.createToken(userIntent);
         userViewModel.getToken().observe(Profile_Activity.this, new Observer<String>() {
             @Override
             public void onChanged(String token) {
-                friendsList =userViewModel.getAllFriends(user);
+                friendsList =userViewModel.getAllFriends(userIntent);
                 lstPosts = findViewById(R.id.lstPosts);
                 adapter = new PostsListAdapter(Profile_Activity.this);
                 lstPosts.setAdapter(adapter);
@@ -100,5 +108,116 @@ public class Profile_Activity extends AppCompatActivity {
             return false;
         });
         popupMenu.show();
+    }
+
+    @Override
+    public void onShareClick(View v) {
+
+        PopupMenu popup = new PopupMenu(this, v);
+
+        popup.getMenuInflater().inflate(R.menu.menu_share, popup.getMenu());
+
+        popup.show();
+
+    }
+
+    @Override
+    public void onLikeClick(Post post, TextView likesTextView) {
+
+        postsViewModel.likePost(post, Profile_Activity.this);
+        // Get the current number of likes as a string
+        String currentLikesString = likesTextView.getText().toString();
+
+        // Extract the number of likes from the string
+        int currentLikes = Integer.parseInt(currentLikesString.split(" ")[0]);
+
+        likesTextView.setText(currentLikes + " likes");
+    }
+
+    @Override
+    public void onCommentClick(int postId) {
+        Intent intentUser = getIntent();
+        User newUser = (User) intentUser.getSerializableExtra("user");
+        Intent intent = new Intent(this, Comment_Activity.class);
+        intent.putExtra("POST_ID", postId);
+        intent.putExtra("userDetails", newUser);
+        startActivity(intent);
+    }
+
+    public void onOptionClick(View v, int postID) {
+        //ImageButton post_option = findViewById(R.id.post_options);
+        // Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, v);
+
+        // Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.menu_post_option, popup.getMenu());
+        Post mypost = null;
+        List<Post> posts = postsViewModel.get().getValue();
+        for (Post post : posts) {
+            if (post.getId() == postID) {
+                mypost = post;
+                break;
+            }
+        }
+
+        // Set the item click listener
+        Post finalMypost = mypost;
+        if (!finalMypost.getAuthor().equals(userIntent.getUserName())) {
+            new AlertDialog.Builder(this).setMessage("Can't edit/delete posts of other users").show();
+            return;
+        }
+        popup.setOnMenuItemClickListener(item -> {
+            // Handle item clicks here
+            int id = item.getItemId();
+            if (id == R.id.action_post_delete) {
+                postsViewModel.delete(finalMypost);
+                posts.remove(finalMypost);
+                postsViewModel.deleteAll();
+                postsViewModel.getAllPosts(this).observe(this, posts2 -> {
+                    adapter.setPosts(posts2);
+                });
+            } else if (id == R.id.action_post_edit) {
+                assert finalMypost != null;
+                showEditPostDialog(finalMypost);
+            }
+            return false;
+        });
+
+        // Showing the popup menu
+        popup.show();
+    }
+
+    @Override
+    public void onPictureClick(View v, String userId, String profileImg) {}
+
+
+    private void showEditPostDialog(Post post) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Post");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setText(post.getContent());
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String newContent = input.getText().toString();
+            // Update the post content
+            post.setContent(newContent);
+            // Update post on server
+            postsViewModel.edit(post);
+            dialog.dismiss();
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    @Override
+    public void onRefresh() {
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
