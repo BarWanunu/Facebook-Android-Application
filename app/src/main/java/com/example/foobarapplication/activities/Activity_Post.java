@@ -28,8 +28,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
 import com.example.foobarapplication.R;
-import com.example.foobarapplication.adapters.FriendsAdapter;
-import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
@@ -54,9 +52,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     boolean isDarkMode = false;
     private RecyclerView lstPosts;
     private PostsListAdapter adapter;
-
-    private FriendsAdapter friendsAdapter;
-    private FriendsRequestsAdapter friendsRequestsAdapter;
     private UserViewModel userViewModel;
     private PostsViewModel postsViewModel;
     private User userIntent;
@@ -76,7 +71,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         setContentView(R.layout.activity_post);
 
         Intent intentUser = getIntent();
-        userIntent = (com.example.foobarapplication.entities.User) intentUser.getSerializableExtra("user");
+        userIntent = (User) intentUser.getSerializableExtra("user");
 
         postsViewModel = new PostsViewModel(this);
         userViewModel = new UserViewModel(this);
@@ -84,8 +79,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        friendsList = userViewModel.getAllFriends(user);
-        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+        friendsList = userViewModel.getAllFriends(userIntent);
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
    
 
         ImageButton friends = findViewById(R.id.friends);
@@ -155,7 +150,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     assert finalMyuser != null;
                     showEditUserImageDialog(finalMyuser, myPosts);
                 } else if (id == R.id.profile) {
-                    goToProfile(user.getUserName(), user.getPhoto());
+                    goToProfile(userIntent.getUserName(), userIntent.getPhoto());
                 }
                 return false;
             });
@@ -206,8 +201,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     public void onFriendsClick(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
-        friendsList = userViewModel.getAllFriends(user);
-        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+        friendsList = userViewModel.getAllFriends(userIntent);
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
