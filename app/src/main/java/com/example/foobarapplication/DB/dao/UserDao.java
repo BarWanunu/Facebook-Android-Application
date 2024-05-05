@@ -28,4 +28,7 @@ public interface UserDao {
 
     @Query("select * from user")
     List<User> getAll();
+
+    @Query("delete from user")
+    void deleteAll();
 }

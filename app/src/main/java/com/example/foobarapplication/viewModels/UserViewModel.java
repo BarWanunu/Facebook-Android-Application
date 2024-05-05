@@ -98,5 +98,9 @@ public class UserViewModel extends ViewModel {
     public void rejectFriendsRequest(String userId, String friendId) {
         userRepository.rejectFriendsRequest(userId, friendId, GlobalToken.token);
     }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
 }
 

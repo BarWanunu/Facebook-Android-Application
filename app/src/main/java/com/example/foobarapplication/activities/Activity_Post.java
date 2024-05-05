@@ -21,6 +21,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -99,19 +102,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     myPosts.add(post);
                 }
             }
-            // Inflating the Popup using xml file
 
-            //User myuser = null;
             List<User> users = userViewModel.get();
-            /*
-            for (User user : users) {
-                if (user.getUserName().equals(userIntent.getUserName())) {
-                    myuser = user;
-                    break;
-                }
-            }
 
-             */
             User finalMyuser = userIntent;
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
@@ -134,6 +127,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     return true;
                 } else if (id == R.id.action_logout) {
                     // Start MainActivity - the login page
+                    userViewModel.deleteAll();
+                    postsViewModel.deleteAll();
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     // Close current activity if necessary
@@ -165,11 +160,11 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         btnGallery.setOnClickListener(v -> openGallery());
 
         Button btnAddPost = findViewById(R.id.btnAddPost);
-
         postsViewModel.deleteAll();
-        postsViewModel.getAllPosts(this).observe(this, posts -> {
+        postsViewModel.getAllPosts(Activity_Post.this).observe(Activity_Post.this, posts -> {
             adapter.setPosts(posts);
         });
+
 //
 
         btnAddPost.setOnClickListener(v -> {
@@ -251,8 +246,15 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     //like button was pressed
     public void onLikeClick(Post post, TextView likesTextView) {
-
-        postsViewModel.likePost(post, Activity_Post.this);
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        postsViewModel.likePost(post, success);
+        success.observe(Activity_Post.this, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                postsViewModel.deleteAll();
+                postsViewModel.getAllPosts(Activity_Post.this);
+            }
+        });
         // Get the current number of likes as a string
         String currentLikesString = likesTextView.getText().toString();
 
@@ -299,11 +301,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             // Handle item clicks here
             int id = item.getItemId();
             if (id == R.id.action_post_delete) {
-                postsViewModel.delete(finalMypost);
-                posts.remove(finalMypost);
-                postsViewModel.deleteAll();
-                postsViewModel.getAllPosts(this).observe(this, posts2 -> {
-                    adapter.setPosts(posts2);
+                MutableLiveData<Boolean> success = new MutableLiveData<>();
+                postsViewModel.delete(finalMypost, success);
+                success.observe(Activity_Post.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        postsViewModel.deleteAll();
+                        postsViewModel.getAllPosts(Activity_Post.this).observe(Activity_Post.this, posts2 -> {
+                            adapter.setPosts(posts2);
+                        });
+                    }
                 });
             } else if (id == R.id.action_post_edit) {
                 assert finalMypost != null;
@@ -395,8 +402,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         profiltIntent.putExtra("profileImg", profileImg);
         profiltIntent.putExtra("user", myuser);
         startActivity(profiltIntent);
+        finish();
         Toast.makeText(Activity_Post.this, "Welcome to " + userId + "'s profile, the posts here are only for display", Toast.LENGTH_SHORT).show();
-        userViewModel.createToken(userIntent);
     }
 
     private void showEditUsernameDialog(User user, List<Post> myposts) {
@@ -511,7 +518,15 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             // Update the post content
             post.setContent(newContent);
             // Update post on server
-            postsViewModel.edit(post);
+            MutableLiveData<Boolean> success = new MutableLiveData<>();
+            postsViewModel.edit(post, success);
+            success.observe(Activity_Post.this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    postsViewModel.deleteAll();
+                    postsViewModel.getAllPosts(Activity_Post.this);
+                }
+            });
             dialog.dismiss();
         });
 

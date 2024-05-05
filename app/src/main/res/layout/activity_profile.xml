@@ -50,7 +50,7 @@
             android:layout_height="595dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lstPosts"
+                android:id="@+id/lstPosts2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white" />
