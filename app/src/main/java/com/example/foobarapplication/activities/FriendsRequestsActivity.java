@@ -1,7 +1,7 @@
 package com.example.foobarapplication.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,15 +44,18 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onApproveClick(User user) {
+    public void onApproveClick(User user, FriendsRequestsAdapter adapter) {
         userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+        adapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onDeclineClick(User user) {
-        // Handle decline action
-        Toast.makeText(this, "Declined: " + user.getUserName(), Toast.LENGTH_SHORT).show();
+    public void onDeclineClick(User user, FriendsRequestsAdapter adapter) {
+        userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+        adapter.notifyDataSetChanged();
     }
 }
 

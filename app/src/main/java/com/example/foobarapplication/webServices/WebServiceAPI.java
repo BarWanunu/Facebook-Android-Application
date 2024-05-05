@@ -67,4 +67,7 @@ public interface WebServiceAPI {
 
     @PATCH("users/{userId}/friends/{friendId}")
     Call<JsonObject> approveFriendsRequest(@Path("userId") String userId, @Path("friendId") String friendId, @Header("Authorization") String token);
+
+    @DELETE("users/{userId}/friends/requests/{friendId}")
+    Call<JsonObject> rejectFriendsRequest(@Path("userId") String userId, @Path("friendId") String friendId, @Header("Authorization") String token);
 }

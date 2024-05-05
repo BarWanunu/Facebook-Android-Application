@@ -28,6 +28,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
 import com.example.foobarapplication.R;
+import com.example.foobarapplication.adapters.FriendsAdapter;
+import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
@@ -52,6 +54,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     boolean isDarkMode = false;
     private RecyclerView lstPosts;
     private PostsListAdapter adapter;
+
+    private FriendsAdapter friendsAdapter;
+    private FriendsRequestsAdapter friendsRequestsAdapter;
     private UserViewModel userViewModel;
     private PostsViewModel postsViewModel;
     private User userIntent;
@@ -79,12 +84,13 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        friendsList = userViewModel.getAllFriends(userIntent);
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+        friendsList = userViewModel.getAllFriends(user);
+        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
+   
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
-            onFriendsClick(v, friendsList);
+            onFriendsClick(v);
         });
 
         ImageButton menu = findViewById(R.id.menu);
@@ -148,6 +154,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 } else if (id == R.id.action_user_edit_image) {
                     assert finalMyuser != null;
                     showEditUserImageDialog(finalMyuser, myPosts);
+                } else if (id == R.id.profile) {
+                    goToProfile(user.getUserName(), user.getPhoto());
                 }
                 return false;
             });
@@ -201,9 +209,10 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         });
     }
 
-    public void onFriendsClick(View v, List<User> friendsList) {
+    public void onFriendsClick(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
-
+        friendsList = userViewModel.getAllFriends(user);
+        friendsRequest = userViewModel.getAllFriendsRequest(user.getUserName());
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -219,7 +228,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 intent.putExtra("username", userIntent.getUserName());
                 intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
                 startActivity(intent);
-                friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
                 return true;
             }
             return false;
@@ -237,7 +245,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     //share button was pressed
     @Override
     public void onShareClick(View v) {
-        //ImageButton shareButton = findViewById(R.id.shareButton);
 
         PopupMenu popup = new PopupMenu(this, v);
 
@@ -354,6 +361,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void friendsMenu(PopupMenu popup, String userId, String profileImg) {
         popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
