@@ -4,7 +4,7 @@
 In order to begin this is the url link to clone the project : https://github.com/shakedg1234/Foobar_Application.git
 
 Now we can begin using the app and get on facebook! 
-To start running first thing make sure the server is running and then you can press play (The grenn triangle) - make sure the coonfiguration is app. <br>
+To start running first thing please download the pixel 2 device. Afterwards, make sure the server is running and then you can press play (The grenn triangle) - make sure the coonfiguration is app. <br>
 
 ## About our project
 
