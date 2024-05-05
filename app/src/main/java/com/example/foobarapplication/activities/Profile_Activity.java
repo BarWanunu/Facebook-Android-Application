@@ -251,7 +251,6 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Intent intent = new Intent(this, Activity_Post.class);
         intent.putExtra("user", userViewModel.get().get(0));
         finish();
