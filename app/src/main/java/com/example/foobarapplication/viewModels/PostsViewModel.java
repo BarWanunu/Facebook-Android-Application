@@ -38,7 +38,7 @@ public class PostsViewModel extends ViewModel {
     }
 
 
-    public LiveData<List<Post>> getFromCloud(LifecycleOwner context) {
+    public LiveData<List<Post>> getAllPosts(LifecycleOwner context) {
         posts = postsRepository.getAllPosts(GlobalToken.token, context);
         return posts;
     }
