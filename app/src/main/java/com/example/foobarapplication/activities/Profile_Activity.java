@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,17 +63,27 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
         swipeRefreshLayout.setOnRefreshListener(this);
 
         userViewModel.createToken(userIntent);
-        userViewModel.getToken().observe(Profile_Activity.this, new Observer<String>() {
+        LiveData<String> tokenList = userViewModel.getToken();
+        tokenList.observe(Profile_Activity.this, new Observer<String>() {
             @Override
             public void onChanged(String token) {
-                friendsList =userViewModel.getAllFriends(userIntent);
-                lstPosts = findViewById(R.id.lstPosts);
-                adapter = new PostsListAdapter(Profile_Activity.this);
-                lstPosts.setAdapter(adapter);
-                lstPosts.setLayoutManager(new LinearLayoutManager(Profile_Activity.this));
-                postsViewModel.deleteAll();
-                postsViewModel.getPostsByUser(userId, Profile_Activity.this).observe(Profile_Activity.this, posts -> {
-                    adapter.setPosts(posts);
+                friendsList = userViewModel.getAllFriends(userIntent);
+                tokenList.removeObserver(this);
+                userViewModel.createToken(userViewModel.get().get(0));
+                tokenList.observe(Profile_Activity.this, new Observer<String>() {
+                    @Override
+                    public void onChanged(String string) {
+                        lstPosts = findViewById(R.id.lstPosts2);
+                        adapter = new PostsListAdapter(Profile_Activity.this);
+                        adapter.setOnItemClickListener(Profile_Activity.this);
+                        lstPosts.setAdapter(adapter);
+                        lstPosts.setLayoutManager(new LinearLayoutManager(Profile_Activity.this));
+                        postsViewModel.deleteAll();
+                        postsViewModel.getPostsByUser(userId, Profile_Activity.this).observe(Profile_Activity.this, posts -> {
+                            adapter.setPosts(posts);
+                        });
+                        tokenList.removeObserver(this);
+                    }
                 });
             }
         });
@@ -124,7 +136,15 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
     @Override
     public void onLikeClick(Post post, TextView likesTextView) {
 
-        postsViewModel.likePost(post, Profile_Activity.this);
+        MutableLiveData<Post> success = new MutableLiveData<>();
+        postsViewModel.likePost(post, success);
+        success.observe(Profile_Activity.this, new Observer<Post>() {
+            @Override
+            public void onChanged(Post post) {
+                postsViewModel.deleteAll();
+                postsViewModel.getPostsByUser(userId, Profile_Activity.this);
+            }
+        });
         // Get the current number of likes as a string
         String currentLikesString = likesTextView.getText().toString();
 
@@ -136,11 +156,9 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
 
     @Override
     public void onCommentClick(int postId) {
-        Intent intentUser = getIntent();
-        User newUser = (User) intentUser.getSerializableExtra("user");
         Intent intent = new Intent(this, Comment_Activity.class);
         intent.putExtra("POST_ID", postId);
-        intent.putExtra("userDetails", newUser);
+        intent.putExtra("userDetails", userViewModel.get().get(0));
         startActivity(intent);
     }
 
@@ -159,10 +177,9 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
                 break;
             }
         }
-
         // Set the item click listener
         Post finalMypost = mypost;
-        if (!finalMypost.getAuthor().equals(userIntent.getUserName())) {
+        if (!finalMypost.getAuthor().equals(userViewModel.get().get(0).getUserName())) {
             new AlertDialog.Builder(this).setMessage("Can't edit/delete posts of other users").show();
             return;
         }
@@ -170,11 +187,14 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
             // Handle item clicks here
             int id = item.getItemId();
             if (id == R.id.action_post_delete) {
-                postsViewModel.delete(finalMypost);
-                posts.remove(finalMypost);
-                postsViewModel.deleteAll();
-                postsViewModel.getAllPosts(this).observe(this, posts2 -> {
-                    adapter.setPosts(posts2);
+                MutableLiveData<Boolean> success = new MutableLiveData<>();
+                postsViewModel.delete(finalMypost, success);
+                success.observe(Profile_Activity.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        postsViewModel.deleteAll();
+                        postsViewModel.getPostsByUser(userId, Profile_Activity.this);
+                    }
                 });
             } else if (id == R.id.action_post_edit) {
                 assert finalMypost != null;
@@ -206,7 +226,15 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
             // Update the post content
             post.setContent(newContent);
             // Update post on server
-            postsViewModel.edit(post);
+            MutableLiveData<Boolean> success = new MutableLiveData<>();
+            postsViewModel.edit(post, success);
+            success.observe(Profile_Activity.this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    postsViewModel.deleteAll();
+                    postsViewModel.getPostsByUser(userId, Profile_Activity.this);
+                }
+            });
             dialog.dismiss();
         });
 
@@ -219,5 +247,14 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
     public void onRefresh() {
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, Activity_Post.class);
+        intent.putExtra("user", userViewModel.get().get(0));
+        finish();
+        startActivity(intent);
     }
 }

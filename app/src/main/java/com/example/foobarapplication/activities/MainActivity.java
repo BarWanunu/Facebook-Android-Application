@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
                                     public void onChanged(User user) {
                                         Intent signInIntent = new Intent(MainActivity.this, Activity_Post.class);
                                         signInIntent.putExtra("user", user);
-                                        signInIntent.putExtra("token", token);
                                         Toast.makeText(MainActivity.this, "Login Success, welcome to Facebook!", Toast.LENGTH_SHORT).show();
+                                        finish();
                                         startActivity(signInIntent);
                                     }
                                 });

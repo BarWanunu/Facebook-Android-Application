@@ -52,14 +52,16 @@ public class PostAPI {
         });
     }
 
-    public void delete(Post post, String token) {
+    public void delete(Post post, String token, MutableLiveData<Boolean> success) {
         Call<Post> call = webServiceAPI.deletePost(post.getAuthor(), post.getId(), "Bearer " + token);
         call.enqueue(new Callback<Post>() {
             @Override
             public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     Log.d("DeletePost", "Post deleted");
                 } else {
+                    success.postValue(false);
                     Log.d("DeletePost", "Failed to delete post");
                 }
             }
@@ -71,7 +73,7 @@ public class PostAPI {
         });
     }
 
-    public void edit(Post post, String token) {
+    public void edit(Post post, String token, MutableLiveData<Boolean> success) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("editedText", post.getContent());
         Call<Post> call = webServiceAPI.editPost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
@@ -79,8 +81,10 @@ public class PostAPI {
             @Override
             public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     Log.d("EditPost", "Post edited successfully");
                 } else {
+                    success.postValue(false);
                     Log.d("EditPost", "Failed to edit post");
                 }
             }
@@ -94,7 +98,7 @@ public class PostAPI {
 
     public void likePost(Post post, String token, MutableLiveData<Post> success) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("isLiked", post.getIsLiked());
+        jsonObject.addProperty("isLiked", false);
         Call<JsonObject> call = webServiceAPI.likePost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -103,7 +107,6 @@ public class PostAPI {
                     Gson gson = new Gson();
                     int likes = gson.fromJson(response.body().get("likes"), int.class);
                     post.setLikes(likes);
-                    post.setLiked(!post.getIsLiked());
                     success.postValue(post);
                     Log.d("LikePost", "Post liked successfully");
                 } else {
@@ -125,8 +128,6 @@ public class PostAPI {
             @Override
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 if (response.isSuccessful()) {
-                    List<Post> list = response.body();
-                    //Collections.sort(list);
                     posts.postValue(response.body());
                     Log.d("getAllPosts", "succeeded to fetch posts: ");
                 } else {
