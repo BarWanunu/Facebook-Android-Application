@@ -26,7 +26,7 @@ on the top of the phone you'll see the facebook logo to the right and 3 icons. <
 Underneath, there's the box where you as the user can let us know what's on your mind. All you need to do is write it and click add.
 Be aware you can also add a photo with your post, if you'll choose to post only a text, there won't be a photo that will attach automaticlly to the post. <br>
 
-## Ruler Actions
+#### Ruler Actions
 At the bottom of the page you'll see our ruler of actions. <br>
 We have 2 ImageButtons that will respond. <br>
 The first one, is the most ledt one - the menu button. In one click you'll see a few options pop up. <br>
@@ -47,7 +47,7 @@ If you suddenly, encounter with a post of someome who isn't your friend and you 
 Each post has its own data: author, content, number of likes and comments, you can add like by presing the like button, you can add comments by pressing the comments button and right after to enter you comment and submit it. you can also delete and edit your comment. <br>
 When you add a post the home page will get updated and your post will be added at the end of the page.
 
-## Our workflow
+#### Our workflow
 
 At first we divided the missions between us and updated it in the Jira. <br>
 Then, we started to arrange our project to build as MVVM architecture. <br>
