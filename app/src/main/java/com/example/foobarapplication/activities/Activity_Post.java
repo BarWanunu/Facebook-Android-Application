@@ -167,7 +167,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         Button btnAddPost = findViewById(R.id.btnAddPost);
 
         postsViewModel.deleteAll();
-        postsViewModel.getFromCloud(this).observe(this, posts -> {
+        postsViewModel.getAllPosts(this).observe(this, posts -> {
             adapter.setPosts(posts);
         });
 //
@@ -186,6 +186,11 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 }
 
                 postsViewModel.add(newPost, Activity_Post.this);
+
+                postsViewModel.deleteAll();
+                postsViewModel.getAllPosts(this).observe(this, posts -> {
+                    adapter.setPosts(posts);
+                });
 
                 // Show a toast message
                 Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
@@ -296,6 +301,10 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             if (id == R.id.action_post_delete) {
                 postsViewModel.delete(finalMypost);
                 posts.remove(finalMypost);
+                postsViewModel.deleteAll();
+                postsViewModel.getAllPosts(this).observe(this, posts2 -> {
+                    adapter.setPosts(posts2);
+                });
             } else if (id == R.id.action_post_edit) {
                 assert finalMypost != null;
                 showEditPostDialog(finalMypost);
@@ -477,7 +486,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 posts.add(post);
                 dao.update(post);
             }
-            Collections.sort(posts);
+            //Collections.sort(posts);
             postsViewModel.get().setValue(posts);
             dialog.dismiss();
         });
