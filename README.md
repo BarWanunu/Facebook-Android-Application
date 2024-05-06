@@ -67,4 +67,4 @@ During our work we checked after every little detail we changed that our app beh
 When everything worked as we expected we upload our program. <br>
 
 ## Important Things
-In order, for the application to run successfully without sudden crushes, please make sure you dont uplaod any photo that has a size larger than 1023 KB either for profile image or for a post.
+In order, for the application to run successfully without sudden crushes, please make sure you don't upload any photo that has a size larger than 1023 KB either for profile image or for a post.
