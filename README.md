@@ -48,7 +48,7 @@ If you suddenly, encounter with a post of someome who isn't your friend and you 
 You can enter to every one of your friends profile. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them, an appropriate message will be displayed <br>
 Also, if you would like to see all of your friend friends just click on the friends icon and select Profile Friends. <br>
 If you'll enter your own profile you'll be able to edit or delete your posts. <br>
-When entering to profile (even if it is your profile) you won't be able to edit your user details or delete your user, you can do that only from the home page <br>
+When entering to profile (even if it is your profile) you won't be able to edit your user details or delete your user, you can do that only from the home page. <br>
 If you want to get back to the main feed please return from the android back button. <br>
 
 #### Posts
