@@ -35,7 +35,7 @@ The first one, is the most left one - the menu button. In one click you'll see a
 3. My Profile - you'll be transfered in to your profile and you'll be able to see all of your posts. <br>
 4. Log Out - you'll log out from your account back to the sign in page. <br>
 
-The second option, is cliking on the friend button where it will pop up 2 options : <br>
+The second option, is cliking on the friends button where it will pop up 2 options : <br>
 1. My Friends - by choosing that you'll see a list that contains all of your friends. <br>
 2. Friends Requests - A list of all your friend requests will pop up, and you can choose whom to accept and whom to decline. <br>
 
