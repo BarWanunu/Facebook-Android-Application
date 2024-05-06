@@ -28,12 +28,12 @@ public class UserRepository {
         return api.getAllFriends(user.getUserName(), token);
     }
 
-    public void removeFriend(String userId, String friendId, String token) {
-        api.removeFriend(userId, friendId, token);
+    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success) {
+        api.removeFriend(userId, friendId, token, success);
     }
 
-    public List<User> getAllFriendsRequest(String username, String token) {
-        return api.getAllFriendsRequest(username, token);
+    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
+        return api.getAllFriendsRequest(username, token, success);
     }
 
     public void addFriendRequest(String userName, String token) {

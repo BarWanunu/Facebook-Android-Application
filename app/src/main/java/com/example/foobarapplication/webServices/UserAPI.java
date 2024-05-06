@@ -67,6 +67,7 @@ public class UserAPI {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
+                        String a = jsonObject.getString("message");
                         isUserChecked.postValue(success);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -193,21 +194,24 @@ public class UserAPI {
         });
     }
 
-    public void removeFriend(String userId, String friendId, String token) {
+    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success) {
 
         Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     Log.d("deleteFriend", "Succeed to delete friend");
                 } else {
+                    success.postValue(false);
                     Log.d("deleteFriend", "Failed to delete friend");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                success.postValue(false);
                 Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
             }
         });
@@ -248,13 +252,14 @@ public class UserAPI {
         return friendsList;
     }
 
-    public List<User> getAllFriendsRequest(String username, String token) {
+    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
         List<User> friendsRequest = new LinkedList<>();
         Call<JsonObject> call = webServiceAPI.getAllFriendsRequest(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     JsonObject jsonObject = response.body();
                     if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
                         JsonArray friendsArray = jsonObject.getAsJsonArray("friendsRequest");
@@ -267,16 +272,19 @@ public class UserAPI {
                             }
                         }
                     } else {
+                        success.postValue(false);
                         String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
                         Log.d("getAllFriendsRequests", "Failed to get friends requests: " + errorMessage);
                     }
                 } else {
+                    success.postValue(false);
                     Log.d("getAllFriendsRequest", "Failed to get all of the friends requests");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                success.postValue(false);
                 Log.e("getAllFriendsRequests", "Failed to fetch friends requests" + t.getMessage());
             }
         });
@@ -314,13 +322,14 @@ public class UserAPI {
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+
                 Log.e("approveFriendsRequest", "Failed to add the friend" + t.getMessage());
             }
         });
     }
 
     public void rejectFriendsRequest(String userId, String friendId, String token) {
-        Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId,"Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
