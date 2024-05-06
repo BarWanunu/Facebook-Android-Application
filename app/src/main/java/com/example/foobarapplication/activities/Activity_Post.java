@@ -21,7 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,8 +30,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
 import com.example.foobarapplication.R;
-import com.example.foobarapplication.adapters.FriendsAdapter;
-import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
 import com.example.foobarapplication.adapters.PostsListAdapter;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
@@ -45,7 +42,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,8 +81,9 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         swipeRefreshLayout.setOnRefreshListener(this);
 
         friendsList = userViewModel.getAllFriends(userIntent);
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
-   
+        MutableLiveData<Boolean> success = new MutableLiveData<>();
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
+
 
         ImageButton friends = findViewById(R.id.friends);
         friends.setOnClickListener(v -> {
@@ -99,9 +96,11 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
             List<Post> myPosts = new LinkedList<>();
             List<Post> posts = postsViewModel.get().getValue();
-            for (Post post : posts) {
-                if (post.getAuthor().equals(post.getAuthor())) {
-                    myPosts.add(post);
+            if (posts != null) {
+                for (Post post : posts) {
+                    if (post.getAuthor().equals(post.getAuthor())) {
+                        myPosts.add(post);
+                    }
                 }
             }
 
@@ -204,7 +203,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
     public void onFriendsClick(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
         friendsList = userViewModel.getAllFriends(userIntent);
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+        MutableLiveData<Boolean> success = new MutableLiveData<>();
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -219,7 +219,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 Intent intent = new Intent(this, FriendsRequestsActivity.class);
                 intent.putExtra("username", userIntent.getUserName());
                 intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
+                intent.putExtra("user", userIntent);
                 startActivity(intent);
+                List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
+                success.observe(Activity_Post.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        if (friendsRequestNew.size() != friendsRequest.size()) {
+                            postsViewModel.deleteAll();
+                            postsViewModel.getAllPosts(Activity_Post.this);
+                        }
+                    }
+                });
                 return true;
             }
             return false;
@@ -371,8 +382,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.RemoveFriend) {
-                userViewModel.removeFriend(userIntent.getUserName(), userId);
-                friendsList = userViewModel.getAllFriends(userIntent);
+                MutableLiveData<Boolean> successFriend = new MutableLiveData<>();
+                userViewModel.removeFriend(userIntent.getUserName(), userId, successFriend);
+                successFriend.observe(Activity_Post.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        friendsList = userViewModel.getAllFriends(userIntent);
+                        postsViewModel.deleteAll();
+                        postsViewModel.getAllPosts(Activity_Post.this);
+                    }
+                });
                 return true;
             } else if (id == R.id.action_profile) {
                 goToProfile(userId, profileImg);
@@ -389,7 +408,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             int id = item.getItemId();
             if (id == R.id.AddFriend) {
                 userViewModel.addFriendRequest(userId);
-                friendsRequest = userViewModel.getAllFriendsRequest(userId);
+                MutableLiveData<Boolean> success = new MutableLiveData<>();
+                friendsRequest = userViewModel.getAllFriendsRequest(userId, success);
                 return true;
             }
             return false;

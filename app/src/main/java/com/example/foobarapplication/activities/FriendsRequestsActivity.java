@@ -1,6 +1,7 @@
 package com.example.foobarapplication.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,7 +53,7 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
     @Override
     // Approving the friend request
     public void onApproveClick(User user, FriendsRequestsAdapter adapter) {
-        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username"), user.getUserName());
         adapter.notifyDataSetChanged();
     }
 
@@ -60,8 +61,18 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
     @Override
     // Rejecting the friend request
     public void onDeclineClick(User user, FriendsRequestsAdapter adapter) {
-        userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username") ,user.getUserName());
+        userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username"), user.getUserName());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        User user = (User) getIntent().getSerializableExtra("user");
+        Intent intent = new Intent(this, Activity_Post.class);
+        intent.putExtra("user", user);
+        finish();
+        startActivity(intent);
     }
 }
 
