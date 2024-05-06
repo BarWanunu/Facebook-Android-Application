@@ -140,9 +140,17 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                     finish();
                     return true;
                 } else if (id == R.id.action_user_delete) {
-                    userViewModel.delete(finalMyuser);
-                    users.remove(finalMyuser);
-                    finish();
+                    MutableLiveData<Boolean> success = new MutableLiveData<>();
+                    userViewModel.delete(finalMyuser, success);
+                    success.observe(Activity_Post.this, new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean aBoolean) {
+                            users.remove(finalMyuser);
+                        }
+                    });
+                    Intent i = new Intent(this, MainActivity.class);
+                    startActivity(i);
+
                 } else if (id == R.id.action_user_edit_name) {
                     assert finalMyuser != null;
                     showEditUsernameDialog(finalMyuser, myPosts);
