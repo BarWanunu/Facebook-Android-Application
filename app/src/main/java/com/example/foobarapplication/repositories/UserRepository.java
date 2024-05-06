@@ -32,8 +32,8 @@ public class UserRepository {
         api.removeFriend(userId, friendId, token, success);
     }
 
-    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
-        return api.getAllFriendsRequest(username, token, success);
+    public List<User> getAllFriendsRequest(String username, String token) {
+        return api.getAllFriendsRequest(username, token);
     }
 
     public void addFriendRequest(String userName, String token) {

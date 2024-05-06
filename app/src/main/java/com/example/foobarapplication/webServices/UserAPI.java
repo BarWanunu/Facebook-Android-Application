@@ -252,14 +252,13 @@ public class UserAPI {
         return friendsList;
     }
 
-    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
+    public List<User> getAllFriendsRequest(String username, String token) {
         List<User> friendsRequest = new LinkedList<>();
         Call<JsonObject> call = webServiceAPI.getAllFriendsRequest(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    success.postValue(true);
                     JsonObject jsonObject = response.body();
                     if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
                         JsonArray friendsArray = jsonObject.getAsJsonArray("friendsRequest");
@@ -272,19 +271,16 @@ public class UserAPI {
                             }
                         }
                     } else {
-                        success.postValue(false);
                         String errorMessage = jsonObject != null && jsonObject.has("message") ? jsonObject.get("message").getAsString() : "Unknown error";
                         Log.d("getAllFriendsRequests", "Failed to get friends requests: " + errorMessage);
                     }
                 } else {
-                    success.postValue(false);
                     Log.d("getAllFriendsRequest", "Failed to get all of the friends requests");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-                success.postValue(false);
                 Log.e("getAllFriendsRequests", "Failed to fetch friends requests" + t.getMessage());
             }
         });

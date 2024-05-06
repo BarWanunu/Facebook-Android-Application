@@ -83,8 +83,8 @@ public class UserViewModel extends ViewModel {
         userRepository.removeFriend(userId, friendId, GlobalToken.token, success);
     }
 
-    public List<User> getAllFriendsRequest(String username, MutableLiveData<Boolean> success) {
-        return userRepository.getAllFriendsRequest(username, GlobalToken.token, success);
+    public List<User> getAllFriendsRequest(String username) {
+        return userRepository.getAllFriendsRequest(username, GlobalToken.token);
     }
 
     public void addFriendRequest(String userName) {

@@ -81,8 +81,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         swipeRefreshLayout.setOnRefreshListener(this);
 
         friendsList = userViewModel.getAllFriends(userIntent);
-        MutableLiveData<Boolean> success = new MutableLiveData<>();
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
 
 
         ImageButton friends = findViewById(R.id.friends);
@@ -204,7 +203,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         PopupMenu popupMenu = new PopupMenu(this, v);
         friendsList = userViewModel.getAllFriends(userIntent);
         MutableLiveData<Boolean> success = new MutableLiveData<>();
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -221,7 +220,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
                 intent.putExtra("user", userIntent);
                 startActivity(intent);
-                List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName(), success);
+                List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName());
                 success.observe(Activity_Post.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
@@ -409,7 +408,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             if (id == R.id.AddFriend) {
                 userViewModel.addFriendRequest(userId);
                 MutableLiveData<Boolean> success = new MutableLiveData<>();
-                friendsRequest = userViewModel.getAllFriendsRequest(userId, success);
+                friendsRequest = userViewModel.getAllFriendsRequest(userId);
                 return true;
             }
             return false;
