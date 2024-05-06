@@ -29,7 +29,7 @@ Be aware you can also add a photo with your post, if you'll choose to post only 
 #### Ruler Actions
 At the bottom of the page you'll see our ruler of actions. <br>
 We have 2 ImageButtons that will respond. <br>
-The first one, is the most ledt one - the menu button. In one click you'll see a few options pop up. <br>
+The first one, is the most left one - the menu button. In one click you'll see a few options pop up. <br>
 1. Light/Dark mode - you can adjust the visuality of the phone as you like by making it dark mode or light mode. <br>
 2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would choose. <br>
 3. My Profile - you'll be transfered in to your profile and you'll be able to see all of your posts. <br>
