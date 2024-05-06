@@ -67,6 +67,7 @@ public class UserAPI {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
+                        String a = jsonObject.getString("message");
                         isUserChecked.postValue(success);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -193,21 +194,24 @@ public class UserAPI {
         });
     }
 
-    public void removeFriend(String userId, String friendId, String token) {
+    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success) {
 
         Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     Log.d("deleteFriend", "Succeed to delete friend");
                 } else {
+                    success.postValue(false);
                     Log.d("deleteFriend", "Failed to delete friend");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                success.postValue(false);
                 Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
             }
         });
@@ -314,13 +318,14 @@ public class UserAPI {
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+
                 Log.e("approveFriendsRequest", "Failed to add the friend" + t.getMessage());
             }
         });
     }
 
     public void rejectFriendsRequest(String userId, String friendId, String token) {
-        Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId,"Bearer " + token);
+        Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
