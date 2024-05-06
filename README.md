@@ -31,7 +31,7 @@ At the bottom of the page you'll see our ruler of actions. <br>
 We have 2 ImageButtons that will respond. <br>
 The first one, is the most ledt one - the menu button. In one click you'll see a few options pop up. <br>
 1. Light/Dark mode - you can adjust the visuality of the phone as you like by making it dark mode or light mode. <br>
-2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would chosoe. <br>
+2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would choose. <br>
 3. My Profile - you'll be transfered in to your profile and you'll be able to see all of your posts. <br>
 4. Log Out - you'll log out from your account back to the sign in page. <br>
 
@@ -48,11 +48,14 @@ If you suddenly, encounter with a post of someome who isn't your friend and you 
 You can enter to every one of your friends proifle. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them. <br>
 Also, if you would like to see all of your friend friends just click on the friends icon and select Profile Friends. <br>
 If you'll enter your own profile you'll be able to edit or delete your posts. <br>
+When entering to profile (even if it is your profile) you won't be able to edit your details or delete your user, you can do that only from the home page <br>
 If you want to get back to the main feed please return from the android back button. <br>
 
 #### Posts
 Each post has its own data: author, content, number of likes and comments, you can add like by presing the like button, you can add comments by pressing the comments button and right after to enter you comment and submit it. you can also delete and edit your comment. <br>
 When you add a post the home page will get updated and your post will be added at the end of the page.
+You can not edit/delete post that is not your post, an appropriate message will be displayed
+
 
 #### Our workflow
 
