@@ -17,7 +17,6 @@ public class Post implements Comparable<Post>{
     private int likes;
     private String img;
     private String profileImg;
-    private boolean isLiked = false;
 
     public Post() {
     }
@@ -92,13 +91,6 @@ public class Post implements Comparable<Post>{
     }
     public String getsProfilePicture(){
         return profileImg;
-    }
-
-    public boolean getIsLiked() {
-        return isLiked;
-    }
-    public void setLiked(boolean liked) {
-        this.isLiked = liked;
     }
 
     public String getProfile() {

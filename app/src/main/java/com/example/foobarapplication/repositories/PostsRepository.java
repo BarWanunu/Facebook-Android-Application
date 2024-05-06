@@ -55,16 +55,14 @@ public class PostsRepository {
     public MutableLiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
         MutableLiveData<List<Post>> userPosts = new MutableLiveData<>();
         api.getPostsByUser(userID, userPosts);
-        Observer<List<Post>> observer = new Observer<List<Post>>() {
+        userPosts.observe(context, new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> posts) {
-                if (posts != null && !posts.isEmpty()) {
-                    userPosts.postValue(posts);
-                }
+                postListData.setValue(posts);
+                userPosts.removeObserver(this);
             }
-        };
-        userPosts.observe(context, observer);
-        return userPosts;
+        });
+        return postListData;
     }
 
 
@@ -89,36 +87,17 @@ public class PostsRepository {
 
     }
 
-    public void delete(Post post, String token) {
-        api.delete(post, token);
+    public void delete(Post post, String token, MutableLiveData<Boolean> success) {
+        api.delete(post, token, success);
         dao.delete(post);
-        List<Post> posts = get().getValue();
-        posts.remove(post);
-        //Collections.sort(posts);
-        postListData.setValue(posts);
     }
 
-    public void edit(Post post, String token) {
-        api.edit(post, token);
-        dao.update(post);
-        List<Post> posts = dao.index();
-        //Collections.sort(posts);
-        postListData.setValue(posts);
+    public void edit(Post post, String token, MutableLiveData<Boolean> success) {
+        api.edit(post, token, success);
     }
 
-    public void likePost(Post post, String token, LifecycleOwner owner) {
-        MutableLiveData<Post> success = new MutableLiveData<>();
+    public void likePost(Post post, String token, MutableLiveData<Post> success) {
         api.likePost(post, token, success);
-        success.observe(owner, new Observer<Post>() {
-            @Override
-            public void onChanged(Post post) {
-                dao.update(post);
-                List<Post> posts = dao.index();
-                //Collections.sort(posts);
-                postListData.setValue(posts);
-            }
-        });
-
     }
 
     public void deleteAll() {

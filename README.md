@@ -4,8 +4,7 @@
 In order to begin this is the url link to clone the project : https://github.com/shakedg1234/Foobar_Application.git
 
 Now we can begin using the app and get on facebook! 
-To start running first thing make sure the server is running and then you can press play (The grenn triangle) - make sure the coonfiguration is app. <br>
-At any time of the project, if you want to upload a photo for ypur profile image or post please make sure that it's size isn't over than 140 KB so the program won't shut itself.
+To start running first thing please download the pixel 2 device. Afterwards, make sure the server is running and then you can press play (The grenn triangle) - make sure the coonfiguration is app. <br>
 
 ## About our project
 
@@ -34,6 +33,7 @@ The first one, is the most ledt one - the menu button. In one click you'll see a
 1. Light/Dark mode - you can adjust the visuality of the phone as you like by making it dark mode or light mode. <br>
 2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would chosoe. <br>
 3. My Profile - you'll be transfered in to your profile and you'll be able to see all of your posts. <br>
+4. Log Out - you'll log out from your account back to the sign in page. <br>
 
 The second option, is cliking on the friend button where it will pop up 2 options : <br>
 1. My Friends - by choosing that you'll see a list that contains all of your friends. <br>
@@ -43,6 +43,12 @@ The second option, is cliking on the friend button where it will pop up 2 option
 In our facebook as mentions above you'll be able to see who are your friends at any time by cliking My Friends button. <br>
 Moreover, when you'll see a post of your friend, you can press on his photo and you'll be able to choose if you want to remove this friend from your friends list or to enter his profile and see all of his posts. <br>
 If you suddenly, encounter with a post of someome who isn't your friend and you want to add him as a friend, just click on his photo and you'll have the option to add him as a friend by seding him a friend request and wait until he will either approve it or reject. <br>
+
+#### Profile
+You can enter to every one of your friends proifle. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them. <br>
+Also, if you would like to see all of your friend friends just click on the friends icon and select Profile Friends. <br>
+If you'll enter your own profile you'll be able to edit or delete your posts. <br>
+If you want to get back to the main feed please return from the android back button. <br>
 
 #### Posts
 Each post has its own data: author, content, number of likes and comments, you can add like by presing the like button, you can add comments by pressing the comments button and right after to enter you comment and submit it. you can also delete and edit your comment. <br>
@@ -56,3 +62,6 @@ Afterwards, we started doing the most basic interactions with the server - to ad
 Then, we divided our work for the users, posts and friends and end up merging all toghter. <br>
 During our work we checked after every little detail we changed that our app behavior is as we expected. <br> 
 When everything worked as we expected we upload our program. <br>
+
+## Important Things
+In order, for the application to run successfully without sudden crushes, please make sure you dont uplaod any photo that has a size larger than 140 KB either for profile image or for a post.

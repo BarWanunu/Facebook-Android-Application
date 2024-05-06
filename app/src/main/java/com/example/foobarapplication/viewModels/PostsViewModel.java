@@ -32,7 +32,7 @@ public class PostsViewModel extends ViewModel {
 
     }
 
-    public LiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
+    public MutableLiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
         posts = postsRepository.getPostsByUser(userID, context);
         return posts;
     }
@@ -68,16 +68,16 @@ public class PostsViewModel extends ViewModel {
         postsRepository.add(post, GlobalToken.token, owner);
     }
 
-    public void delete(Post post) {
-        postsRepository.delete(post, GlobalToken.token);
+    public void delete(Post post, MutableLiveData<Boolean> success) {
+        postsRepository.delete(post, GlobalToken.token, success);
     }
 
-    public void edit(Post post) {
-        postsRepository.edit(post, GlobalToken.token);
+    public void edit(Post post, MutableLiveData<Boolean> success) {
+        postsRepository.edit(post, GlobalToken.token, success);
     }
 
-    public void likePost(Post post, LifecycleOwner owner) {
-        postsRepository.likePost(post, GlobalToken.token, owner);
+    public void likePost(Post post, MutableLiveData<Post> success) {
+        postsRepository.likePost(post, GlobalToken.token, success);
     }
 
     public void deleteAll() {
