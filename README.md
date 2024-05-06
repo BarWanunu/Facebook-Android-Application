@@ -45,7 +45,7 @@ Moreover, when you'll see a post of your friend, you can press on his photo and 
 If you suddenly, encounter with a post of someome who isn't your friend and you want to add him as a friend, just click on his photo and you'll have the option to add him as a friend by seding him a friend request and wait until he will either approve it or reject. <br>
 
 #### Profile
-You can enter to every one of your friends proifle. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them. <br>
+You can enter to every one of your friends profile. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them. <br>
 Also, if you would like to see all of your friend friends just click on the friends icon and select Profile Friends. <br>
 If you'll enter your own profile you'll be able to edit or delete your posts. <br>
 When entering to profile (even if it is your profile) you won't be able to edit your details or delete your user, you can do that only from the home page <br>
