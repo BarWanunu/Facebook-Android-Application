@@ -59,8 +59,8 @@ public class UserViewModel extends ViewModel {
         userRepository.createToken(user, this);
     }
 
-    public void delete(User user) {
-        userRepository.delete(user, isUserDeleted, GlobalToken.token);
+    public void delete(User user, MutableLiveData<Boolean> success) {
+        userRepository.delete(user, success, GlobalToken.token);
     }
 
     public List<User> get() {

@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         userViewModel.getToken().observe(MainActivity.this, new Observer<String>() {
                             @Override
                             public void onChanged(String token) {
+                                userViewModel.deleteAll();
                                 MutableLiveData<User> user = new MutableLiveData<>();
                                 userViewModel.getUser(enteredUsername, user, MainActivity.this);
                                 user.observe(MainActivity.this, new Observer<User>() {
