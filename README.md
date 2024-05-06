@@ -13,7 +13,7 @@ The first page while running the app, in order to sign in to our facebook app yo
 After you sign in with us you'll get a spesific token that will allow you to make some of the activities we offer for our users by making sure you are indeed the person who are authorized to make the specific action.
 
 #### Signup page
-In the signup page is where you'll create your user. <br>
+The signup page is where you'll create your user. <br>
 You'll have to fill all of the fields in order to finish the form. <br>
 For example - the email address you sign up with must be from the pattern of name@example.com. <br>
 For the password choosing it must be in the length of minimum 8 characters and contain letters and numbers. 
