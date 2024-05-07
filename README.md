@@ -4,6 +4,7 @@
 In order to begin this is the url link to clone the project : https://github.com/shakedg1234/Foobar_Application.git
 
 Now we can begin using the app and get on facebook! 
+Make sure that you press on the "Sync Project with Gradle Files" button
 To start running please press play (The grenn triangle) - make sure the coonfiguration is MainActivity.
 
 ## About our project
