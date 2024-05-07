@@ -36,13 +36,15 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if (friendRequests.get(0).getUserName().equals("You don't have any friends requests")) {
+        /*
+        if (friendRequests.get(0).getUserName().equals("No friends requests")) {
             view = LayoutInflater.from(context).inflate(R.layout.no_friends_request, parent, false);
             return new NoFriendRequestViewHolder(view);
         } else {
-            view = LayoutInflater.from(context).inflate(R.layout.friend_request_item_layout, parent, false);
-            return new ViewHolder(view);
-        }
+
+         */
+        view = LayoutInflater.from(context).inflate(R.layout.friend_request_item_layout, parent, false);
+        return new ViewHolder(view);
     }
 
     // ViewHolder for the "no friend request" layout
@@ -54,9 +56,14 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (friendRequests.get(0).getUserName().equals("You don't have any friends requests")) {
+        if (friendRequests.get(0).getUserName().equals("No friends requests")) {
             // Set a message indicating no friend requests
-            holder.friendNameTextView.setText("You don't have any friends requests");
+            holder.friendNameTextView.setText("No friends requests");
+
+
+            holder.approveButton.setVisibility(View.GONE);
+            holder.declineButton.setVisibility(View.GONE);
+
         } else {
             // Bind friend request data
             User friendRequest = friendRequests.get(position);
