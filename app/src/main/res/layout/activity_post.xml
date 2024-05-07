@@ -92,8 +92,7 @@
             android:layout_height="match_parent"
             android:background="@color/facebook"
             android:gravity="center"
-            android:hint="what's on your mind ?"
-            tools:ignore="HardcodedText"
+            android:hint="@string/on_your_mind"
             >
 
         </EditText>
@@ -101,13 +100,12 @@
         <Button
             android:id="@+id/btnAddPost"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginTop="-10dp"
             android:backgroundTint="@color/white"
-            android:text="add post"
+            android:text="@string/add_post"
             android:textColor="@color/facebook"
-
-            android:textSize="14sp" />
+            android:textSize="10sp" />
 
 
     </LinearLayout>
@@ -175,7 +173,8 @@
             android:layout_height="54dp"
             android:background="@color/facebook"
             android:clickable="true"
-            android:src="@drawable/home">
+            android:src="@drawable/home"
+            android:focusable="true">
 
         </ImageButton>
     </LinearLayout>

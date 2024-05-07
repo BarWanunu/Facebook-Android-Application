@@ -26,7 +26,9 @@
     <string name="remove_friend">Remove Friend</string>
     <string name="profile_friends">Profile Friends</string>
     <string name="add_friend">Add Friend</string>
-    <string name="Profile">Profile</string>
+    <string name="Profile">Go To Profile</string>
+    <string name="on_your_mind">What\'s on your mind ?</string>
+    <string name="add_post">add Post</string>
     <string name="friend_request">Friends Requests</string>
     <string name="edit">\n</string>
     <string name="Delete">\n</string>

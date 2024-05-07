@@ -3,6 +3,7 @@ package com.example.foobarapplication.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.FriendsRequestsAdapter;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
@@ -53,16 +55,38 @@ public class FriendsRequestsActivity extends AppCompatActivity implements Friend
     @Override
     // Approving the friend request
     public void onApproveClick(User user, FriendsRequestsAdapter adapter) {
-        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username"), user.getUserName());
-        adapter.notifyDataSetChanged();
+        // approving the friend request and presenting the response from the server
+        userViewModel.approveFriendsRequest(getIntent().getStringExtra("username"), user.getUserName(), new ApprovalCallback() {
+            @Override
+            public void onResponse(String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(FriendsRequestsActivity.this, message, Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     // Rejecting the friend request
     public void onDeclineClick(User user, FriendsRequestsAdapter adapter) {
-        userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username"), user.getUserName());
-        adapter.notifyDataSetChanged();
+        // rejecting the friend request and presenting the response from the server
+        userViewModel.rejectFriendsRequest(getIntent().getStringExtra("username"), user.getUserName(), new ApprovalCallback() {
+            @Override
+            public void onResponse(String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(FriendsRequestsActivity.this, message, Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
     }
 
     @Override
