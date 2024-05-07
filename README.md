@@ -4,7 +4,7 @@
 In order to begin this is the url link to clone the project : https://github.com/shakedg1234/Foobar_Application.git
 
 Now we can begin using the app and get on facebook! 
-To start running first thing please download the pixel 2 device. Afterwards, make sure the server is running and then you can press play (The grenn triangle) - make sure the coonfiguration is app. <br>
+To start running first thing please download the pixel 2 device. Afterwards, make sure the server is running and then you can press play (The grenn triangle) - make sure the configuration is app. <br>
 
 ## About our project
 
@@ -13,7 +13,7 @@ The first page while running the app, in order to sign in to our facebook app yo
 After you sign in with us you'll get a spesific token that will allow you to make some of the activities we offer for our users by making sure you are indeed the person who are authorized to make the specific action.
 
 #### Signup page
-In the signup page is where you'll create your user. <br>
+The signup page is where you'll create your user. <br>
 You'll have to fill all of the fields in order to finish the form. <br>
 For example - the email address you sign up with must be from the pattern of name@example.com. <br>
 For the password choosing it must be in the length of minimum 8 characters and contain letters and numbers. 
@@ -29,13 +29,13 @@ Be aware you can also add a photo with your post, if you'll choose to post only 
 #### Ruler Actions
 At the bottom of the page you'll see our ruler of actions. <br>
 We have 2 ImageButtons that will respond. <br>
-The first one, is the most ledt one - the menu button. In one click you'll see a few options pop up. <br>
+The first one, is the most left one - the menu button. In one click you'll see a few options pop up. <br>
 1. Light/Dark mode - you can adjust the visuality of the phone as you like by making it dark mode or light mode. <br>
-2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would chosoe. <br>
+2. Edit name, Edit Image, Delete User - all of this functions will change/erase your profile as you would choose. <br>
 3. My Profile - you'll be transfered in to your profile and you'll be able to see all of your posts. <br>
 4. Log Out - you'll log out from your account back to the sign in page. <br>
 
-The second option, is cliking on the friend button where it will pop up 2 options : <br>
+The second option, is clicking on the friends button where it will pop up 2 options : <br>
 1. My Friends - by choosing that you'll see a list that contains all of your friends. <br>
 2. Friends Requests - A list of all your friend requests will pop up, and you can choose whom to accept and whom to decline. <br>
 
@@ -45,14 +45,17 @@ Moreover, when you'll see a post of your friend, you can press on his photo and 
 If you suddenly, encounter with a post of someome who isn't your friend and you want to add him as a friend, just click on his photo and you'll have the option to add him as a friend by seding him a friend request and wait until he will either approve it or reject. <br>
 
 #### Profile
-You can enter to every one of your friends proifle. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them. <br>
+You can enter to every one of your friends profile. Overthere, you'll see all of the spesific friend posts. You are not able to edit or delete any of them, an appropriate message will be displayed <br>
 Also, if you would like to see all of your friend friends just click on the friends icon and select Profile Friends. <br>
 If you'll enter your own profile you'll be able to edit or delete your posts. <br>
+When entering to profile (even if it is your profile) you won't be able to edit your user details or delete your user, you can do that only from the home page. <br>
 If you want to get back to the main feed please return from the android back button. <br>
 
 #### Posts
 Each post has its own data: author, content, number of likes and comments, you can add like by presing the like button, you can add comments by pressing the comments button and right after to enter you comment and submit it. you can also delete and edit your comment. <br>
 When you add a post the home page will get updated and your post will be added at the end of the page.
+You can not edit/delete post that is not your post, an appropriate message will be displayed
+
 
 #### Our workflow
 
@@ -64,4 +67,4 @@ During our work we checked after every little detail we changed that our app beh
 When everything worked as we expected we upload our program. <br>
 
 ## Important Things
-In order, for the application to run successfully without sudden crushes, please make sure you dont uplaod any photo that has a size larger than 140 KB either for profile image or for a post.
+In order, for the application to run successfully without sudden crushes, please make sure you don't upload any photo that has a size larger than 1023 KB either for profile image or for a post.

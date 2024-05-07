@@ -460,7 +460,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         profiltIntent.putExtra("user", myuser);
         startActivity(profiltIntent);
         finish();
-        Toast.makeText(Activity_Post.this, "Welcome to " + userId + "'s profile, the posts here are only for display", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Activity_Post.this, "Welcome to " + userId + "'s profile", Toast.LENGTH_SHORT).show();
     }
 
     private void showEditUsernameDialog(User user, List<Post> myposts) {
