@@ -36,22 +36,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        /*
-        if (friendRequests.get(0).getUserName().equals("No friends requests")) {
-            view = LayoutInflater.from(context).inflate(R.layout.no_friends_request, parent, false);
-            return new NoFriendRequestViewHolder(view);
-        } else {
-
-         */
         view = LayoutInflater.from(context).inflate(R.layout.friend_request_item_layout, parent, false);
         return new ViewHolder(view);
-    }
-
-    // ViewHolder for the "no friend request" layout
-    private static class NoFriendRequestViewHolder extends ViewHolder {
-        public NoFriendRequestViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
     }
 
     @Override
