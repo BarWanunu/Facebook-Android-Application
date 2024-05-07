@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.UserDao;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 import com.example.foobarapplication.webServices.UserAPI;
@@ -28,24 +29,24 @@ public class UserRepository {
         return api.getAllFriends(user.getUserName(), token);
     }
 
-    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success) {
-        api.removeFriend(userId, friendId, token, success);
+    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        api.removeFriend(userId, friendId, token, success, callback);
     }
 
     public List<User> getAllFriendsRequest(String username, String token) {
         return api.getAllFriendsRequest(username, token);
     }
 
-    public void addFriendRequest(String userName, String token) {
-        api.addFriendRequest(userName, token);
+    public void addFriendRequest(String userName, String token, ApprovalCallback callback) {
+        api.addFriendRequest(userName, token, callback);
     }
 
-    public void approveFriendsRequest(String userId, String friendId, String token) {
-        api.approveFriendsRequest(userId, friendId, token);
+    public void approveFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
+        api.approveFriendsRequest(userId, friendId, token, callback);
     }
 
-    public void rejectFriendsRequest(String userId, String friendId, String token) {
-        api.rejectFriendsRequest(userId, friendId, token);
+    public void rejectFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
+        api.rejectFriendsRequest(userId, friendId, token, callback);
     }
 
 

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.foobarapplication.Globals.GlobalToken;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 import com.google.gson.Gson;
@@ -194,25 +195,32 @@ public class UserAPI {
         });
     }
 
-    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success) {
+    public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
 
         Call<JsonObject> call = webServiceAPI.deleteFriend(userId, friendId, "Bearer " + token);
+        String message[] = new String[1];
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(true);
                     Log.d("deleteFriend", "Succeed to delete friend");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(false);
                     Log.d("deleteFriend", "Failed to delete friend");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                message[0] = t.getMessage();
                 success.postValue(false);
                 Log.e("deleteFriends", "Failed to delete friend" + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }
@@ -287,57 +295,77 @@ public class UserAPI {
         return friendsRequest;
     }
 
-    public void addFriendRequest(String userName, String token) {
+    public void addFriendRequest(String userName, String token, ApprovalCallback callback) {
+        String[] message = new String[1];
         Call<JsonObject> call = webServiceAPI.addFriendRequest(userName, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.message();
                     Log.d("addFriendRequest", "Succeed to add the request");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.message();
                     Log.d("addFriendRequest", "Failed to add the request");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                message[0] = t.getMessage();
                 Log.e("addFriendRequest", "Failed to add the request" + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }
 
-    public void approveFriendsRequest(String userId, String friendId, String token) {
+    public void approveFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
+        String[] message = new String[1];
         Call<JsonObject> call = webServiceAPI.approveFriendsRequest(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("approveFriendsRequest", "Succeed to add the friend");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("approveFriendsRequest", "Failed to add the friend");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-
+                message[0] = t.getMessage();
                 Log.e("approveFriendsRequest", "Failed to add the friend" + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }
 
-    public void rejectFriendsRequest(String userId, String friendId, String token) {
+    public void rejectFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
+        String[] message = new String[1];
         Call<JsonObject> call = webServiceAPI.rejectFriendsRequest(userId, friendId, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("rejectFriendsRequest", "Succeed to reject the friend");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("rejectFriendsRequest", "Failed to reject the friend");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                message[0] = t.getMessage();
                 Log.e("rejectFriendsRequest", "Failed to reject the friend" + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }

@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,12 +30,12 @@ import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.PostsListAdapter;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.PostsViewModel;
 import com.example.foobarapplication.viewModels.UserViewModel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -80,126 +79,135 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.refreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+        // initializing friend request list and friends list from the server
         friendsList = userViewModel.getAllFriends(userIntent);
         friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
 
-
+        // friends button listener
         ImageButton friends = findViewById(R.id.friends);
-        friends.setOnClickListener(v -> {
-            onFriendsClick(v);
-        });
+        friends.setOnClickListener(this::onFriendsClick);
 
+        // menu button listener
         ImageButton menu = findViewById(R.id.menu);
-        menu.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(this, v);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
-            List<Post> myPosts = new LinkedList<>();
-            List<Post> posts = postsViewModel.get().getValue();
-            if (posts != null) {
-                for (Post post : posts) {
-                    if (post.getAuthor().equals(post.getAuthor())) {
-                        myPosts.add(post);
-                    }
-                }
-            }
+        menu.setOnClickListener(this::onMenuClick);
 
-            List<User> users = userViewModel.get();
+        // button gallery listener
+        ImageButton btnGallery = findViewById(R.id.btnGallery);
+        btnGallery.setOnClickListener(v -> openGallery());
 
-            User finalMyuser = userIntent;
-            popupMenu.setOnMenuItemClickListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.action_dark_mode) {
-                    // Toggle the mode
-                    isDarkMode = !isDarkMode;
-
-                    if (isDarkMode) {
-                        // Set dark mode background, text color, etc.
-                        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-
-                    } else {
-                        // Set light mode background, text color, etc.
-                        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
-                    }
-                    adapter.setDarkMode(isDarkMode);
-
-                    // Notify the adapter that the data has changed
-                    adapter.notifyDataSetChanged();
-                    return true;
-                } else if (id == R.id.action_logout) {
-                    // Start MainActivity - the login page
-                    userViewModel.deleteAll();
-                    postsViewModel.deleteAll();
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    // Close current activity if necessary
-                    finish();
-                    return true;
-                } else if (id == R.id.action_user_delete) {
-                    userViewModel.delete(finalMyuser);
-                    users.remove(finalMyuser);
-                    finish();
-                } else if (id == R.id.action_user_edit_name) {
-                    assert finalMyuser != null;
-                    showEditUsernameDialog(finalMyuser, myPosts);
-                } else if (id == R.id.action_user_edit_image) {
-                    assert finalMyuser != null;
-                    showEditUserImageDialog(finalMyuser, myPosts);
-                } else if (id == R.id.profile) {
-                    goToProfile(userIntent.getUserName(), userIntent.getPhoto());
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
         lstPosts = findViewById(R.id.lstPosts);
         adapter = new PostsListAdapter(this, isDarkMode);
         lstPosts.setAdapter(adapter);
         lstPosts.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener(this);
-        ImageButton btnGallery = findViewById(R.id.btnGallery);
-        btnGallery.setOnClickListener(v -> openGallery());
 
-        Button btnAddPost = findViewById(R.id.btnAddPost);
+        // getting all the posts from the server
         postsViewModel.deleteAll();
         postsViewModel.getAllPosts(Activity_Post.this).observe(Activity_Post.this, posts -> {
             adapter.setPosts(posts);
         });
 
-//
-
-        btnAddPost.setOnClickListener(v -> {
-            EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
-            String enteredText = whatsOnYourMindEditText.getText().toString();
-
-            if (!enteredText.isEmpty()) {
-                Post newPost;
-                String currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(new Date());
-                if (selectedImageBase64 != null) {
-                    newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, selectedImageBase64, userIntent.getPhoto());
-                } else {
-                    newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
-                }
-
-                postsViewModel.add(newPost, Activity_Post.this);
-
-                postsViewModel.deleteAll();
-                postsViewModel.getAllPosts(this).observe(this, posts -> {
-                    adapter.setPosts(posts);
-                });
-
-                // Show a toast message
-                Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
-
-                // Clear the EditText
-                whatsOnYourMindEditText.setText("");
-            } else {
-                // Show a toast message indicating that the text is empty
-                Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // adding post button
+        Button btnAddPost = findViewById(R.id.btnAddPost);
+        btnAddPost.setOnClickListener(v -> addPost());
     }
 
-    public void onFriendsClick(View v) {
+    private void addPost() {
+        EditText whatsOnYourMindEditText = findViewById(R.id.whats_on_your_mind);
+        String enteredText = whatsOnYourMindEditText.getText().toString();
+
+        if (!enteredText.isEmpty()) {
+            Post newPost;
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(new Date());
+            if (selectedImageBase64 != null) {
+                newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, selectedImageBase64, userIntent.getPhoto());
+            } else {
+                newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
+            }
+
+            postsViewModel.add(newPost, Activity_Post.this);
+
+            postsViewModel.deleteAll();
+            postsViewModel.getAllPosts(this).observe(this, posts -> {
+                adapter.setPosts(posts);
+            });
+
+            // Show a toast message
+            Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
+
+            // Clear the EditText
+            whatsOnYourMindEditText.setText("");
+        } else {
+            // Show a toast message indicating that the text is empty
+            Toast.makeText(this, "Please enter text before adding a post", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Opening the menu options
+    private void onMenuClick(View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+        List<Post> myPosts = new LinkedList<>();
+        List<Post> posts = postsViewModel.get().getValue();
+        if (posts != null) {
+            for (Post post : posts) {
+                if (post.getAuthor().equals(post.getAuthor())) {
+                    myPosts.add(post);
+                }
+            }
+        }
+
+        List<User> users = userViewModel.get();
+
+        User finalMyuser = userIntent;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_dark_mode) {
+                // Toggle the mode
+                isDarkMode = !isDarkMode;
+
+                if (isDarkMode) {
+                    // Set dark mode background, text color, etc.
+                    getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+
+                } else {
+                    // Set light mode background, text color, etc.
+                    getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+                }
+                adapter.setDarkMode(isDarkMode);
+
+                // Notify the adapter that the data has changed
+                adapter.notifyDataSetChanged();
+                return true;
+            } else if (id == R.id.action_logout) {
+                // Start MainActivity - the login page
+                userViewModel.deleteAll();
+                postsViewModel.deleteAll();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                // Close current activity if necessary
+                finish();
+                return true;
+            } else if (id == R.id.action_user_delete) {
+                userViewModel.delete(finalMyuser);
+                users.remove(finalMyuser);
+                finish();
+            } else if (id == R.id.action_user_edit_name) {
+                assert finalMyuser != null;
+                showEditUsernameDialog(finalMyuser, myPosts);
+            } else if (id == R.id.action_user_edit_image) {
+                assert finalMyuser != null;
+                showEditUserImageDialog(finalMyuser, myPosts);
+            } else if (id == R.id.profile) {
+                goToProfile(userIntent.getUserName(), userIntent.getPhoto());
+            }
+            return false;
+        });
+        popupMenu.show();
+    }
+
+    // The menu opens up when we press the friends button
+    private void onFriendsClick(View v) {
         PopupMenu popupMenu = new PopupMenu(this, v);
         friendsList = userViewModel.getAllFriends(userIntent);
         MutableLiveData<Boolean> success = new MutableLiveData<>();
@@ -208,7 +216,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.my_friends && friendsList != null) {
+            if (id == R.id.my_friends) {
                 Intent intent = new Intent(this, FriendsActivity.class);
                 intent.putExtra("username", userIntent.getUserName());
                 intent.putExtra("friendsList", new ArrayList<>(friendsList));
@@ -221,6 +229,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 intent.putExtra("user", userIntent);
                 startActivity(intent);
                 List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+                // checking if the friend request changed if so update the posts list
                 success.observe(Activity_Post.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
@@ -335,6 +344,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
     }
 
+    // The method checks if the picture that was clicked is the user, friend of user or not a friend
     @Override
     public void onPictureClick(View v, String userId, String profileImg) {
         boolean isFriend = false;
@@ -362,6 +372,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
     }
 
+    // In case the picture was the user the menu will display only profile option
     private void userMenu(PopupMenu popup, String userId, String profileImg) {
         popup.getMenuInflater().inflate(R.menu.menu_user_option, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
@@ -375,6 +386,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
     }
 
+    // In case the picture was the user friend the menu will display only profile and remove friend options
     @SuppressLint("NotifyDataSetChanged")
     private void friendsMenu(PopupMenu popup, String userId, String profileImg) {
         popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
@@ -382,7 +394,19 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             int id = item.getItemId();
             if (id == R.id.RemoveFriend) {
                 MutableLiveData<Boolean> successFriend = new MutableLiveData<>();
-                userViewModel.removeFriend(userIntent.getUserName(), userId, successFriend);
+                // removing the friend and updating the posts after the removal
+                userViewModel.removeFriend(userIntent.getUserName(), userId, successFriend, new ApprovalCallback() {
+                    @Override
+                    public void onResponse(String message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Activity_Post.this, message, Toast.LENGTH_SHORT).show();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
                 successFriend.observe(Activity_Post.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
@@ -401,13 +425,25 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         popup.show();
     }
 
+    //In case the picture wasn't a user friend the menu will display only add friend options
     private void notFriendsMenu(PopupMenu popup, String userId) {
         popup.getMenuInflater().inflate(R.menu.not_friends_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.AddFriend) {
-                userViewModel.addFriendRequest(userId);
-                MutableLiveData<Boolean> success = new MutableLiveData<>();
+                // adding the friend request and update the list
+                userViewModel.addFriendRequest(userId, new ApprovalCallback() {
+                    @Override
+                    public void onResponse(String message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Activity_Post.this, message, Toast.LENGTH_SHORT).show();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
                 friendsRequest = userViewModel.getAllFriendsRequest(userId);
                 return true;
             }
@@ -495,7 +531,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 openCamera();
             }
         });
-        input2.setText("choose image from camera");
+        input2.setText("choose an image from the camera");
         layout.addView(input);
         layout.addView(input2);
         builder.setView(layout);
@@ -508,13 +544,14 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             userViewModel.edit(user, user.getUserName());
             PostsDao dao = LocalDB.getInstance(this).postDao();
             List<Post> posts = postsViewModel.get().getValue();
-            for (Post post : myposts) {
-                posts.remove(post);
-                post.setProfileImg(selectedImageBase64);
-                posts.add(post);
-                dao.update(post);
+            if (posts != null) {
+                for (Post post : myposts) {
+                    posts.remove(post);
+                    post.setProfileImg(selectedImageBase64);
+                    posts.add(post);
+                    dao.update(post);
+                }
             }
-            //Collections.sort(posts);
             postsViewModel.get().setValue(posts);
             dialog.dismiss();
         });
@@ -615,15 +652,6 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
         return imageFile;
-    }
-
-
-    // Helper method to encode Bitmap to base64
-    private String encodeImageToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 }
 

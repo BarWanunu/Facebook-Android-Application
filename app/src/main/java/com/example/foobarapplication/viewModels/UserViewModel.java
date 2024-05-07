@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foobarapplication.Globals.GlobalToken;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.repositories.UserRepository;
 
@@ -79,24 +80,24 @@ public class UserViewModel extends ViewModel {
         return userRepository.getAllFriends(user, GlobalToken.token);
     }
 
-    public void removeFriend(String userId, String friendId, MutableLiveData<Boolean> success) {
-        userRepository.removeFriend(userId, friendId, GlobalToken.token, success);
+    public void removeFriend(String userId, String friendId, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        userRepository.removeFriend(userId, friendId, GlobalToken.token, success, callback);
     }
 
     public List<User> getAllFriendsRequest(String username) {
         return userRepository.getAllFriendsRequest(username, GlobalToken.token);
     }
 
-    public void addFriendRequest(String userName) {
-        userRepository.addFriendRequest(userName, GlobalToken.token);
+    public void addFriendRequest(String userName, ApprovalCallback callback) {
+        userRepository.addFriendRequest(userName, GlobalToken.token, callback);
     }
 
-    public void approveFriendsRequest(String userId, String friendId) {
-        userRepository.approveFriendsRequest(userId, friendId, GlobalToken.token);
+    public void approveFriendsRequest(String userId, String friendId, ApprovalCallback callback) {
+        userRepository.approveFriendsRequest(userId, friendId, GlobalToken.token, callback);
     }
 
-    public void rejectFriendsRequest(String userId, String friendId) {
-        userRepository.rejectFriendsRequest(userId, friendId, GlobalToken.token);
+    public void rejectFriendsRequest(String userId, String friendId, ApprovalCallback callback) {
+        userRepository.rejectFriendsRequest(userId, friendId, GlobalToken.token, callback);
     }
 
     public void deleteAll() {
