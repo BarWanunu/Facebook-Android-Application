@@ -148,7 +148,7 @@ public class UserAPI {
         });
     }
 
-    public void edit(User user, String token, UserViewModel userViewModel) {
+    public void edit(User user, String token, UserViewModel userViewModel, MutableLiveData<Boolean> success) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("editedUsername", user.getUserName());
         jsonObject.addProperty("imageData", user.getPhoto());
@@ -157,15 +157,18 @@ public class UserAPI {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     createToken(user.getUserName(), userViewModel);
                     Log.d("editUser", "Edited the user");
                 } else {
+                    success.postValue(false);
                     Log.d("editUser", "Failed to edit user");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                success.postValue(false);
                 Log.e("editUser", "Failed to edit user: " + t.getMessage());
             }
         });

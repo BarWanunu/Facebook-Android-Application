@@ -83,8 +83,8 @@ public class UserRepository {
     }
 
     // Editing the user's details
-    public void edit(User user, String oldUserName, String token, UserViewModel model) {
-        api.edit(user, token, model);
+    public void edit(User user, String oldUserName, String token, UserViewModel model, MutableLiveData<Boolean> success) {
+        api.edit(user, token, model, success);
         dao.delete(oldUserName);
         dao.add(user);
     }

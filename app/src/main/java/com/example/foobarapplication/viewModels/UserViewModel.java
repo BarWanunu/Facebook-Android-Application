@@ -68,8 +68,8 @@ public class UserViewModel extends ViewModel {
         return userRepository.getAll();
     }
 
-    public void edit(User user, String oldUserName) {
-        userRepository.edit(user, oldUserName, GlobalToken.token, this);
+    public void edit(User user, String oldUserName, MutableLiveData<Boolean> success) {
+        userRepository.edit(user, oldUserName, GlobalToken.token, this, success);
     }
 
     public void getUser(String username, MutableLiveData<User> user, LifecycleOwner owner) {
