@@ -17,11 +17,14 @@ public class RetrofitBuilder {
         if (retrofit == null) {
             synchronized (RetrofitBuilder.class) {
                 if (retrofit == null) {
+
+                    // Create OkHttpClient with timeout settings
                     OkHttpClient okHttpClient = new OkHttpClient.Builder().
                             connectTimeout(30, TimeUnit.SECONDS).
                             readTimeout(30, TimeUnit.SECONDS).
                             writeTimeout(30, TimeUnit.SECONDS).build();
 
+                    // Build Retrofit instance with base URL and OkHttpClient
                     retrofit = new Retrofit.Builder()
                             .baseUrl("http://10.0.2.2:80/").client(okHttpClient).callbackExecutor(Executors.newSingleThreadExecutor())
                             .addConverterFactory(ScalarsConverterFactory.create())
@@ -29,7 +32,8 @@ public class RetrofitBuilder {
                             .build();
                 }
             }
-            }
-            return retrofit;
         }
+        // Return the singleton instance of Retrofit
+        return retrofit;
     }
+}

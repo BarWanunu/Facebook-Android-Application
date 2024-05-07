@@ -68,7 +68,6 @@ public class UserAPI {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().toString());
                         boolean success = jsonObject.getBoolean("success");
-                        String a = jsonObject.getString("message");
                         isUserChecked.postValue(success);
                     } catch (JSONException e) {
                         e.printStackTrace();

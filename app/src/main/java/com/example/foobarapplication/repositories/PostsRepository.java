@@ -3,7 +3,6 @@ package com.example.foobarapplication.repositories;
 import android.content.Context;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -13,8 +12,6 @@ import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.webServices.PostAPI;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +34,7 @@ public class PostsRepository {
         }
     }
 
+    // Retrieves all posts from the API and updates the LiveData with the retrieved data
     public MutableLiveData<List<Post>> getAllPosts(String token, LifecycleOwner context) {
         api.getAllPosts(token, postListData);
         Observer<List<Post>> observer = new Observer<List<Post>>() {
@@ -53,6 +51,7 @@ public class PostsRepository {
         return postListData;
     }
 
+    // Retrieves posts by a specific user from the API and updates the LiveData with the retrieved data
     public MutableLiveData<List<Post>> getPostsByUser(String userID, LifecycleOwner context) {
         MutableLiveData<List<Post>> userPosts = new MutableLiveData<>();
         api.getPostsByUser(userID, userPosts);
@@ -66,12 +65,12 @@ public class PostsRepository {
         return postListData;
     }
 
-
+    // Retrieves the LiveData containing the list of posts
     public MutableLiveData<List<Post>> get() {
         return postListData;
     }
 
-
+    // Adds a new post and observes the success LiveData for database insertion
     public void add(final Post post, String token, LifecycleOwner owner, MutableLiveData<Post> success, ApprovalCallback callback) {
         api.add(post, token, success, callback);
         success.observe(owner, new Observer<Post>() {
@@ -87,21 +86,24 @@ public class PostsRepository {
 
     }
 
+    // Deletes a post and observes the success LiveData for database deletion
     public void delete(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
         api.delete(post, token, success, callback);
         dao.delete(post);
     }
 
+    // Edits a post and observes the success LiveData for update
     public void edit(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
         api.edit(post, token, success, callback);
     }
 
+    // Likes a post and observes the success LiveData for update
     public void likePost(Post post, String token, MutableLiveData<Post> success) {
         api.likePost(post, token, success);
     }
 
+    // Deletes all posts from the local database
     public void deleteAll() {
         dao.deleteAll();
     }
-
 }

@@ -33,10 +33,6 @@ public class CommentsRepository {
         return dao.getAllComments();
     }
 
-
-
-
-
     public LiveData<List<Comment>> getAll() {
         return commentListData;
     }

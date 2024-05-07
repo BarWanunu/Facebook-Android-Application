@@ -45,7 +45,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         }
     }
 
-    // ViewHolder for the "no friend request" layout
+    // ViewHolder for the no friends request layout
     private static class NoFriendRequestViewHolder extends ViewHolder {
         public NoFriendRequestViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,8 +71,6 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
             holder.declineButton.setOnClickListener(v -> listener.onDeclineClick(friendRequest, this));
         }
     }
-
-
 
 
     @Override

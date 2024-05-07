@@ -125,6 +125,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
             }
 
+            // adding a post
             MutableLiveData<Post> success = new MutableLiveData<>();
             postsViewModel.add(newPost, Activity_Post.this, success, new ApprovalCallback() {
                 @Override
@@ -139,6 +140,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 }
             });
 
+            // refreshing the posts list
             success.observe(Activity_Post.this, new Observer<Post>() {
                 @Override
                 public void onChanged(Post post) {

@@ -51,9 +51,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             friendNameTextView = itemView.findViewById(R.id.friendNameTextView);
         }
     }
-    public void updateList(List<User> updatedList) {
-        this.friendsList = updatedList;
-    }
 }
 
 
