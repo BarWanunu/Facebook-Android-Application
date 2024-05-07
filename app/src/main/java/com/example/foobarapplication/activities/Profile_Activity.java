@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.adapters.PostsListAdapter;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.PostsViewModel;
@@ -188,7 +190,18 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
             int id = item.getItemId();
             if (id == R.id.action_post_delete) {
                 MutableLiveData<Boolean> success = new MutableLiveData<>();
-                postsViewModel.delete(finalMypost, success);
+                postsViewModel.delete(finalMypost, success, new ApprovalCallback() {
+                    @Override
+                    public void onResponse(String message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Profile_Activity.this, message, Toast.LENGTH_SHORT).show();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
                 success.observe(Profile_Activity.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
@@ -227,7 +240,18 @@ public class Profile_Activity extends AppCompatActivity implements PostsListAdap
             post.setContent(newContent);
             // Update post on server
             MutableLiveData<Boolean> success = new MutableLiveData<>();
-            postsViewModel.edit(post, success);
+            postsViewModel.edit(post, success, new ApprovalCallback() {
+                @Override
+                public void onResponse(String message) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Profile_Activity.this, message, Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
             success.observe(Profile_Activity.this, new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean aBoolean) {

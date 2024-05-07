@@ -125,15 +125,29 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
             }
 
-            postsViewModel.add(newPost, Activity_Post.this);
-
-            postsViewModel.deleteAll();
-            postsViewModel.getAllPosts(this).observe(this, posts -> {
-                adapter.setPosts(posts);
+            MutableLiveData<Post> success = new MutableLiveData<>();
+            postsViewModel.add(newPost, Activity_Post.this, success, new ApprovalCallback() {
+                @Override
+                public void onResponse(String message) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Activity_Post.this, message, Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             });
 
-            // Show a toast message
-            Toast.makeText(Activity_Post.this, "Post added successfully", Toast.LENGTH_SHORT).show();
+            success.observe(Activity_Post.this, new Observer<Post>() {
+                @Override
+                public void onChanged(Post post) {
+                    postsViewModel.deleteAll();
+                    postsViewModel.getAllPosts(Activity_Post.this).observe(Activity_Post.this, posts -> {
+                        adapter.setPosts(posts);
+                    });
+                }
+            });
 
             // Clear the EditText
             whatsOnYourMindEditText.setText("");
@@ -189,9 +203,16 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 finish();
                 return true;
             } else if (id == R.id.action_user_delete) {
-                userViewModel.delete(finalMyuser);
-                users.remove(finalMyuser);
-                finish();
+                MutableLiveData<Boolean> success = new MutableLiveData<>();
+                userViewModel.delete(finalMyuser, success);
+                success.observe(Activity_Post.this, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        users.remove(finalMyuser);
+                    }
+                });
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
             } else if (id == R.id.action_user_edit_name) {
                 assert finalMyuser != null;
                 showEditUsernameDialog(finalMyuser, myPosts);
@@ -323,7 +344,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             int id = item.getItemId();
             if (id == R.id.action_post_delete) {
                 MutableLiveData<Boolean> success = new MutableLiveData<>();
-                postsViewModel.delete(finalMypost, success);
+                postsViewModel.delete(finalMypost, success, new ApprovalCallback() {
+                    @Override
+                    public void onResponse(String message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(Activity_Post.this, message, Toast.LENGTH_SHORT).show();
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                });
                 success.observe(Activity_Post.this, new Observer<Boolean>() {
                     @Override
                     public void onChanged(Boolean aBoolean) {
@@ -577,7 +609,18 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
             post.setContent(newContent);
             // Update post on server
             MutableLiveData<Boolean> success = new MutableLiveData<>();
-            postsViewModel.edit(post, success);
+            postsViewModel.edit(post, success, new ApprovalCallback() {
+                @Override
+                public void onResponse(String message) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(Activity_Post.this, message, Toast.LENGTH_SHORT).show();
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
             success.observe(Activity_Post.this, new Observer<Boolean>() {
                 @Override
                 public void onChanged(Boolean aBoolean) {

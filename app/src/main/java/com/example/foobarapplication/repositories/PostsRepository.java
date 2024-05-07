@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 
 import com.example.foobarapplication.DB.LocalDB;
 import com.example.foobarapplication.DB.dao.PostsDao;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.webServices.PostAPI;
 
@@ -71,9 +72,8 @@ public class PostsRepository {
     }
 
 
-    public void add(final Post post, String token, LifecycleOwner owner) {
-        MutableLiveData<Post> success = new MutableLiveData<>();
-        api.add(post, token, success);
+    public void add(final Post post, String token, LifecycleOwner owner, MutableLiveData<Post> success, ApprovalCallback callback) {
+        api.add(post, token, success, callback);
         success.observe(owner, new Observer<Post>() {
             @Override
             public void onChanged(Post post) {
@@ -87,13 +87,13 @@ public class PostsRepository {
 
     }
 
-    public void delete(Post post, String token, MutableLiveData<Boolean> success) {
-        api.delete(post, token, success);
+    public void delete(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        api.delete(post, token, success, callback);
         dao.delete(post);
     }
 
-    public void edit(Post post, String token, MutableLiveData<Boolean> success) {
-        api.edit(post, token, success);
+    public void edit(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        api.edit(post, token, success, callback);
     }
 
     public void likePost(Post post, String token, MutableLiveData<Post> success) {
