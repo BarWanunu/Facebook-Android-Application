@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -26,72 +27,96 @@ public class PostAPI {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public void add(Post post, String token, MutableLiveData<Post> success) {
+    public void add(Post post, String token, MutableLiveData<Post> success, ApprovalCallback callback) {
         JsonObject postCreate = new JsonObject();
         postCreate.addProperty("text", post.getContent());
         postCreate.addProperty("date", post.getDate());
         postCreate.addProperty("img", post.getImg());
         Call<JsonObject> call = webServiceAPI.createPost("Bearer " + token, postCreate);
+        String message[] = new String[1];
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     Gson gson = new Gson();
                     Post post = gson.fromJson(response.body().get("post"), Post.class);
                     success.postValue(post);
                     Log.d("AddPost", "Post added");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
+                    success.postValue(post);
                     Log.d("AddPost", "Failed to add post");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                message[0] = t.getMessage();
+                success.postValue(post);
                 Log.d("AddPost", "Failed to add post: " + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }
 
-    public void delete(Post post, String token, MutableLiveData<Boolean> success) {
-        Call<Post> call = webServiceAPI.deletePost(post.getAuthor(), post.getId(), "Bearer " + token);
-        call.enqueue(new Callback<Post>() {
+    public void delete(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        Call<JsonObject> call = webServiceAPI.deletePost(post.getAuthor(), post.getId(), "Bearer " + token);
+        String message[] = new String[1];
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(true);
                     Log.d("DeletePost", "Post deleted");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(false);
                     Log.d("DeletePost", "Failed to delete post");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                message[0] = t.getMessage();
                 Log.e("DeletePost", "Network error: " + t.getMessage());
+                success.postValue(false);
+                callback.onResponse(message[0]);
             }
         });
     }
 
-    public void edit(Post post, String token, MutableLiveData<Boolean> success) {
+    public void edit(Post post, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("editedText", post.getContent());
-        Call<Post> call = webServiceAPI.editPost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
-        call.enqueue(new Callback<Post>() {
+        Call<JsonObject> call = webServiceAPI.editPost(post.getAuthor(), post.getId(), "Bearer " + token, jsonObject);
+        String message[] = new String[1];
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(true);
                     Log.d("EditPost", "Post edited successfully");
+                    callback.onResponse(message[0]);
                 } else {
+                    message[0] = response.body().get("message").getAsString();
                     success.postValue(false);
                     Log.d("EditPost", "Failed to edit post");
+                    callback.onResponse(message[0]);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                message[0] = t.getMessage();
                 Log.e("EditPost", "Network error: " + t.getMessage());
+                callback.onResponse(message[0]);
             }
         });
     }

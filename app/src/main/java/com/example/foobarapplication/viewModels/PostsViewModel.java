@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foobarapplication.Globals.GlobalToken;
+import com.example.foobarapplication.entities.ApprovalCallback;
 import com.example.foobarapplication.entities.Post;
 import com.example.foobarapplication.repositories.PostsRepository;
 
@@ -64,16 +65,16 @@ public class PostsViewModel extends ViewModel {
         return isGetPosts;
     }
 
-    public void add(Post post, LifecycleOwner owner) {
-        postsRepository.add(post, GlobalToken.token, owner);
+    public void add(Post post, LifecycleOwner owner, MutableLiveData<Post> success, ApprovalCallback callback) {
+        postsRepository.add(post, GlobalToken.token, owner, success, callback);
     }
 
-    public void delete(Post post, MutableLiveData<Boolean> success) {
-        postsRepository.delete(post, GlobalToken.token, success);
+    public void delete(Post post, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        postsRepository.delete(post, GlobalToken.token, success, callback);
     }
 
-    public void edit(Post post, MutableLiveData<Boolean> success) {
-        postsRepository.edit(post, GlobalToken.token, success);
+    public void edit(Post post, MutableLiveData<Boolean> success, ApprovalCallback callback) {
+        postsRepository.edit(post, GlobalToken.token, success, callback);
     }
 
     public void likePost(Post post, MutableLiveData<Post> success) {

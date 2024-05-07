@@ -38,10 +38,10 @@ public interface WebServiceAPI {
     Call<JsonObject> createPost(@Header("Authorization") String token, @Body JsonObject postBody);
 
     @DELETE("users/{userId}/posts/{postId}")
-    Call<Post> deletePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token);
+    Call<JsonObject> deletePost(@Path("userId") String userId, @Path("postId") int postId, @Header("Authorization") String token);
 
     @PATCH("users/{id}/posts/{pid}")
-    Call<Post> editPost(@Path("id") String userId, @Path("pid") int postId, @Header("Authorization") String token, @Body JsonObject jsonBody);
+    Call<JsonObject> editPost(@Path("id") String userId, @Path("pid") int postId, @Header("Authorization") String token, @Body JsonObject jsonBody);
 
     @PATCH("User/{id}")
     Call<JsonObject> editUser(@Path("id") String userId, @Header("Authorization") String token, @Body JsonObject jsonObject);
