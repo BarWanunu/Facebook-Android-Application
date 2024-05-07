@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,7 +79,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
 
     public PostsListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
-        //this.isDarkMode = isDarkMode;
         this.context = context;
     }
 
@@ -96,26 +94,8 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             final Post current = posts.get(position);
             holder.tvAuthor.setText(current.getAuthor());
             holder.tvContent.setText(current.getContent());
-
-            //                Picasso.get().load(current.getuPic()).into(holder.ivPic);
-////                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-//            if (currentPic == -1 && currentProfilePicture == -1) {
-//
-//                String img= current.getsPic();
-//                String profile =current.getsProfilePicture();
-//
-//            } else if (currentPic != -1 && currentProfilePicture == -1) {
-//                Picasso.get().load(current.getPic()).into(holder.ivPic);
-//                Picasso.get().load(current.getuProfilePicture()).into(holder.profilePicture);
-//            } else {
-//                holder.ivPic.setImageResource(current.getPic());
-//                holder.profilePicture.setImageResource(current.getProfilePicture());
-//
-            // Check if the image data is provided as Base64 strings
-            //holder.ivPic.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.pingpong));
             String imageBase64 = current.getsPic();
             String profileImageBase64 = current.getsProfilePicture();
-
             if (imageBase64 != null && !imageBase64.isEmpty()) {
                 String formattedBase64 = imageBase64.substring(23);
                 // Decode the Base64 string into a byte array
@@ -128,7 +108,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
             } else {
                 holder.ivPic.setVisibility(View.GONE);  // Hide the ImageView if there is no image
             }
-
 
 
             if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
@@ -173,8 +152,6 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Post
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Post currentPost = posts.get(adapterPosition);
                     listener.onLikeClick(currentPost, holder.likesTextView);
-                    // Toggle the isLiked state for the current post
-                    //currentPost.setLiked(!currentPost.getIsLiked());
                 }
             }
         });

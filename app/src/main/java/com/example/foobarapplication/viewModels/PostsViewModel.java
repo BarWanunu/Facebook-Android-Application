@@ -49,10 +49,6 @@ public class PostsViewModel extends ViewModel {
         return posts;
     }
 
-//    public LiveData<List<Post>> getAllFromDb(String token) {
-//        posts = postsRepository.getAllFromDb(isGetPosts, token);
-//        return posts;
-//    }
     public static Post create(String profile, String text, String dateString, int likes){
         return new Post(profile, text, dateString, likes);
     }

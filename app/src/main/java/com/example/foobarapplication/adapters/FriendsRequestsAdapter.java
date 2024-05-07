@@ -66,8 +66,6 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
     }
 
 
-
-
     @Override
     public int getItemCount() {
         return friendRequests == null || friendRequests.isEmpty() ? 1 : friendRequests.size();

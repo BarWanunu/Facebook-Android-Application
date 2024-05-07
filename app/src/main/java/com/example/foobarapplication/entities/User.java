@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String photo;
 
     @Ignore
-    public User(String email, String password, String photo, String userName) {
+    public User(String email, String password, String photo, @NonNull String userName) {
         this.email = email;
         this.password = password;
         this.photo = photo;
@@ -26,7 +26,7 @@ public class User implements Serializable {
     }
 
     @Ignore
-    public User(String userName, String password) {
+    public User(@NonNull String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
@@ -37,7 +37,7 @@ public class User implements Serializable {
     }
 
     @Ignore
-    public User(String userName) {
+    public User(@NonNull String userName) {
         this.userName = userName;
     }
 
@@ -67,6 +67,7 @@ public class User implements Serializable {
         return this.confirmPassword;
     }
 
+    @NonNull
     public String getUserName() {
         return this.userName;
     }
@@ -75,7 +76,7 @@ public class User implements Serializable {
         return confirmPassword;
     }
 
-    public void setUserName(String userName) {
+    public void setUserName(@NonNull String userName) {
         this.userName = userName;
     }
 

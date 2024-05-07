@@ -13,7 +13,6 @@ import com.example.foobarapplication.entities.User;
 import com.example.foobarapplication.viewModels.UserViewModel;
 import com.example.foobarapplication.webServices.UserAPI;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class UserRepository {
@@ -25,67 +24,72 @@ public class UserRepository {
         dao = LocalDB.getInstance(context).userDao();
     }
 
+    // Retrieves all friends of a user from the server
     public List<User> getAllFriends(User user, String token) {
         return api.getAllFriends(user.getUserName(), token);
     }
 
+    // Removing a friend from the user's friends list
     public void removeFriend(String userId, String friendId, String token, MutableLiveData<Boolean> success, ApprovalCallback callback) {
         api.removeFriend(userId, friendId, token, success, callback);
     }
 
+    // Getting a list of all the user's friends requests
     public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
         return api.getAllFriendsRequest(username, token, success);
     }
 
+    // Adding a friend request for the specific user we want
     public void addFriendRequest(String userName, String token, ApprovalCallback callback) {
         api.addFriendRequest(userName, token, callback);
     }
 
+    // Approving a friend request and making the two users friends
     public void approveFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
         api.approveFriendsRequest(userId, friendId, token, callback);
     }
 
+    // Rejecting a friend request
     public void rejectFriendsRequest(String userId, String friendId, String token, ApprovalCallback callback) {
         api.rejectFriendsRequest(userId, friendId, token, callback);
     }
 
-
-    class UserListData extends MutableLiveData<List<User>> {
-
-        public UserListData() {
-            super();
-            setValue(new LinkedList<>());
-        }
-    }
-
+    // Adds a new user and observes the success LiveData for database insertion
     public void add(final User user, final MutableLiveData<Boolean> isUserAdded) {
         api.add(user, isUserAdded);
         dao.add(user);
     }
 
+    // Checking if the user's fields exists in the database in order to let him inside the app
     public void check(final User user, final MutableLiveData<Boolean> isUserChecked, UserViewModel userViewModel) {
         api.check(user, isUserChecked, userViewModel);
     }
 
+    // Deleting the user from the database
     public void delete(User user, MutableLiveData<Boolean> isUserDeleted, String token) {
         api.delete(user, isUserDeleted, token);
         dao.delete(user);
     }
+
+    // Creating the token for the user
     public void createToken(User user, UserViewModel userViewModel) {
         api.createToken(user.getUserName(), userViewModel);
 
     }
 
+    // Getting all users from the local database
     public List<User> getAll() {
         return dao.getAll();
     }
 
-    public void edit(User user, String oldUserName, String token, UserViewModel model) {
-        api.edit(user, token, model);
+    // Editing the user's details
+    public void edit(User user, String oldUserName, String token, UserViewModel model, MutableLiveData<Boolean> success) {
+        api.edit(user, token, model, success);
         dao.delete(oldUserName);
         dao.add(user);
     }
 
+    // Getting the user from the server
     public void getUser(String username, String token, MutableLiveData<User> user, LifecycleOwner owner) {
         api.getUser(username, token, user);
         user.observe(owner, new Observer<User>() {
@@ -98,6 +102,7 @@ public class UserRepository {
         });
     }
 
+    // Deletes all users from the local database
     public void deleteAll() {
         dao.deleteAll();
     }

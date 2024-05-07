@@ -13,10 +13,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.foobarapplication.R;
 import com.example.foobarapplication.entities.Comment;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +68,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             holder.commentAuthor.setText(current.getCommentAuthor());
             holder.commentContent.setText(current.getCommentContent());
             String profileImageBase64 = current.getSProfilePicture();
-            if(profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+            if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
                 String formattedBase64 = profileImageBase64.substring(23);
                 // Decode the Base64 string into a byte array
                 byte[] profileImageData = Base64.decode(formattedBase64, Base64.DEFAULT);
@@ -83,14 +81,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
         //check if the editCommentButton was pressed
         holder.editCommentButton.setOnClickListener(v -> {
-            if (listener != null){
+            if (listener != null) {
                 listener.onEditCommentClick(position);
             }
         });
 
         //check if the deleteCommentButton was pressed
         holder.deleteCommentButton.setOnClickListener(v -> {
-            if (listener != null){
+            if (listener != null) {
                 listener.onDeleteCommentClick(position);
             }
         });
@@ -106,8 +104,8 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         this.listener = listener;
     }
 
-    public void setComments(List<Comment> s){
-        comments =s;
+    public void setComments(List<Comment> s) {
+        comments = s;
         notifyDataSetChanged();
     }
 

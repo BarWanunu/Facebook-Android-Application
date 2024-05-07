@@ -125,6 +125,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 newPost = new Post(userIntent.getUserName(), enteredText, currentDate, 0, userIntent.getPhoto());
             }
 
+            // adding a post
             MutableLiveData<Post> success = new MutableLiveData<>();
             postsViewModel.add(newPost, Activity_Post.this, success, new ApprovalCallback() {
                 @Override
@@ -139,6 +140,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 }
             });
 
+            // refreshing the posts list
             success.observe(Activity_Post.this, new Observer<Post>() {
                 @Override
                 public void onChanged(Post post) {
@@ -511,7 +513,8 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
             // Update user's name in the local user object and ViewModel
             user.setUserName(newUserName);
-            userViewModel.edit(user, oldUserName);
+
+            userViewModel.edit(user, oldUserName, new MutableLiveData<>());
 
             // Prepare to update posts
             Executor executor = Executors.newSingleThreadExecutor();
@@ -570,21 +573,20 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // Set up the buttons
         builder.setPositiveButton("Submit", (dialog, which) -> {
-            // Update the post content
+            // Update the user photo
             user.setPhoto(selectedImageBase64);
-            // Update post on server
-            userViewModel.edit(user, user.getUserName());
-            PostsDao dao = LocalDB.getInstance(this).postDao();
-            List<Post> posts = postsViewModel.get().getValue();
-            if (posts != null) {
-                for (Post post : myposts) {
-                    posts.remove(post);
-                    post.setProfileImg(selectedImageBase64);
-                    posts.add(post);
-                    dao.update(post);
+            MutableLiveData<Boolean> success = new MutableLiveData<>();
+            userViewModel.edit(user, user.getUserName(), success);
+            success.observe(Activity_Post.this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    postsViewModel.deleteAll();
+                    postsViewModel.getAllPosts(Activity_Post.this).observe(Activity_Post.this, posts2 -> {
+                        adapter.setPosts(posts2);
+                    });
                 }
-            }
-            postsViewModel.get().setValue(posts);
+            });
+
             dialog.dismiss();
         });
 
