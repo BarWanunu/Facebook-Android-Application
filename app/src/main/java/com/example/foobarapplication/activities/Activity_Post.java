@@ -81,7 +81,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
 
         // initializing friend request list and friends list from the server
         friendsList = userViewModel.getAllFriends(userIntent);
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), new MutableLiveData<>());
 
         // friends button listener
         ImageButton friends = findViewById(R.id.friends);
@@ -234,7 +234,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
         PopupMenu popupMenu = new PopupMenu(this, v);
         friendsList = userViewModel.getAllFriends(userIntent);
         MutableLiveData<Boolean> success = new MutableLiveData<>();
-        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+        friendsRequest = userViewModel.getAllFriendsRequest(userIntent.getUserName(), new MutableLiveData<>());
         popupMenu.getMenuInflater().inflate(R.menu.friends_icon_menu, popupMenu.getMenu());
 
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -251,7 +251,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                 intent.putExtra("friendsRequest", new ArrayList<>(friendsRequest));
                 intent.putExtra("user", userIntent);
                 startActivity(intent);
-                List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName());
+                List<User> friendsRequestNew = userViewModel.getAllFriendsRequest(userIntent.getUserName(), new MutableLiveData<>());
                 // checking if the friend request changed if so update the posts list
                 success.observe(Activity_Post.this, new Observer<Boolean>() {
                     @Override
@@ -478,7 +478,7 @@ public class Activity_Post extends AppCompatActivity implements PostsListAdapter
                         });
                     }
                 });
-                friendsRequest = userViewModel.getAllFriendsRequest(userId);
+                friendsRequest = userViewModel.getAllFriendsRequest(userId, new MutableLiveData<>());
                 return true;
             }
             return false;

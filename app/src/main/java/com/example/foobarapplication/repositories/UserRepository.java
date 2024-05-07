@@ -35,8 +35,8 @@ public class UserRepository {
     }
 
     // Getting a list of all the user's friends requests
-    public List<User> getAllFriendsRequest(String username, String token) {
-        return api.getAllFriendsRequest(username, token);
+    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
+        return api.getAllFriendsRequest(username, token, success);
     }
 
     // Adding a friend request for the specific user we want

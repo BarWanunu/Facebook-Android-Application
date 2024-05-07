@@ -262,13 +262,14 @@ public class UserAPI {
         return friendsList;
     }
 
-    public List<User> getAllFriendsRequest(String username, String token) {
+    public List<User> getAllFriendsRequest(String username, String token, MutableLiveData<Boolean> success) {
         List<User> friendsRequest = new LinkedList<>();
         Call<JsonObject> call = webServiceAPI.getAllFriendsRequest(username, "Bearer " + token);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+                    success.postValue(true);
                     JsonObject jsonObject = response.body();
                     if (jsonObject != null && jsonObject.has("success") && jsonObject.get("success").getAsBoolean()) {
                         JsonArray friendsArray = jsonObject.getAsJsonArray("friendsRequest");
@@ -285,12 +286,14 @@ public class UserAPI {
                         Log.d("getAllFriendsRequests", "Failed to get friends requests: " + errorMessage);
                     }
                 } else {
+                    success.postValue(false);
                     Log.d("getAllFriendsRequest", "Failed to get all of the friends requests");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                success.postValue(false);
                 Log.e("getAllFriendsRequests", "Failed to fetch friends requests" + t.getMessage());
             }
         });
@@ -303,11 +306,11 @@ public class UserAPI {
         call.enqueue(new Callback<JsonObject>() {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    message[0] = response.message();
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("addFriendRequest", "Succeed to add the request");
                     callback.onResponse(message[0]);
                 } else {
-                    message[0] = response.message();
+                    message[0] = response.body().get("message").getAsString();
                     Log.d("addFriendRequest", "Failed to add the request");
                     callback.onResponse(message[0]);
                 }
