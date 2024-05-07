@@ -11,7 +11,7 @@ Then, run the server and you can press play (The grenn triangle) - make sure the
 
 #### Signin page
 The first page while running the app, in order to sign in to our facebook app you can take one of the users from the mongoDB or to create one for yourself. <br>
-After you sign in with us you'll get a spesific token that will allow you to make some of the activities we offer for our users by making sure you are indeed the person who are authorized to make the specific action.
+After you sign in with us you'll get a spesific token that will allow you to make some of the activities we offer for our users by making sure you are indeed the person who are authorized to make the action.
 
 #### Signup page
 The signup page is where you'll create your user. <br>
