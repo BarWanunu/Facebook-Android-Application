@@ -14,7 +14,11 @@ Use the link we gave above for the second part, and for the first part just swit
 ## Running the app
 Now let's strat the app ! <br>
 We will guide you with several steps in order to run the android app. <br>
+
+First, make the Node Js server is running as required. <br>
+=======
 First, make sure the Node Js server running as required. <br>
+
 Afterwards, make sure you download the Pixel 2 device and then press "Sync Project with Gradle Files" button. <br>
 Then, make sure the configuration is App and you can start running our facebook app by pressing the green triangle !! <br>
 We hope you'll enjoy your experience !
